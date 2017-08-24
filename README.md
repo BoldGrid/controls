@@ -1,4 +1,4 @@
-# Webpack ES6 Seed
+# Controls
 
 Simple webpack boilerplate for `ES2015`, `scss`. Ships with a `standard` JavaScript linter. Add what you need!
 
@@ -12,4 +12,3 @@ yarn dev
 
 # Build for production
 yarn build
-```
