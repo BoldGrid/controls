@@ -1,0 +1,77 @@
+{
+  "_from": "webpack-seed",
+  "_id": "webpack-seed@2.0.0",
+  "_inBundle": false,
+  "_integrity": "sha1-qCPVWbt6pYOs0EpQUt+jXTu7jH0=",
+  "_location": "/webpack-seed",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "webpack-seed",
+    "name": "webpack-seed",
+    "escapedName": "webpack-seed",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/webpack-seed/-/webpack-seed-2.0.0.tgz",
+  "_shasum": "a823d559bb7aa583acd04a5052dfa35d3bbb8c7d",
+  "_spec": "webpack-seed",
+  "_where": "C:\\Users\\mgr\\Desktop",
+  "author": {
+    "name": "William Wise",
+    "email": "will@williamwise.net"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "bulma": "^0.4.3",
+    "eslint-config-wordpress": "^2.0.0",
+    "html-loader": "^0.5.1",
+    "jshint-loader": "^0.8.4",
+    "normalize.css": "^7.0.0"
+  },
+  "deprecated": false,
+  "description": "Vanilla JS ES6 (ES2015) seed. Bootstrapped with sass and a standard linter. Add what you need!",
+  "devDependencies": {
+    "babel-core": "^6.22.1",
+    "babel-eslint": "^7.2.3",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-stage-0": "^6.22.0",
+    "copy-webpack-plugin": "^4.0.1",
+    "css-loader": "^0.28.0",
+    "eslint": "^3.19.0",
+    "eslint-loader": "^1.7.1",
+    "eslint-plugin-html": "^2.0.3",
+    "extract-text-webpack-plugin": "^2.1.0",
+    "file-loader": "^0.9.0",
+    "html-minifier": "^3.5.2",
+    "html-webpack-plugin": "^2.28.0",
+    "jshint": "^2.9.4",
+    "node-sass": "^4.5.3",
+    "sass-loader": "^6.0.5",
+    "standard": "^10.0.2",
+    "style-loader": "^0.16.1",
+    "url-loader": "^0.5.8",
+    "webpack": "^2.6.0",
+    "webpack-dev-server": "^2.4.2"
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "license": "WTFPL",
+  "main": "index.js",
+  "name": "webpack-seed",
+  "repository": {},
+  "scripts": {
+    "build": "rm -rf ./dist && NODE_ENV=production webpack --colors",
+    "dev": "webpack-dev-server --colors",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "2.0.0"
+}
