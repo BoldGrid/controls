@@ -24,8 +24,8 @@
   "_spec": "webpack-seed",
   "_where": "C:\\Users\\mgr\\Desktop",
   "author": {
-    "name": "William Wise",
-    "email": "will@williamwise.net"
+    "name": "Rafael Ramos",
+    "email": "rramo012@gmail.com"
   },
   "bundleDependencies": false,
   "dependencies": {
@@ -69,6 +69,7 @@
   "name": "webpack-seed",
   "repository": {},
   "scripts": {
+	"start": "webpack-dev-server --colors",
     "build": "rm -rf ./dist && NODE_ENV=production webpack --colors",
     "dev": "webpack-dev-server --colors",
     "test": "echo \"Error: no test specified\" && exit 1"
