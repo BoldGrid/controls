@@ -69,7 +69,7 @@
   "name": "webpack-seed",
   "repository": {},
   "scripts": {
-	"start": "webpack-dev-server --colors",
+    "start": "npm run build",
     "build": "rm -rf ./dist && NODE_ENV=production webpack --colors",
     "dev": "webpack-dev-server --colors",
     "test": "echo \"Error: no test specified\" && exit 1"
