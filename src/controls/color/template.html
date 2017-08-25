@@ -1,12 +1,6 @@
 $color_palettes = ! empty( $this->choices['palettes'] ) ? $this->choices['palettes'] : array();
-$has_neutral_color = ! empty( $color_palettes['palettes'][0]['neutral-color'] );
 $color_palatte_columns = $color_palettes['color-palette-size'] + ( (int) $has_neutral_color );
 ?>
-<span class="customize-control-title"><?php echo $this->label; ?></span>
-
-<?php if ( ! empty( $this->description ) ) : ?>
-<span class="description customize-control-description"><?php echo $this->description; ?></span>
-<?php endif; ?>
 
 <h3>Active Palette</h3>
 <div class='boldgrid-color-palette-wrapper color-palette-columns-<?php echo $color_palatte_columns;?>'
