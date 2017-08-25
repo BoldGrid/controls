@@ -32,6 +32,7 @@
     "bulma": "^0.4.3",
     "eslint-config-wordpress": "^2.0.0",
     "html-loader": "^0.5.1",
+    "http-server": "^0.10.0",
     "jshint-loader": "^0.8.4",
     "normalize.css": "^7.0.0"
   },
@@ -69,7 +70,7 @@
   "name": "webpack-seed",
   "repository": {},
   "scripts": {
-    "start": "npm run dev",
+    "start": "npm run build; http-server dist/ -p $PORT",
     "build": "rm -rf ./dist && NODE_ENV=production webpack --colors",
     "dev": "webpack-dev-server --colors",
     "test": "echo \"Error: no test specified\" && exit 1"
