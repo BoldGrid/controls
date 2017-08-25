@@ -71,6 +71,7 @@
   "repository": {},
   "scripts": {
     "start": "http-server dist/ -p $PORT",
+    "prod": "http-server dist/ -p 8000 -o",
     "postinstall": "npm run build",
     "build": "rm -rf ./dist && NODE_ENV=production webpack --colors",
     "dev": "webpack-dev-server --colors",
