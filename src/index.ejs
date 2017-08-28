@@ -6,33 +6,19 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>BoldGrid Customization Controls</title>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/black-tie/jquery-ui.css">
-  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 </head>
 <body>
-  <h1>BoldGrid Controls</h1>
-  <div id="tabs">
-  <ul>
-    <li><a href="#tabs-1">Info</a></li>
-    <li><a href="#tabs-2">Colors</a></li>
+  <ul class="bg-tabs">
+	  <li class="tab-link current" data-tab="colors-tab"><a href="#colors-tab">Colors</a></li>
+	  <li class="tab-link" data-tab="dev-info"><a href="#dev-info">Dev Info</a></li>
   </ul>
-  <div id="tabs-1">
-	  <h2>Dev Environment Info</h2>
-	  <dl>
-	    <dt><code>src/</code></dt>
-	    <dd>Working directory. Entry point is <code>index.js</code></dd>
 
-	    <dt><code>static/</code></dt>
-	    <dd>Static working directory. All files in this directory are copied to the <code>dist/</code></dd>
-
-	    <dt><code>dist/</code></dt>
-	    <dd>Production directory. Run <code>yarn build</code> to populate.</dd>
-
-	    <dt><code>config/</code></dt>
-	    <dd>Webpack config</dd>
-	  </dl>
+  <div class="bg-tabs-content current colors-tab">
   </div>
-  <div id="tabs-2">
+  <div class="bg-tabs-content dev-info">
+	  <%= require("./app/template/dev-info.html") %>
   </div>
 </div>
 

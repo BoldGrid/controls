@@ -42,7 +42,10 @@ module.exports = {
       exclude: /node_modules/,
       use: [
         'babel-loader'
-      ]
+	],
+	query: {
+	  presets: ["es2015"]
+  }
     }, {
       test: /\.js$/,
       enforce: 'pre',
@@ -83,7 +86,7 @@ module.exports = {
     new webpack.NamedModulesPlugin(),
 
     new HtmlWebpackPlugin({
-      template: path.join( path.resolve( __dirname, '..', 'src' ), 'index.html' ),
+      template: path.join( path.resolve( __dirname, '..', 'src' ), 'index.ejs' ),
       path: path.resolve( __dirname, '..', 'dist' ),
       filename: 'index.html'
     })

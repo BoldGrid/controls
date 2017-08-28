@@ -1,4 +1,4 @@
 import 'normalize.css';
-import { Interface } from './interface/interface';
+import { Application } from './app/main.js';
 
-new Interface().init();
+new Application().init();

@@ -3,6 +3,7 @@ const webpack = require( 'webpack' );
 const HtmlWebpackPlugin = require( 'html-webpack-plugin' );
 const ExtractTextPlugin = require( 'extract-text-webpack-plugin' );
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
+const MinifyPlugin = require( 'babel-minify-webpack-plugin' );
 
 const srcDir = path.resolve( __dirname, '..', 'src' );
 const distDir = path.resolve( __dirname, '..', 'dist' );
@@ -77,12 +78,12 @@ use: [ {
       }
     ]),
 
-    new webpack.optimize.UglifyJsPlugin(),
+	new MinifyPlugin(),
 
     new webpack.NamedModulesPlugin(),
 
     new HtmlWebpackPlugin({
-      template: path.join( srcDir, 'index.html' ),
+      template: path.join( srcDir, 'index.ejs' ),
       path: distDir,
       filename: 'index.html',
       minify: {
