@@ -42,10 +42,7 @@ module.exports = {
       exclude: /node_modules/,
       use: [
         'babel-loader'
-	],
-	query: {
-	  presets: ["es2015"]
-  }
+	]
     }, {
       test: /\.js$/,
       enforce: 'pre',
