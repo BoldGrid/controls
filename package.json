@@ -29,9 +29,12 @@
   },
   "bundleDependencies": false,
   "dependencies": {
+    "Iris": "https://github.com/Automattic/Iris#master",
     "babel-minify-webpack-plugin": "^0.2.0",
     "boldgrid-components": "https://github.com/BoldGrid/components#master",
     "bulma": "^0.4.3",
+    "color": "https://github.com/Automattic/Color.js",
+    "color-js": "^1.0.4",
     "eslint-config-wordpress": "^2.0.0",
     "html-loader": "^0.5.1",
     "http-server": "^0.10.0",

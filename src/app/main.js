@@ -2,7 +2,7 @@ import { Application as ComponentApplication } from 'boldgrid-components/src/app
 import 'boldgrid-components/src/app/scss/main.scss';
 
 import './main.scss';
-import { Control as ColorControl } from '../controls/color/js/control.js';
+import { Renderer as ColorRender } from '../controls/color/js/renderer.js';
 
 export class Application {
 
@@ -22,8 +22,8 @@ export class Application {
 	 * @since 1.0.0
 	 */
 	renderControls() {
-		let colorControl = new ColorControl();
-		colorControl.render( $( '.colors-tab' ) );
-		console.log( colorControl );
+		let colorRender = new ColorRender();
+		colorRender.render( $( '.colors-tab' ) );
+		console.log( colorRender );
 	}
 }

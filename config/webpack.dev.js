@@ -78,6 +78,13 @@ module.exports = {
       }
     ]),
 
+	new CopyWebpackPlugin([
+	  {
+		from: '../node_modules/Iris/dist/iris.min.js',
+		to: './static/'
+	  }
+	]),
+
     new webpack.HotModuleReplacementPlugin(),
 
     new webpack.NamedModulesPlugin(),

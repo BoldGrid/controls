@@ -78,6 +78,13 @@ use: [ {
       }
     ]),
 
+    new CopyWebpackPlugin([
+      {
+        from: '../node_modules/Iris/dist/iris.min.js',
+        to: './static/'
+      }
+    ]),
+
 	new MinifyPlugin(),
 
     new webpack.NamedModulesPlugin(),
