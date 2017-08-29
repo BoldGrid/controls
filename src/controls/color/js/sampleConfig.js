@@ -10,11 +10,11 @@ export default {
 			'copy_on_mod': true,
 			'is_active': true,
 			'colors': [
-				'#8bbe1d',
-				'#0047ab',
-				'#0047ab',
-				'#8bbe1d',
-				'#2a2a2a'
+				'#ef7928',
+				'#25374a',
+				'#738599',
+				'#25374a',
+				'#f3f3f3'
 			]
 		},
 		{
@@ -25,11 +25,11 @@ export default {
 			'copy_on_mod': true,
 			'is_active': true,
 			'colors': [
-				'#0047ab',
-				'#8bbe1d',
-				'#8bbe1d',
-				'#0047ab',
-				'#2a2a2a'
+				'#516d30',
+				'#1a1a1a',
+				'#8c8c8c',
+				'#1a1a1a',
+				'#f3f3f3'
 			]
 		},
 		{
@@ -40,11 +40,41 @@ export default {
 			'copy_on_mod': true,
 			'is_active': true,
 			'colors': [
-				'yellow',
-				'#0047ab',
-				'#8bbe1d',
-				'red',
-				'#2a2a2a'
+				'#d4b65a',
+				'#3f313e',
+				'#666666',
+				'#3f313e',
+				'#f3f3f3'
+			]
+		},
+		{
+			'default': true,
+			'palette_id': '7501ccf9673539117844dc999ecf6010',
+			'format': 'palette-primary',
+			'neutral-color': '#f5e8d3',
+			'copy_on_mod': true,
+			'is_active': true,
+			'colors': [
+				'#209a96',
+				'#7d786d',
+				'#4a4740',
+				'#7d786d',
+				'#fffaf2'
+			]
+		},
+		{
+			'default': true,
+			'palette_id': '7501ccf9673539117844dc999ecf6010',
+			'format': 'palette-primary',
+			'neutral-color': '#292929',
+			'copy_on_mod': true,
+			'is_active': true,
+			'colors': [
+				'#af2f30',
+				'#558a98',
+				'#ffffff',
+				'#558a98',
+				'#585858'
 			]
 		}
 	],
@@ -55,11 +85,11 @@ export default {
 		'all': [],
 		'neutral-color': '#ffffff',
 		'active': [
-			'#8bbe1d',
-			'#0047ab',
-			'#0047ab',
-			'#8bbe1d',
-			'#2a2a2a'
+			'#ef7928',
+			'#25374a',
+			'#738599',
+			'#25374a',
+			'#f3f3f3'
 		]
 	}
 };

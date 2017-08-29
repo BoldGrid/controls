@@ -1,3 +1,5 @@
+var self, colorPalette;
+
 window.BOLDGRID = window.BOLDGRID || {};
 window.BOLDGRID.COLOR_PALETTE = window.BOLDGRID.COLOR_PALETTE || {};
 window.BOLDGRID.COLOR_PALETTE.Modify = window.BOLDGRID.COLOR_PALETTE.Modify || {};
@@ -6,7 +8,6 @@ colorPalette = window.BOLDGRID.COLOR_PALETTE.Modify;
 self = colorPalette;
 
 colorPalette.setupTransitions = function() {
-	console.log( self.configs.enableCustomizerTransitions );
 	if ( self.configs.enableCustomizerTransitions ) {
 		self.bindActiveColorClick();
 	}

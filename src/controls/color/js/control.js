@@ -3,6 +3,9 @@ window.BOLDGRID.COLOR_PALETTE = window.BOLDGRID.COLOR_PALETTE || {};
 window.BOLDGRID.COLOR_PALETTE.Modify = window.BOLDGRID.COLOR_PALETTE.Modify || {};
 
 import './transitions.js';
+import { SassCompiler }from '../../sass/compile.js';
+import { Generate }from './generate.js';
+import BrehautColorJs from 'color-js/color';
 
 var $window = $( window ),
 	colorPalette = BOLDGRID.COLOR_PALETTE.Modify,
@@ -22,6 +25,8 @@ var default_neutrals =  [ '#232323', '#FFFFFF', '#FF5F5F', '#FFDBB8', '#FFFFB2',
 
 colorPalette.init = function( configs ) {
 	self.configs = configs;
+	self.sassCompiler = new SassCompiler();
+
 	self.$palette_control_wrapper = $( '.bgctrl-color-palette' );
 	self.$color_picker_input = self.$palette_control_wrapper.find( '.pluto-color-control' );
 	self.$palette_option_field = self.$palette_control_wrapper.find( '.palette-option-field' );
@@ -30,7 +35,6 @@ colorPalette.init = function( configs ) {
 	self.$paletteWrapper = self.$palette_control_wrapper.find( '.boldgrid-color-palette-wrapper' );
 	self.hasNeutral = self.$paletteWrapper.data( 'has-neutral' );
 	self.numColors = self.$paletteWrapper.data( 'num-colors' );
-
 
 	// Create icon set variable.
 	colorPalette.duplicate_modification_icons();
@@ -211,14 +215,15 @@ colorPalette.bind_generate_palette_action = function() {
 		}
 
 		// Generate Palettes.
-		var palettes = BOLDGRID.COLOR_PALETTE.Generate.generate_palette_collection( paletteData, colorPalette.generated_color_palettes );
+		let generate = new Generate(),
+			palettes = generate.generatePaletteCollection( paletteData, colorPalette.generated_color_palettes );
 
 		if ( self.hasNeutral ) {
 			$.each( palettes, function() {
 
 				// Generate neutral color or pass through existing neutral.
 				if ( ! neutralColor ) {
-					this.push( colorPalette.palette_generator.generateNeutralColor( this ) );
+					this.push( generate.generateNeutralColor( this ) );
 				} else {
 					this.push( neutralColor );
 				}
@@ -685,8 +690,8 @@ colorPalette.compile = function( content, options ) {
 colorPalette.doCompile = function() {
 	var currentCompile = self.pendingCompile;
 
-	if ( currentCompile && ! BOLDGRID.Sass.processing ) {
-		BOLDGRID.Sass.compile( currentCompile.content, currentCompile.options );
+	if ( currentCompile && ! self.sassCompiler.processing ) {
+		self.sassCompiler.compile( currentCompile.content, currentCompile.options );
 		self.pendingCompile = false;
 	}
 };
@@ -756,7 +761,7 @@ colorPalette.open_picker = function() {
 colorPalette.set_iris_color = function( css_color ) {
 
 	// Set the color value.
-	var background_color = net.brehaut.Color( css_color );
+	var background_color = BrehautColorJs( css_color );
 	self.$color_picker_input.iris( 'color', background_color.toString() );
 };
 

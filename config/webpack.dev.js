@@ -71,19 +71,20 @@ module.exports = {
   },
 
   plugins: [
-    new CopyWebpackPlugin([
-      {
-        from: './../static',
-        to: 'static'
-      }
-    ]),
-
-	new CopyWebpackPlugin([
-	  {
-		from: '../node_modules/Iris/dist/iris.min.js',
-		to: './static/'
-	  }
-	]),
+	new CopyWebpackPlugin( [
+		{
+			from: './../static',
+			to: 'static'
+		},
+		{
+			from: '../node_modules/Iris/dist/iris.min.js',
+			to: './static/'
+		},
+		{
+			from: '../node_modules/sass.js/dist/sass.worker.js',
+			to: './static/'
+		}
+	] ),
 
     new webpack.HotModuleReplacementPlugin(),
 

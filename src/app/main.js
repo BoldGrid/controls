@@ -23,6 +23,5 @@ export class Application {
 	renderControls() {
 		let colorRender = new ColorRender();
 		colorRender.render( $( '.colors-tab' ) );
-		console.log( colorRender );
 	}
 }

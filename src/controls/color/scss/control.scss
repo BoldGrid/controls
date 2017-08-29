@@ -5,6 +5,10 @@
 	display: block;
 }
 
+.bgctrl-color-palette {
+	max-width: 400px;
+}
+
 .palette-action-buttons {
 	margin-top: 12px;
 	.boldgrid-neutral-color {
@@ -47,7 +51,6 @@
 .boldgrid-neutral-color,
 .boldgrid-active-palette,
 .boldgrid-inactive-palette .boldgrid-palette-colors {
-	width: 92%;
 	position: relative;
 }
 
@@ -106,7 +109,7 @@
 			}
 		}
 	}
-	.wp-picker{
+	.iris-picker {
 		&-container{
 			.button {
 				margin-left: 3px;
@@ -171,7 +174,7 @@
 	border: 2px solid;
 	border-color: #E1E1E1;
 	height: 84px;
-	margin-top: 15px;
+	margin: 15px auto;
 	li {
 		margin-top: 0px;
 		margin-bottom: 0px;

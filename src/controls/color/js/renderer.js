@@ -31,7 +31,7 @@ export class Renderer {
 
 			if ( ! window.BOLDGRIDSass ) {
 				window.BOLDGRIDSass = {};
-				window.BOLDGRIDSass.WorkerUrl = '';
+				window.BOLDGRIDSass.WorkerUrl = './static/sass.worker.js';
 				window.BOLDGRIDSass.ScssFormatFileContents = '';
 				window.BOLDGRIDSass.outputCssFilename = '';
 			}
