@@ -1095,6 +1095,19 @@ bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.4.0:
   version "4.11.8"
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.8.tgz#2cde09eb5ee341f484746bb0309b3253b1b1442f"
 
+"boldgrid-components@https://github.com/BoldGrid/components#master":
+  version "2.1.0"
+  resolved "https://github.com/BoldGrid/components#fd3b221ae1b6523c8c99c1933ad78a77c27a6251"
+  dependencies:
+    bulma "^0.4.3"
+    ejs-loader "^0.3.0"
+    eslint-config-wordpress "^2.0.0"
+    html-loader "^0.5.1"
+    http-server "^0.10.0"
+    jshint-loader "^0.8.4"
+    normalize.css "^7.0.0"
+    rimraf "^2.6.1"
+
 bonjour@^3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/bonjour/-/bonjour-3.5.0.tgz#8e890a183d8ee9a2393b3844c691a42bcf7bc9f5"
