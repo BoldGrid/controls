@@ -1,3 +1,3 @@
 src/controls/color/js/control.js
-/node_modules
-/node_modules/boldgrid-components
+./node_modules
+./node_modules/style-loader/addStyles.js
