@@ -1,28 +1,4 @@
 {
-  "_from": "webpack-seed",
-  "_id": "webpack-seed@2.0.0",
-  "_inBundle": false,
-  "_integrity": "sha1-qCPVWbt6pYOs0EpQUt+jXTu7jH0=",
-  "_location": "/webpack-seed",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "tag",
-    "registry": true,
-    "raw": "webpack-seed",
-    "name": "webpack-seed",
-    "escapedName": "webpack-seed",
-    "rawSpec": "",
-    "saveSpec": null,
-    "fetchSpec": "latest"
-  },
-  "_requiredBy": [
-    "#USER",
-    "/"
-  ],
-  "_resolved": "https://registry.npmjs.org/webpack-seed/-/webpack-seed-2.0.0.tgz",
-  "_shasum": "a823d559bb7aa583acd04a5052dfa35d3bbb8c7d",
-  "_spec": "webpack-seed",
-  "_where": "C:\\Users\\mgr\\Desktop",
   "author": {
     "name": "Rafael Ramos",
     "email": "rramo012@gmail.com"
