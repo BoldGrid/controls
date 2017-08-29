@@ -1,6 +1,6 @@
-// Import { Application as ComponentApplication } from 'boldgrid-components/src/app/js/main.js';
+import { Application as ComponentApplication } from 'boldgrid-components/src/app/js/main.js';
 
-// import './main.scss';
+import './main.scss';
 import { Renderer as ColorRender } from '../controls/color/js/renderer.js';
 
 export class Application {
