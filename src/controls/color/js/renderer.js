@@ -36,9 +36,7 @@ export class Renderer {
 				window.BOLDGRIDSass.outputCssFilename = '';
 			}
 
-			window.BOLDGRID.COLOR_PALETTE.Modify.init( {
-				enableCustomizerTransitions: false
-			} );
+			window.BOLDGRID.COLOR_PALETTE.Modify.init();
 		} );
 	}
 

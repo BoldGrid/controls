@@ -24,7 +24,7 @@ colorPalette.themePalettes = [];
 var default_neutrals =  [ '#232323', '#FFFFFF', '#FF5F5F', '#FFDBB8', '#FFFFB2', '#bad6b1', '#99acbf', '#cdb5e2' ];
 
 colorPalette.init = function( configs ) {
-	self.configs = configs;
+	self.configs = self.initConfigs();
 	self.sassCompiler = new SassCompiler();
 
 	self.$palette_control_wrapper = $( '.bgctrl-color-palette' );
@@ -61,6 +61,14 @@ colorPalette.init = function( configs ) {
 
 	// Wait 100ms before running this function because it expects WP color picker to be set up.
 	setTimeout( colorPalette.wp_picker_post_init, 100 );
+};
+
+colorPalette.initConfigs = function( configs ) {
+	return _.defaults( {
+		enableCustomizerTransitions: false,
+		boldgrid_light_text: '#FFF',
+		boldgrid_dark_text: '#000'
+	}, configs );
 };
 
 /**

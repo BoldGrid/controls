@@ -54,7 +54,6 @@ colorPalette.addColorTransition = function() {
 	}, timeout );
 };
 
-
 /**
  * Upon clicking a color in the active palette, fade in and out the color on the iframe.
  *
