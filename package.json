@@ -45,8 +45,7 @@
     "webpack-dev-server": "^2.4.2"
   },
   "engines": {
-    "node": ">=6",
-    "yarn": "0.27.*"
+    "node": ">=6"
   },
   "license": "WTFPL",
   "main": "index.js",
