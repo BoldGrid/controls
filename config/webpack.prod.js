@@ -39,15 +39,15 @@ use: [ {
       use: [
         'babel-loader'
       ]
-    }, {
+  }, /*{
       test: /\.js$/,
       enforce: 'pre',
 
       loader: 'eslint-loader',
       options: {
-        /*EmitWarning: true*/
+        emitWarning: true
       }
-    }, {
+  },*/ {
       test: /\.(scss|css)$/,
       use: ExtractTextPlugin.extract({
         fallback: 'style-loader',
