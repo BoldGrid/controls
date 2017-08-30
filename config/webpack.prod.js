@@ -45,7 +45,7 @@ use: [ {
 
       loader: 'eslint-loader',
       options: {
-        emitWarning: true
+        /*EmitWarning: true*/
       }
     }, {
       test: /\.(scss|css)$/,
