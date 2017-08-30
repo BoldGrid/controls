@@ -15,11 +15,11 @@
 		display: none;
 	}
 }
-.wp-core-ui .button.palette-creator-button {
-	width: 92%;
-	margin: 2px;
+.palette-action-buttons .button.palette-creator-button {
+	width: 100%;
+	margin: 24px auto;
 	font-size: 14px;
-	margin-bottom: 20px;
+	display: block;
 }
 
 .palette-buttons.button.upload-button {
@@ -98,40 +98,32 @@
 	width: 100%;
 }
 
-.boldgrid-color-palette-wrapper {
-	.wp-color-result {
-		display: none;
-		&.expanded-wp-colorpicker {
-			height: 28px;
-			&:after {
-				line-height: 28px;
-				font-size: 13px;
-			}
-		}
+.boldgrid-color-palette-wrapper .color-picker {
+	input[type=text] {
+		width: 140px;
 	}
+
 	.iris-picker {
+		margin: 20px auto;
+		border-color: #ddd;
+		border-radius: 0;
+
 		&-container{
 			.button {
 				margin-left: 3px;
-			}
-			input[type=text].wp-color-picker {
-				width: 140px;
 			}
 		}
 		&-clear {
 			display: none;
 		}
-		&-open+.wp-picker-input-wrap .close-color-picker {
-			display: inline-block;
-		}
 	}
+
 	.close-color-picker {
-		line-height: 23px;
-		height: 25px;
-		display: none;
+		margin: 0 15px;
 	}
-	.wp-picker-container {
-	    margin-bottom: 5px;
+
+	.custom-input {
+		text-align: center;
 	}
 }
 

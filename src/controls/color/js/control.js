@@ -4,7 +4,8 @@ window.BOLDGRID.COLOR_PALETTE.Modify = window.BOLDGRID.COLOR_PALETTE.Modify || {
 
 import './transitions.js';
 import { SassCompiler }from '../../sass/compile.js';
-import { Generate }from './generate.js';
+import { Generate } from './generate.js';
+import { Picker as ColorPicker } from '../../color-picker';
 import BrehautColorJs from 'color-js/color';
 
 var $window = $( window ),
@@ -26,15 +27,24 @@ var default_neutrals =  [ '#232323', '#FFFFFF', '#FF5F5F', '#FFDBB8', '#FFFFB2',
 colorPalette.init = function( configs ) {
 	self.configs = self.initConfigs();
 	self.sassCompiler = new SassCompiler();
+	self.colorPicker = new ColorPicker();
 
+	self.classProperties();
+	self.setupEvents();
+};
+
+colorPalette.classProperties = function() {
 	self.$palette_control_wrapper = $( '.bgctrl-color-palette' );
-	self.$color_picker_input = self.$palette_control_wrapper.find( '.pluto-color-control' );
+	self.$colorPickerWrap = self.$palette_control_wrapper.find( '.color-picker-wrap' );
 	self.$palette_option_field = self.$palette_control_wrapper.find( '.palette-option-field' );
 	self.generated_palettes_container = self.$palette_control_wrapper.find( '.generated-palettes-container' );
 	self.$accoridon_section_colors = $( '#accordion-section-colors' );
 	self.$paletteWrapper = self.$palette_control_wrapper.find( '.boldgrid-color-palette-wrapper' );
 	self.hasNeutral = self.$paletteWrapper.data( 'has-neutral' );
 	self.numColors = self.$paletteWrapper.data( 'num-colors' );
+};
+
+colorPalette.setupEvents = function() {
 
 	// Create icon set variable.
 	colorPalette.duplicate_modification_icons();
@@ -49,10 +59,7 @@ colorPalette.init = function( configs ) {
 	colorPalette.bind_generate_palette_action();
 	colorPalette.bind_help_section_visibility();
 	colorPalette.bind_help_link();
-	colorPalette.setupTransitions();
-
-	// Hide Advanced Options.
-	colorPalette.setup_advanced_options();
+	colorPalette.bindActiveColorClick();
 
 	// Action that occurs when color palette is compiled.
 	colorPalette.bind_compile_done();
@@ -60,7 +67,7 @@ colorPalette.init = function( configs ) {
 	colorPalette.fetch_acceptable_palette_formats();
 
 	// Wait 100ms before running this function because it expects WP color picker to be set up.
-	setTimeout( colorPalette.wp_picker_post_init, 100 );
+	setTimeout( colorPalette.pickerPostInit, 100 );
 };
 
 colorPalette.initConfigs = function( configs ) {
@@ -92,12 +99,11 @@ colorPalette.bind_help_section_visibility = function() {
 colorPalette.setup_close_color_picker = function() {
 	self.$close_palette_creator = $( '<button type="button" class="button close-color-picker">Done</button>' );
 
-	$( '.boldgrid-color-palette-wrapper input[type=text].wp-color-picker' )
-		.after( self.$close_palette_creator );
+	self.colorPicker.$input.after( self.$close_palette_creator );
 
-	self.$close_palette_creator.on( 'click', function() {
-		$( 'body' ).click();
-	});
+	self.$close_palette_creator.on( 'click', () => {
+		self.colorPicker.hide();
+	} );
 };
 
 /**
@@ -187,25 +193,6 @@ colorPalette.duplicate_modification_icons = function() {
 	if ( colorPalette.$icon_set ) {
 		colorPalette.$icon_set = colorPalette.$icon_set.clone();
 	}
-};
-
-/**
- * Allow the user to expand an advanced options accordion
- */
-colorPalette.setup_advanced_options = function() {
-	self.$palette_control_wrapper.find( '.boldgrid-advanced-options-content' ).hide();
-
-	self.$palette_control_wrapper.find( '.boldgrid-advanced-options' ).on( 'click', function( e ) {
-		e.stopPropagation();
-	});
-
-	self.$palette_control_wrapper.find( '.boldgrid-advanced-options-label' ).on( 'click', function( e ) {
-		e.stopPropagation();
-		$( this ).closest( '.boldgrid-advanced-options' )
-			.find( '.boldgrid-advanced-options-content' )
-			.stop()
-			.slideToggle();
-	});
 };
 
 /**
@@ -415,9 +402,8 @@ colorPalette.activate_palette = function( $ul ) {
 	var $div = $ul.closest( 'div' ).addClass( 'current-palette-wrapper' ).detach();
 	self.$palette_control_wrapper.find( '.boldgrid-color-palette-wrapper' ).prepend( $div );
 
-	var $action_butttons = self.$palette_control_wrapper.find( '.palette-action-buttons' );
-	$action_butttons.removeClass( 'hidden' ).insertAfter( $ul );
-	colorPalette.$color_picker.show();
+	var $actionButtons = self.$palette_control_wrapper.find( '.palette-action-buttons' );
+	$actionButtons.removeClass( 'hidden' ).insertAfter( $ul );
 
 	self.$palette_control_wrapper.find( '.boldgrid-active-palette' ).each( function() {
 		var $this = $( this );
@@ -728,9 +714,9 @@ colorPalette.activate_color = function( e, $element, ignoreColorChange ) {
 
 		// If this is a neutral color set a different set of defaults.
 		if ( self.hasNeutral && $this.is( '.boldgrid-active-palette .boldgrid-palette-colors:last' ) ) {
-			self.$color_picker_input.iris({ palettes: default_neutrals });
+			self.colorPicker.$input.iris({ palettes: default_neutrals });
 		} else {
-			self.$color_picker_input.iris({ palettes: true });
+			self.colorPicker.$input.iris({ palettes: true });
 		}
 
 		colorPalette.modify_palette_action( $this.closest( '[data-palette-wrapper="true"]' ) );
@@ -743,7 +729,7 @@ colorPalette.activate_color = function( e, $element, ignoreColorChange ) {
 			self.pause_color_changes();
 		}
 
-		colorPalette.set_iris_color( $this.css( 'background-color' ) );
+		self.colorPicker.setColor( $this.css( 'background-color' ) );
 	}
 };
 
@@ -760,17 +746,7 @@ colorPalette.pause_color_changes = function() {
 };
 
 colorPalette.open_picker = function() {
-	if ( ! self.$palette_control_wrapper.find( '.wp-picker-open' ).length ) {
-
-		self.$palette_control_wrapper.find( '.wp-color-result' ).click();
-	}
-};
-
-colorPalette.set_iris_color = function( css_color ) {
-
-	// Set the color value.
-	var background_color = BrehautColorJs( css_color );
-	self.$color_picker_input.iris( 'color', background_color.toString() );
+	self.colorPicker.show();
 };
 
 /**
@@ -799,119 +775,74 @@ colorPalette.updateNeutralData = function() {
  */
 colorPalette.setup_color_picker = function() {
 
+	// Hack, colors are updated shortly after, just give it an array.
+	var secondaryPalette = colorPalette.themePalettes[0];
+	if ( self.hasNeutral ) {
+		secondaryPalette.push( '#FFF' );
+	}
+
 	var myOptions = {
+		secondaryPalette: secondaryPalette,
+		change: function( event, ui ) {
 
-			// You can declare a default color here,.
+			if ( self.fadeEffectInProgress ) {
+				return false;
+			}
 
-			// or in the data-default-color attribute on the input.
-			defaultColor: false,
-			change: function( event, ui ) {
+			var color = ui.color.toString();
 
-				if ( self.fadeEffectInProgress ) {
-					return false;
+			self.$palette_control_wrapper
+				.find( '.active-palette-section' )
+				.css( 'background-color', color );
+
+			// Update the neutral color data elements.
+			colorPalette.updateNeutralData();
+			colorPalette.updateCustomPalettes();
+
+			if ( self.ignoreColorChange ) {
+				return;
+			}
+
+			colorPalette.last_refresh_time = new Date().getTime();
+			var current_refreshtime = colorPalette.last_refresh_time;
+
+			// Update every 100 ms.
+			setTimeout( function() {
+				var isMostRecent = current_refreshtime === colorPalette.last_refresh_time,
+					progressiveUpdate = self.most_recent_update + colorPalette.pickerCompileDelay < new Date().getTime();
+
+				if ( isMostRecent || progressiveUpdate ) {
+					colorPalette.update_theme_option();
+					self.most_recent_update = new Date().getTime();
 				}
+			}, colorPalette.pickerCompileDelay, current_refreshtime );
 
-				var color = ui.color.toString();
+		}
+	};
 
-				self.$palette_control_wrapper
-					.find( '.active-palette-section' )
-					.css( 'background-color', color );
-
-				// Update the neutral color data elements.
-				colorPalette.updateNeutralData();
-				colorPalette.updateCustomPalettes();
-
-				if ( self.ignoreColorChange ) {
-					return;
-				}
-
-				colorPalette.last_refresh_time = new Date().getTime();
-				var current_refreshtime = colorPalette.last_refresh_time;
-
-				// Update every 100 ms.
-				setTimeout( function() {
-					var isMostRecent = current_refreshtime === colorPalette.last_refresh_time,
-						progressiveUpdate = self.most_recent_update + colorPalette.pickerCompileDelay < new Date().getTime();
-
-					if ( isMostRecent || progressiveUpdate ) {
-						colorPalette.update_theme_option();
-						self.most_recent_update = new Date().getTime();
-					}
-				}, colorPalette.pickerCompileDelay, current_refreshtime );
-
-			},
-
-			// Hide the color picker controls on load.
-			hide: true,
-
-			// Show a group of common colors beneath the square.
-
-			// or, supply an array of colors to customize further.
-			palettes: true
-		};
-
-		self.$color_picker_input.iris( myOptions );
-		colorPalette.$color_picker = self.$palette_control_wrapper.find( '.wp-picker-container' ).hide();
-		colorPalette.createPickerPalettes();
-		colorPalette.bindCustomPalettes();
+	this.colorPicker.init( self.$palette_control_wrapper.find('.color-picker'), myOptions );
 };
 
 /**
- * Update the custom colors listed on the right side of your color picker.
+ * Update the custom colors listed on the left side of your color picker.
  *
  * @since 1.1.1
  */
-colorPalette.updateCustomPalettes = function( index, color ) {
+colorPalette.updateCustomPalettes = function() {
 	var $pickerPalettes = self.$palette_control_wrapper.find( '.secondary-colors .iris-palette' );
 
-	if ( index && color ) {
+	self.$palette_control_wrapper.find( '.boldgrid-active-palette .boldgrid-palette-colors' ).each( function( index ) {
 
-		// Single Update.
-		$pickerPalettes
-			.eq( index )
-			.css( 'background-color', color );
-	} else {
-
-		// Update All.
-		self.$palette_control_wrapper.find( '.boldgrid-active-palette .boldgrid-palette-colors' ).each( function( index ) {
-
-			// Copy Color from active Palette.
-			$pickerPalettes.eq( index ).css( 'background-color', $( this ).css( 'background-color' ) );
-		} );
-	}
-};
-
-/**
- * Create a set of squares to display the users current colors on the side of the color picker
- *
- * @since 1.1.1
- */
-colorPalette.createPickerPalettes = function() {
-	var $paletteWrapper = $( '<div class="secondary-colors"></div>' );
-
-	for ( var i = 0; i < self.numColors; i++ ) {
-		$paletteWrapper.append( '<a class="iris-palette" tabindex="0"></a>' );
-	}
-
-	$paletteWrapper.prependTo( self.$palette_control_wrapper.find( '.iris-picker-inner' ) );
-};
-
-/**
- * When the user click on a custom color, change the color of the picker.
- *
- * @since 1.1.1
- */
-colorPalette.bindCustomPalettes = function() {
-	self.$palette_control_wrapper.find( '.secondary-colors .iris-palette' ).on( 'click', function() {
-		colorPalette.set_iris_color( $( this ).css( 'background-color' ) );
+		// Copy Color from active Palette.
+		$pickerPalettes.eq( index ).css( 'background-color', $( this ).css( 'background-color' ) );
 	} );
-};
+}
 
 /**
  * Set the color on the color palette to the color that has the class ".active-palette-seciton"
  */
 colorPalette.preselect_active_color = function( $scope ) {
-	colorPalette.set_iris_color( $scope.find( '.active-palette-section' ).css( 'background-color' ) );
+	self.colorPicker.setColor( $scope.find( '.active-palette-section' ).css( 'background-color' ) );
 };
 
 /**
@@ -1061,7 +992,7 @@ colorPalette.get_random_format = function() {
 /**
  * Initialization processes to be run after the picker has been initialized
  */
-colorPalette.wp_picker_post_init = function() {
+colorPalette.pickerPostInit = function() {
 
 	// Post Color Picker Load.
 	var $active_palette = self.$palette_control_wrapper.find( '.boldgrid-inactive-palette[data-is-active="1"]' );
@@ -1080,16 +1011,11 @@ colorPalette.wp_picker_post_init = function() {
 	$( 'body' ).on( 'click', function() {
 		self.$palette_control_wrapper.find( '.wp-color-result' ).addClass( 'expanded-wp-colorpicker' );
 
-			// Remove advanced Options DropDown.
-			self.$palette_control_wrapper.find( '.boldgrid-color-palette-wrapper' )
-				.find( '.boldgrid-advanced-options' )
-				.addClass( 'hidden' );
-
-			// Deselect color.
-			self.$palette_control_wrapper
-				.find( '.active-palette-section' )
-				.removeClass( 'active-palette-section' );
-	});
+		// Deselect color.
+		self.$palette_control_wrapper
+			.find( '.active-palette-section' )
+			.removeClass( 'active-palette-section' );
+	} );
 
 	// TODO this doesnt work on auto close.
 	self.$palette_control_wrapper.find( '.wp-color-result' ).on( 'click', function() {
@@ -1102,21 +1028,102 @@ colorPalette.wp_picker_post_init = function() {
 				if ( ! self.$palette_control_wrapper.find( '.active-palette-section' ).length ) {
 					self.$palette_control_wrapper.find( '.boldgrid-active-palette li:first' ).click();
 				}
-
-			} else {
-
-				// Remove advanced Options DropDown.
-				$this.closest( '.boldgrid-color-palette-wrapper' )
-					.find( '.boldgrid-advanced-options' )
-					.addClass( 'hidden' );
-
-				$this.addClass( 'expanded-wp-colorpicker' );
 			}
-
 		} );
 
 	self.active_body_class = self.$palette_control_wrapper
 	.find( '.boldgrid-active-palette' )
 	.first()
 	.attr( 'data-color-palette-format' );
+};
+
+
+/**
+ * Upon clicking a color in the active palette, fade in and out the color on the iframe.
+ *
+ * @since 1.1.7
+ */
+colorPalette.bindActiveColorClick = function() {
+	self.$palette_control_wrapper.on( 'click', '.boldgrid-active-palette li', function( e ) {
+		var transitionColor,
+			backgroundColor,
+			$previewerBody,
+			timeStartedCompile,
+			$this = $( this ),
+			originalColor = $this.css( 'background-color' ),
+			isNeutral = false,
+			desiredDelay = 350,
+			transitionDistance = 0.4,
+			darknessThreshold = 0.5;
+
+		e.stopPropagation();
+		colorPalette.activate_color( null, $( this ), true );
+
+		if ( self.fadeEffectInProgress || ! e.originalEvent ) {
+			return;
+		}
+
+		// Get the previewer frame.
+		$previewerBody = colorPalette.getPreviewerBody();
+
+		if ( self.hasNeutral && $this.is( ':last-of-type' ) ) {
+			isNeutral = true;
+		}
+
+		// Calculate the color to transition to.
+		backgroundColor = BrehautColorJs( originalColor );
+		if ( backgroundColor.getLuminance() > darknessThreshold ) {
+			transitionColor = backgroundColor.darkenByAmount( transitionDistance );
+			transitionColor = transitionColor.toCSS();
+		} else {
+			transitionColor = backgroundColor.lightenByAmount( transitionDistance );
+			transitionColor = transitionColor.toCSS();
+		}
+
+		// Set color to transition to.
+		$this.css( 'background-color', transitionColor );
+		if ( isNeutral ) {
+			$this.closest( '.boldgrid-active-palette' ).attr( 'data-neutral-color', transitionColor );
+		}
+
+		// Enable transitions for the colors.
+		$previewerBody.addClass( 'color-palette-transitions' );
+
+		// Compile.
+		colorPalette.update_theme_option();
+
+		// Reset Color.
+		$this.css( 'background-color', originalColor );
+		if ( isNeutral ) {
+			$this.closest( '.boldgrid-active-palette' ).attr( 'data-neutral-color', originalColor );
+		}
+
+		timeStartedCompile = new Date().getTime();
+		self.fadeEffectInProgress = true;
+
+		$window.one( 'boldgrid_sass_compile_done', function() {
+			var timeout = 0,
+				duration = new Date().getTime() - timeStartedCompile;
+
+			// The compile to fade back in should trigger at a minimum time of desiredDelay.
+
+			// If the compile time exceeds the min than the the timeout will be 0.
+			if ( duration < desiredDelay ) {
+				timeout = desiredDelay;
+			}
+
+			// Wait for compile to finish then fade back in.
+			$window.one( 'boldgrid_sass_compile_done', function( event, data ) {
+				setTimeout( function() {
+					colorPalette.update_iframe( data );
+					setTimeout( function() {
+						$previewerBody.removeClass( 'color-palette-transitions' );
+						self.fadeEffectInProgress = false;
+					}, 250 );
+				}, timeout );
+			} );
+
+			colorPalette.update_theme_option( { source: 'color_palette_focus' } );
+		} );
+	} );
 };
