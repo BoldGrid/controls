@@ -1,7 +1,7 @@
 # Controls
 
 ## Application
-https://damp-savannah-30443.herokuapp.com/ @master
+https://boldgrid-controls.herokuapp.com/ @master
 
 ## Installing
 ```
