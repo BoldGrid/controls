@@ -16,6 +16,7 @@
     "http-server": "^0.10.0",
     "jshint-loader": "^0.8.4",
     "normalize.css": "^7.0.0",
+    "rimraf": "^2.6.1",
     "sass.js": "0.10.4"
   },
   "deprecated": false,
