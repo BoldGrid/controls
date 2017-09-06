@@ -48,8 +48,8 @@
     "node": ">=6"
   },
   "license": "WTFPL",
-  "main": "index.js",
-  "name": "webpack-seed",
+  "main": "src/index.js",
+  "name": "boldgrid-controls",
   "repository": {},
   "scripts": {
     "start": "http-server dist/ -p $PORT",
