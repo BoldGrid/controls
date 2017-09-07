@@ -20,7 +20,7 @@
     "sass.js": "0.10.4"
   },
   "deprecated": false,
-  "description": "Vanilla JS ES6 (ES2015) seed. Bootstrapped with sass and a standard linter. Add what you need!",
+  "description": "BoldGrid Controls",
   "devDependencies": {
     "babel-core": "^6.22.1",
     "babel-eslint": "^7.2.3",
@@ -49,7 +49,7 @@
     "node": ">=6"
   },
   "license": "WTFPL",
-  "main": "src/index.js",
+  "main": "dist/bundle.min.js",
   "name": "boldgrid-controls",
   "repository": {},
   "scripts": {

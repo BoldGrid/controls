@@ -84,3 +84,5 @@ export class Palettes {
 		return paletteColors;
 	}
 }
+
+export { Palettes as default };

@@ -785,3 +785,5 @@ export class Generate {
 	};
 
 }
+
+export { Generate as default };

@@ -46,3 +46,5 @@ export class Renderer {
 		return _.template( file )( { 'config': this.palettes } );
 	}
 }
+
+export { Renderer as default };

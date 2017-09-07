@@ -155,8 +155,9 @@ colorPalette.setup_palette_generation = function() {
 	});
 
 	self.$palette_control_wrapper.on( 'click', '.palette-generate-mode .current-palette-wrapper .color-lock', function( e ) {
-		e.stopPropagation();
 		var $this = $( this );
+
+		e.stopPropagation();
 
 		self.$palette_control_wrapper.find( '.boldgrid-active-palette li' )
 			.eq( $this.data( 'count' ) )
@@ -166,8 +167,9 @@ colorPalette.setup_palette_generation = function() {
 	});
 
 	self.$palette_control_wrapper.find( '.cancel-generated-palettes-button' ).on( 'click', function( e ) {
-		e.stopPropagation();
 		var $this = $( this );
+
+		e.stopPropagation();
 
 		// Strip out the auto generated data element.
 		self.$palette_control_wrapper

@@ -13,13 +13,16 @@ module.exports = {
 
 	devtool: 'source-map',
 
-	entry: [ './index.js' ],
+	entry: {
+		application: './index.js',
+		bundle: './controls/index.js'
+	},
 
 	output: {
-		filename: 'static/bundle.[hash].min.js',
+		filename: '[name].min.js',
 		path: distDir,
 		publicPath: '/',
-		sourceMapFilename: 'static/bundle.[hash].map'
+		sourceMapFilename: '[name].map'
 	},
 
 	module: {
@@ -71,7 +74,7 @@ module.exports = {
 				loader: 'url-loader',
 				query: {
 					limit: 10000, // Use data url for assets <= 10KB
-					name: 'static/[name].[hash].[ext]'
+					name: './[name].[hash].[ext]'
 				}
 			}
 		]
@@ -82,13 +85,14 @@ module.exports = {
 			{
 				from: './../static',
 				to: ''
-			}
-		] ),
-
-		new CopyWebpackPlugin( [
+			},
 			{
 				from: '../node_modules/Iris/dist/iris.min.js',
-				to: './static/'
+				to: './static'
+			},
+			{
+				from: '../node_modules/sass.js/dist/sass.worker.js',
+				to: './static'
 			}
 		] ),
 
@@ -100,6 +104,7 @@ module.exports = {
 			template: path.join( srcDir, 'index.ejs' ),
 			path: distDir,
 			filename: 'index.html',
+			hash: true,
 			minify: {
 				removeComments: true,
 				minifyJS: true,
@@ -108,6 +113,6 @@ module.exports = {
 			}
 		} ),
 
-		new ExtractTextPlugin( 'static/bundle.[hash].min.css' )
+		new ExtractTextPlugin( '[name].min.css' )
 	]
 };
