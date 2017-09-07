@@ -87,11 +87,11 @@ module.exports = {
 				to: ''
 			},
 			{
-				from: '../node_modules/Iris/dist/iris.min.js',
+				from: require.resolve( 'Iris/dist/iris.min.js' ),
 				to: './static'
 			},
 			{
-				from: '../node_modules/sass.js/dist/sass.worker.js',
+				from: require.resolve( 'sass.js/dist/sass.worker.js' ),
 				to: './static'
 			}
 		] ),
