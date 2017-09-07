@@ -49,7 +49,7 @@
     "node": ">=6"
   },
   "license": "WTFPL",
-  "main": "dist/bundle.min.js",
+  "main": "src/controls/index.js",
   "name": "boldgrid-controls",
   "repository": {},
   "scripts": {
@@ -61,5 +61,5 @@
     "rimraf": "rimraf",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "2.0.4"
+  "version": "2.0.5"
 }
