@@ -1,6 +1,7 @@
 import '../scss/control.scss';
 import SampleConfig from './sampleConfig.js';
 import './control.js';
+import txt from 'raw-loader!../scss/color-classes.scss';
 
 export class Renderer {
 
@@ -9,7 +10,7 @@ export class Renderer {
 
 		this.configs = configs || {};
 		this.configs.sass = this.updateSassConfigs( this.configs.sass );
-
+console.log( txt );
 		palettes = $.extend( true, {}, SampleConfig );
 		this.palettes = palettes;
 		this.formatConfig();
@@ -18,7 +19,7 @@ export class Renderer {
 	updateSassConfigs( sassConfigs ) {
 		window.BOLDGRIDSass = _.defaults( sassConfigs || {}, {
 			WorkerUrl: './static/sass.worker.js',
-			ScssFormatFileContents: '',
+			ScssFormatFileContents: '* { color: $palette-primary_1; }, * { color: $palette-primary_2; }, * { color: $palette-primary_3; }, * { color: $palette-primary_4; }',
 			outputCssFilename: ''
 		} );
 
@@ -42,12 +43,16 @@ export class Renderer {
 	}
 
 	render( $target ) {
-		let html = this.getHtml();
+		let html = this.getHtml(),
+			$control = $( html );
+
 		$target.append( html );
 
 		$( function() {
-			window.BOLDGRID.COLOR_PALETTE.Modify.init();
+			window.BOLDGRID.COLOR_PALETTE.Modify.init( $control );
 		} );
+
+		return $control;
 	}
 
 	getHtml( colorPalettes ) {

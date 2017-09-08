@@ -2,7 +2,7 @@ import { Application as ComponentApplication } from 'boldgrid-components/src/app
 
 import 'boldgrid-components/src/app/scss/main.scss';
 import './main.scss';
-import { Renderer as ColorRender } from '../controls/color/js/renderer.js';
+import { ColorPalette } from '../controls';
 
 export class Application {
 
@@ -22,7 +22,13 @@ export class Application {
 	 * @since 1.0.0
 	 */
 	renderControls() {
-		let colorRender = new ColorRender();
-		colorRender.render( $( '.colors-tab' ) );
+		let $tab = $( '.colors-tab' ),
+			colorPalette = new ColorPalette(),
+			$control = colorPalette.render( $tab.find( '.control' ) );
+
+		$control.on( 'sass_compiled', ( e, data ) => {
+			$tab.find( '.css .content' ).html( data.result.text );
+			$tab.find( '.scss .content' ).html( data.scss );
+		} );
 	}
 }

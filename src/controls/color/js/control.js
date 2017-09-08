@@ -24,8 +24,9 @@ colorPalette.themePalettes = [];
 
 var default_neutrals =  [ '#232323', '#FFFFFF', '#FF5F5F', '#FFDBB8', '#FFFFB2', '#bad6b1', '#99acbf', '#cdb5e2' ];
 
-colorPalette.init = function( configs ) {
+colorPalette.init = function( $control, configs ) {
 	self.configs = self.initConfigs();
+	self.$control = $control;
 	self.sassCompiler = new SassCompiler();
 	self.colorPicker = new ColorPicker();
 
@@ -959,6 +960,7 @@ colorPalette.bind_compile_done = function() {
 		colorPalette.doCompile();
 		if ( 'color_palette_focus' !== data.source ) {
 			colorPalette.update_iframe( data );
+			self.$control.trigger( 'sass_compiled', data );
 		}
 	});
 };
@@ -976,8 +978,6 @@ colorPalette.update_palette_settings = function() {
 
 	if ( window.wp && window.wp.customize ) {
 		wp.customize( 'boldgrid_color_palette' ).set( '' ).set( colorPalette.text_area_val );
-	} else {
-		console.log( "Setting new value", colorPalette.text_area_val );
 	}
 };
 

@@ -52,6 +52,7 @@ export class SassCompiler {
 		this.compiler.compile( scss, ( result ) => {
 			let data = {
 				result: result,
+				scss: scss,
 				source: options.source
 			};
 

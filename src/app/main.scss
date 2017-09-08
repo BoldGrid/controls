@@ -7,8 +7,21 @@
 }
 
 
+.bg-tabs-content.current.colors-tab {
+	display: flex;
+
+	.control, .css, .scss {
+		width: 33.333%;
+		margin: 0 auto;
+	}
+
+	.bgctrl-color-palette {
+		margin: 0 auto;
+		max-width: 350px;
+	}
+}
+
 .colors-tab {
-	max-width: 350px;
 
 	h3 {
 		font-size: 1rem;
