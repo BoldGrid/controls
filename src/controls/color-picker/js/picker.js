@@ -33,9 +33,11 @@ export class Picker {
 	}
 
 	hide() {
-		this.$colorPickerWrapper.hide();
-		this.$colorPickerWrapper.attr( 'data-state', 'hidden' );
-		this.$input.iris( 'hide' );
+		if ( $.contains( document, this.$input[0] ) ) {
+			this.$colorPickerWrapper.hide();
+			this.$colorPickerWrapper.attr( 'data-state', 'hidden' );
+			this.$input.iris( 'hide' );
+		}
 	}
 
 	show() {
@@ -86,7 +88,7 @@ export class Picker {
 		this.$colorPickerWrapper.find( '.secondary-colors .iris-palette' ).on( 'click', ( e ) => {
 			this.setColor( $( e.target ).css( 'background-color' ) );
 		} );
-	};
+	}
 
 	setColor( cssColor ) {
 		let colorObject = BrehautColorJs( cssColor );

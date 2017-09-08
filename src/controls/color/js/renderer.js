@@ -4,9 +4,27 @@ import './control.js';
 
 export class Renderer {
 
-	constructor() {
-		this.palettes = SampleConfig;
+	constructor( configs ) {
+		let palettes;
+
+		this.configs = configs || {};
+		this.configs.sass = this.updateSassConfigs( this.configs.sass );
+
+		palettes = $.extend( true, {}, SampleConfig );
+		this.palettes = palettes;
 		this.formatConfig();
+	}
+
+	updateSassConfigs( sassConfigs ) {
+		window.BOLDGRIDSass = _.defaults( sassConfigs || {}, {
+			WorkerUrl: './static/sass.worker.js',
+			ScssFormatFileContents: '',
+			outputCssFilename: ''
+		} );
+
+		sassConfigs = window.BOLDGRIDSass;
+
+		return sassConfigs;
 	}
 
 	formatConfig() {
@@ -28,14 +46,6 @@ export class Renderer {
 		$target.append( html );
 
 		$( function() {
-
-			if ( ! window.BOLDGRIDSass ) {
-				window.BOLDGRIDSass = {};
-				window.BOLDGRIDSass.WorkerUrl = './static/sass.worker.js';
-				window.BOLDGRIDSass.ScssFormatFileContents = '';
-				window.BOLDGRIDSass.outputCssFilename = '';
-			}
-
 			window.BOLDGRID.COLOR_PALETTE.Modify.init();
 		} );
 	}

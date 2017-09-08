@@ -1,4 +1,5 @@
 {
+  "version": "2.0.6",
   "author": {
     "name": "Rafael Ramos",
     "email": "rramo012@gmail.com"
@@ -60,6 +61,5 @@
     "dev": "webpack-dev-server --colors --open",
     "rimraf": "rimraf",
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "version": "2.0.5"
+  }
 }

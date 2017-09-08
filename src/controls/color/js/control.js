@@ -592,7 +592,7 @@ colorPalette.format_current_palette_state = function() {
 };
 
 colorPalette.getContrastColor = function( type ) {
-	if ( window.wp ) {
+	if ( window.wp && window.wp.customize ) {
 		return wp.customize( 'boldgrid_dark_text' ).get();
 	} else {
 		return self.configs[ type ];
@@ -974,7 +974,7 @@ colorPalette.update_iframe = function( data ) {
 colorPalette.update_palette_settings = function() {
 	colorPalette.text_area_val = JSON.stringify({ 'state': colorPalette.state });
 
-	if ( window.wp ) {
+	if ( window.wp && window.wp.customize ) {
 		wp.customize( 'boldgrid_color_palette' ).set( '' ).set( colorPalette.text_area_val );
 	} else {
 		console.log( "Setting new value", colorPalette.text_area_val );
