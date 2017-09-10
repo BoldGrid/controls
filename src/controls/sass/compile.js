@@ -1,4 +1,6 @@
-var BOLDGRID = BOLDGRID || {};
+var $ = window.jQuery,
+	BOLDGRID = BOLDGRID || {};
+
 BOLDGRID.Sass = BOLDGRID.Sass || {};
 
 export class SassCompiler {

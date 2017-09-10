@@ -1,3 +1,5 @@
+var $ = window.jQuery;
+
 import BrehautColorJs from 'color-js/color';
 
 export class Picker {

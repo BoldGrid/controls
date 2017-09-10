@@ -1,5 +1,7 @@
-var ColorLibrary = require( 'color-js/color' );
+var $ = window.jQuery;
+
 import './palettes.js';
+import ColorLibrary from 'color-js/color';
 import ColorPalettes from '../config/color-lover.js';
 import BrehautColorJs from 'color-js/color';
 

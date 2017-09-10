@@ -8,7 +8,9 @@ import { Generate } from './generate.js';
 import { Picker as ColorPicker } from '../../color-picker';
 import BrehautColorJs from 'color-js/color';
 
-var $window = $( window ),
+
+var $ = jQuery,
+	$window = $( window ),
 	colorPalette = BOLDGRID.COLOR_PALETTE.Modify,
 	self = colorPalette;
 
