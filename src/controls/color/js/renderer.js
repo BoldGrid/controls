@@ -1,7 +1,7 @@
 import '../scss/control.scss';
 import SampleConfig from './sampleConfig.js';
 import './control.js';
-import txt from 'raw-loader!../scss/color-classes.scss';
+import BaseStyles from 'raw-loader!../scss/utilities/color-classes.sass';
 
 export class Renderer {
 
@@ -10,7 +10,7 @@ export class Renderer {
 
 		this.configs = configs || {};
 		this.configs.sass = this.updateSassConfigs( this.configs.sass );
-console.log( txt );
+
 		palettes = $.extend( true, {}, SampleConfig );
 		this.palettes = palettes;
 		this.formatConfig();
@@ -19,13 +19,17 @@ console.log( txt );
 	updateSassConfigs( sassConfigs ) {
 		window.BOLDGRIDSass = _.defaults( sassConfigs || {}, {
 			WorkerUrl: './static/sass.worker.js',
-			ScssFormatFileContents: '* { color: $palette-primary_1; }, * { color: $palette-primary_2; }, * { color: $palette-primary_3; }, * { color: $palette-primary_4; }',
+			ScssFormatFileContents: this.baseStyles(),
 			outputCssFilename: ''
 		} );
 
 		sassConfigs = window.BOLDGRIDSass;
 
 		return sassConfigs;
+	}
+
+	baseStyles() {
+		return '$ubtn-theme-color: palette-primary_1;' + BaseStyles;
 	}
 
 	formatConfig() {

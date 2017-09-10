@@ -18,9 +18,10 @@
 		}
 	}
 }
-@function brightness($color) {
+@function brightness( $color ) {
 	@return ((red($color) * .299) + (green($color) * .587) + (blue($color) * .114)) / 255 * 100%;
 }
+
 $ubtn-colors: ();
 @if variable-exists( palette-primary_1 ) {
 	$text-contrast-palette-primary_1: text-contrast( $palette-primary_1 );

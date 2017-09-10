@@ -3,8 +3,10 @@ const webpack = require( 'webpack' );
 const HtmlWebpackPlugin = require( 'html-webpack-plugin' );
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
 
+const src = path.resolve( __dirname, '..', 'src' );
+
 module.exports = {
-	context: path.resolve( __dirname, '..', 'src' ),
+	context: src,
 
 	entry: [ './index.js' ],
 
@@ -15,7 +17,7 @@ module.exports = {
 	},
 
 	devServer: {
-		contentBase: path.resolve( __dirname, '..', 'src' ),
+		contentBase: src,
 		publicPath: '/',
 		historyApiFallback: true,
 		port: 3000,
@@ -54,6 +56,7 @@ module.exports = {
 			},
 			{
 				test: /\.(scss|css)$/,
+				exclude: src + '/controls/color/scss/utilities/color-classes.scss',
 				use: [
 					{
 						loader: 'style-loader'
@@ -98,7 +101,7 @@ module.exports = {
 		new webpack.NamedModulesPlugin(),
 
 		new HtmlWebpackPlugin( {
-			template: path.join( path.resolve( __dirname, '..', 'src' ), 'index.ejs' ),
+			template: path.join( src, 'index.ejs' ),
 			path: path.resolve( __dirname, '..', 'dist' ),
 			filename: 'index.html'
 		} )
