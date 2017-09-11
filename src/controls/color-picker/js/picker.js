@@ -54,7 +54,7 @@ export class Picker {
 	}
 
 	createColorInput() {
-		let $input = $( '<input type="text" class="pluto-color-control color-control-input"/>' );
+		let $input = $( '<input type="text" data-alpha="true" class="pluto-color-control color-control-input"/>' );
 		$input.val( this.$colorPickerWrapper.attr( 'data-value' ) ).change();
 		this.$colorPickerWrapper.html( $input );
 		$input.wrapAll( '<div class="custom-input"></div>' );
