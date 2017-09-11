@@ -6,6 +6,18 @@
 	display: none;
 }
 
+.log-area {
+	background: #272727;
+	color: white;
+	padding: 30px;
+	margin: 30px;
+	border-radius: 3px;
+
+	.log-line {
+		margin: 5px 0;
+	}
+}
+
 .bg-tabs-content.current.colors-tab {
 	display: flex;
 
@@ -14,11 +26,7 @@
 	}
 
 	.color-classes {
-		background: #272727;
-		color: white;
 		padding: 12px;
-		margin: 30px;
-		border-radius: 3px;
 	}
 
 	.control,
@@ -31,5 +39,17 @@
 	.bgctrl-color-palette {
 		margin: 0 auto;
 		max-width: 350px;
+	}
+}
+.bg-tabs-content.current {
+	display: flex;
+
+	.palette-selection {
+		max-width: 400px;
+		margin: 0 auto;
+	}
+
+	.control, .log {
+		flex: 1;
 	}
 }

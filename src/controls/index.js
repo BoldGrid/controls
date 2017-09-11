@@ -1,5 +1,6 @@
 export { ColorPalette } from './color';
-export { StyleUpdater as Updater } from './color';
+export { Selection as ColorPaletteSelection } from './color';
+export { Updater as StyleUpdater } from './style';
 export { SassCompiler } from './color';
 
 export default {

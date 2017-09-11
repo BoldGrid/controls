@@ -1,0 +1,34 @@
+@import '../../shared/scss/variables';
+
+.bg-pagination {
+	display: flex;
+
+	&[data-page="0"] {
+		.prev {
+			visibility: hidden;
+		}
+	}
+	&[data-page="last"] {
+		.next {
+			visibility: hidden;
+		}
+	}
+
+	> * {
+		flex: 1;
+	}
+
+	.next {
+		text-align: right;
+	}
+
+	a {
+		color: $accentColor;
+		text-decoration: none;
+		user-select: none;
+
+		&:hover {
+			color: darken( $accentColor, 20% );
+		}
+	}
+}

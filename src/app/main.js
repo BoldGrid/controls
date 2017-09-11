@@ -1,6 +1,5 @@
 import { Application as ComponentApplication } from 'boldgrid-components/src/app/js/main.js';
-import { ColorPalette } from '../controls';
-import { Updater as StyleUpdater } from '../controls/style/js/updater.js';
+import { ColorPalette, StyleUpdater, ColorPaletteSelection } from '../controls';
 import 'boldgrid-components/src/app/scss/main.scss';
 import './main.scss';
 
@@ -27,13 +26,34 @@ export class Application {
 	 * @since 1.0.0
 	 */
 	renderControls() {
+		this.paletteCustomize();
+		this.paletteSelection();
+	}
+
+	paletteSelection() {
+		let $tab = $( '.palette-selection-tab .control' ),
+			$log = $( '.palette-selection-tab .log' ),
+			paletteSelection = new ColorPaletteSelection(),
+			$control = paletteSelection.create();
+
+		$tab.html( $control );
+
+		$control.on( 'palette-selection', ( e, data ) => {
+			let logData = {
+				colors: data.palette,
+				time: new Date().getTime()
+			};
+
+			$log.append( '<div class="log-line">' + JSON.stringify( logData ) + '</div>' );
+		} );
+	}
+
+	paletteCustomize() {
 		let $tab = $( '.colors-tab' ),
 			colorPalette = new ColorPalette(),
 			$control = colorPalette.render( $tab.find( '.control' ) );
 
-
 		$control.on( 'sass_compiled', ( e, data ) => {
-
 			this.styleUpdater.update( {
 				id: 'bg-controls-colors',
 				css: data.result.text,

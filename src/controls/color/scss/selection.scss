@@ -1,0 +1,65 @@
+@import '../../shared/scss/variables';
+
+.palette-selection {
+	.palette-row {
+		padding: 0;
+		display: flex;
+		margin: 15px 0;
+		outline: 3px solid #ececec;
+
+		li {
+			list-style: none;
+			height: 35px;
+			flex: 1;
+		}
+	}
+
+	.palette-rows .palette-row {
+		cursor: pointer;
+
+		&.active,
+		&:hover {
+			outline: 3px solid $accentColor;
+		}
+	}
+
+	.selected-palette {
+		padding: 0;
+
+		.palette-row {
+			margin-top: 5px;
+		}
+
+		.selected {
+			display: none;
+			border-bottom: 2px solid #e0e0e0;
+
+			p {
+				text-align: right;
+				margin: 0;
+				font-style: italic;
+				color: #757575;
+			}
+		}
+
+		.unselected {
+			text-align: center;
+			font-variant: small-caps;
+			margin: 26px 0 43px;
+			padding: 10px;
+			outline: 2px solid black;
+			background: $primaryColor;
+			color: white;
+		}
+
+		&.active {
+			.selected {
+				display: block;
+			}
+			.unselected {
+				display: none;
+			}
+		}
+	}
+
+}

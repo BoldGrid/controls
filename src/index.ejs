@@ -12,12 +12,17 @@
 </head>
 <body>
   <ul class="bg-tabs">
-	  <li class="tab-link current" data-tab="colors-tab"><a href="#colors-tab">Colors</a></li>
+	  <li class="tab-link current" data-tab="colors-tab"><a href="#colors-tab">Palette Customization</a></li>
+	  <li class="tab-link" data-tab="palette-selection-tab"><a href="#palette-selection-tab">Palette Selection</a></li>
 	  <li class="tab-link" data-tab="dev-info"><a href="#dev-info">Dev Info</a></li>
   </ul>
 
   <div class="bg-tabs-content current colors-tab">
 	  <%= require("./app/template/color-tab.html") %>
+  </div>
+  <div class="bg-tabs-content palette-selection-tab">
+	  <div class="control"></div>
+	  <div class="log log-area"></div>
   </div>
   <div class="bg-tabs-content dev-info">
 	  <%= require("./app/template/dev-info.html") %>
