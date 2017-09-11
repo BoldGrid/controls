@@ -3,7 +3,6 @@ var $ = window.jQuery;
 import BrehautColorJs from 'color-js/color';
 
 export class Picker {
-
 	init( $target, options ) {
 		this.options = _.defaults( options, {
 			clear: false,
@@ -29,7 +28,7 @@ export class Picker {
 			this.$colorPickerWrapper.addClass();
 		} );
 
-		this.$colorPickerWrapper.on( 'click', ( e ) => {
+		this.$colorPickerWrapper.on( 'click', e => {
 			e.stopPropagation();
 		} );
 	}
@@ -87,7 +86,7 @@ export class Picker {
 	 * @since 1.1.1
 	 */
 	bindCustomPalettes() {
-		this.$colorPickerWrapper.find( '.secondary-colors .iris-palette' ).on( 'click', ( e ) => {
+		this.$colorPickerWrapper.find( '.secondary-colors .iris-palette' ).on( 'click', e => {
 			this.setColor( $( e.target ).css( 'background-color' ) );
 		} );
 	}
