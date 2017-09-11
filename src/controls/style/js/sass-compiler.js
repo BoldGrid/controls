@@ -3,13 +3,15 @@ var $ = window.jQuery,
 
 BOLDGRID.Sass = BOLDGRID.Sass || {};
 
+import Sassjs from 'sass.js/dist/sass.js';
+
 export class SassCompiler {
 
 	constructor( options ) {
 
 		// Singleton.
-		if ( this.instance ) {
-			return this.instance;
+		if ( BOLDGRID.Sass.instance ) {
+			return BOLDGRID.Sass.instance;
 		}
 
 		this.init( options );
@@ -23,15 +25,14 @@ export class SassCompiler {
 			'workerURL': BOLDGRIDSass.WorkerUrl
 		}, options );
 
-		this.sassLibrary = require( 'sass.js/dist/sass.js' );
 		this.processing = false;
 		this.compileCount = 0;
 		this.log = {};
 
 		this.$window = $( window );
 		this.compileDone = $.Event( 'boldgrid_sass_compile_done' );
-		this.sassLibrary.setWorkerUrl( this.options.workerURL );
-		this.compiler = new this.sassLibrary( this.options.workerURL );
+		Sassjs.setWorkerUrl( this.options.workerURL );
+		this.compiler = new Sassjs( this.options.workerURL );
 		BOLDGRID.Sass = this;
 	}
 
@@ -91,13 +92,13 @@ export class SassCompiler {
 	resetCompiler() {
 		if ( 50 < this.compileCount ) {
 			this.compileCount = 0;
-			this.sassLibrary.setWorkerUrl( this.options.workerURL );
+			Sassjs.setWorkerUrl( this.options.workerURL );
 			if ( this.compiler ) {
 				this.compiler.destroy();
 				this.compiler = null;
 			}
 
-			this.compiler = new this.sassLibrary( this.options.workerURL );
+			this.compiler = new Sassjs( this.options.workerURL );
 		}
 	}
 }

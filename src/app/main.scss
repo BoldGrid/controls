@@ -1,16 +1,29 @@
 .bg-tabs-content {
-	padding:40px;
+	padding: 40px;
 }
 
 .hidden {
 	display: none;
 }
 
-
 .bg-tabs-content.current.colors-tab {
 	display: flex;
 
-	.control, .css, .scss {
+	h3 {
+		font-size: 1rem;
+	}
+
+	.color-classes {
+		background: #272727;
+		color: white;
+		padding: 12px;
+		margin: 30px;
+		border-radius: 3px;
+	}
+
+	.control,
+	.css,
+	.scss {
 		width: 33.333%;
 		margin: 0 auto;
 	}
@@ -18,12 +31,5 @@
 	.bgctrl-color-palette {
 		margin: 0 auto;
 		max-width: 350px;
-	}
-}
-
-.colors-tab {
-
-	h3 {
-		font-size: 1rem;
 	}
 }

@@ -3,7 +3,7 @@ window.BOLDGRID.COLOR_PALETTE = window.BOLDGRID.COLOR_PALETTE || {};
 window.BOLDGRID.COLOR_PALETTE.Modify = window.BOLDGRID.COLOR_PALETTE.Modify || {};
 
 import './transitions.js';
-import { SassCompiler }from '../../sass/compile.js';
+import { SassCompiler }from '../../style/js/sass-compiler.js';
 import { Generate } from './generate.js';
 import { Picker as ColorPicker } from '../../color-picker';
 import BrehautColorJs from 'color-js/color';
