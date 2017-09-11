@@ -1,4 +1,5 @@
-var $ = window.jQuery;
+var $ = window.jQuery,
+	apiColorCount = {};
 
 import './palettes.js';
 import ColorLibrary from 'color-js/color';
@@ -8,7 +9,6 @@ import BrehautColorJs from 'color-js/color';
 export class Generate {
 
 	constructor() {
-		this.apiColorCount = {};
 
 		/**
 		 * Methods used to generate palettes based on only 1 color.
@@ -505,21 +505,20 @@ export class Generate {
 
 			// If only 1 color is locked.
 			} else {
-
 				let color = colorsPartialPalette.palette[ colorsPartialPalette.generateKeys[0] ];
 
 				// Generate list of similar palettes if we don't have 1 saved already.
-				if ( color.toCSS() !== this.apiColorCount.color ) {
-					this.apiColorCount.color = color.toCSS();
-					this.apiColorCount.palettes = this.findPalettesByColor( this.apiColorCount.color );
-					this.apiColorCount.paletteCounter = 0;
+				if ( color.toCSS() !== apiColorCount.color ) {
+					apiColorCount.color = color.toCSS();
+					apiColorCount.palettes = this.findPalettesByColor( apiColorCount.color );
+					apiColorCount.paletteCounter = 0;
 				}
 
-				if ( this.apiColorCount.palettes[ this.apiColorCount.paletteCounter ] ) {
-					newPalette = this.apiColorCount.palettes[ this.apiColorCount.paletteCounter ].getPalette();
+				if ( apiColorCount.palettes[ apiColorCount.paletteCounter ] ) {
+					newPalette = apiColorCount.palettes[ apiColorCount.paletteCounter ].getPalette();
 					newPalette = this.arrayMove( newPalette, colorsPartialPalette.generateKeys[0], this.colorIndex );
 					newPalette = this.truncateGeneratedPalette( newPalette, colorsPartialPalette.palette );
-					this.apiColorCount.paletteCounter++;
+					apiColorCount.paletteCounter++;
 
 				} else {
 
