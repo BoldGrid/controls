@@ -1,5 +1,5 @@
 var self, colorPalette,
-	jQuery = window.$;
+	$ = window.jQuery;
 
 window.BOLDGRID = window.BOLDGRID || {};
 window.BOLDGRID.COLOR_PALETTE = window.BOLDGRID.COLOR_PALETTE || {};
