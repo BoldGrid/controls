@@ -33,6 +33,13 @@ export class SassCompiler {
 		this.compileDone = $.Event( 'boldgrid_sass_compile_done' );
 		Sassjs.setWorkerUrl( this.options.workerURL );
 		this.compiler = new Sassjs( this.options.workerURL );
+
+		this.compiler.options( {
+			comments: false,
+			indent: '',
+			linefeed: ''
+		} );
+
 		BOLDGRID.Sass = this;
 	}
 

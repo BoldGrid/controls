@@ -1,7 +1,6 @@
 var $ = jQuery;
 
 export class Updater {
-
 	constructor( context ) {
 		this.$head = $( context ).find( 'head' );
 
@@ -25,8 +24,8 @@ export class Updater {
 	 *
 	 * @since 1.0.0
 	 */
-	init() {
-		this._setup();
+	setup() {
+		this._loadStyles();
 	}
 
 	/**
@@ -55,6 +54,19 @@ export class Updater {
 	}
 
 	/**
+	 * Given an array opf configs, register and add each of them.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  {array} configuration Configuration.
+	 */
+	loadSavedConfig( configuration ) {
+		for ( let config of configuration ) {
+			this.register( config );
+		}
+	}
+
+	/**
 	 * Add or update style into the dom.
 	 *
 	 * @since 1.0.0
@@ -63,8 +75,8 @@ export class Updater {
 	 */
 	update( styleData ) {
 		let state = _.find( this.stylesState, state => {
-				return state.id === styleData.id;
-			} );
+			return state.id === styleData.id;
+		} );
 
 		if ( ! state ) {
 
@@ -72,8 +84,9 @@ export class Updater {
 			state = this._createState( styleData );
 		}
 
-		// Check if this has been registered.
 		state.$tag.html( styleData.css );
+		state.css = styleData.css;
+		state.scss = styleData.scss;
 	}
 
 	/**
@@ -84,7 +97,7 @@ export class Updater {
 	addAllStyles() {
 		for ( let style of this.stylesState ) {
 			style.$tag = this.createStyleTag( style.id );
-			style.$tag.html( this.stylesState.css );
+			style.$tag.html( style.css );
 			this.$head.append( style.$tag );
 		}
 	}
@@ -102,24 +115,13 @@ export class Updater {
 	}
 
 	/**
-	 * Run all Dom load events.
-	 *
-	 * @since 1.0.0
-	 */
-	_setup() {
-		$( () => {
-			this._initialRender();
-		} );
-	}
-
-	/**
 	 * When the DOM first loads, take all registered styles and them to the DOM.
 	 *
 	 * @since 1.0.0
 	 */
-	_initialRender() {
+	_loadStyles() {
 		for ( let style of this.registeredStyles ) {
-			this.pushConfig( style );
+			this._pushComponent( style );
 		}
 
 		this._sort();

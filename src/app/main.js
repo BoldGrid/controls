@@ -15,7 +15,7 @@ export class Application {
 
 		// Instantiate the css loader.
 		this.styleUpdater = new StyleUpdater( document );
-		this.styleUpdater.init();
+		this.styleUpdater.setup();
 
 		this.renderControls();
 	}
