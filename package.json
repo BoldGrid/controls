@@ -75,8 +75,9 @@
     "postinstall": "npm run build",
     "build": "npm run rimraf ./dist && NODE_ENV=production webpack --colors",
     "devserver": "webpack-dev-server --colors --open",
-    "karmastart": "karma start karma.config.js",
-    "dev": "npm-run-all -p devserver karmastart",
+    "karmadev": "karma start karma.config.js",
+    "karma": "karma start karma.config.js --single-run",
+    "dev": "npm-run-all -p devserver karmadev",
     "rimraf": "rimraf",
     "test": "echo \"Error: no test specified\" && exit 1"
   }
