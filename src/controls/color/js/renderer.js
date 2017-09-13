@@ -1,9 +1,9 @@
+var $ = window.jQuery;
+
 import '../scss/control.scss';
 import SampleConfig from './sampleConfig.js';
 import './control.js';
 import BaseStyles from 'raw-loader!../scss/utilities/color-classes.sass';
-
-var $ = window.jQuery;
 
 export class Renderer {
 

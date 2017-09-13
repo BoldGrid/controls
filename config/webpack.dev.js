@@ -56,7 +56,7 @@ module.exports = {
 			},
 			{
 				test: /\.(scss|css)$/,
-				exclude: src + '/controls/color/scss/utilities/color-classes.scss',
+				exclude: [ src + '/controls/color/scss/utilities/color-classes.scss' ],
 				use: [
 					{
 						loader: 'style-loader'

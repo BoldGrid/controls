@@ -1,10 +1,10 @@
+var $ = window.jQuery;
+
 import '../scss/selection.scss';
 import '../scss/pagination.scss';
 import './control.js';
 import ColorPalettes from '../config/color-lover.js';
 import Generate from './generate.js';
-
-var $ = window.jQuery;
 
 export class Selection {
 	constructor() {
