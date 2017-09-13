@@ -4,6 +4,7 @@ import '../scss/control.scss';
 import SampleConfig from './sampleConfig.js';
 import './control.js';
 import BaseStyles from 'raw-loader!../scss/utilities/color-classes.sass';
+import { Config } from './config.js';
 
 export class Renderer {
 
@@ -13,7 +14,15 @@ export class Renderer {
 		this.configs = configs || {};
 		this.configs.sass = this.updateSassConfigs( this.configs.sass );
 
-		palettes = $.extend( true, {}, SampleConfig );
+		let output,
+			colorConfig = new Config(),
+			inputValues = {};
+
+		output = colorConfig.createSimpleConfig( inputValues );
+
+		// Clone object to prevent modification of the original.
+		palettes = $.extend( true, {}, output );
+
 		this.palettes = palettes;
 		this.formatConfig();
 	}
