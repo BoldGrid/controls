@@ -72,7 +72,7 @@
   "scripts": {
     "start": "http-server dist/ -p $PORT",
     "prod": "http-server dist/ -p 8000 -o",
-    "postinstall": "npm run build",
+    "postinstall": "npm rebuild node-sass; npm run build",
     "build": "npm run rimraf ./dist && NODE_ENV=production webpack --colors",
     "devserver": "webpack-dev-server --colors --open",
     "karmadev": "karma start karma.config.js",
