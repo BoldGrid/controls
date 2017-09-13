@@ -3,5 +3,6 @@ node_js:
   - "7.1.0"
 before_script:
   - yarn install
+  - npm rebuild node-sass
 script:
     npm run karma
