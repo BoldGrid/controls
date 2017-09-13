@@ -10,7 +10,7 @@ export class Material {
 	/**
 	 * Create a palette.
 	 *
-	 * @since 1.6
+	 * @since 1.0.0
 	 *
 	 * @param  {string} color Color to create palett based off of.
 	 * @return {array}        Palette..
@@ -23,6 +23,23 @@ export class Material {
 		}
 
 		return palette;
+	}
+
+	/**
+	 * Generate all color palettes.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {array} All possible palettes.
+	 */
+	getAllPalettes() {
+		let palettes = [];
+
+		for ( let color of this.availableColors ) {
+			palettes.push( this.getPalette( color ) );
+		}
+
+		return palettes;
 	}
 }
 

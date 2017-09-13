@@ -6,8 +6,12 @@ describe( 'material colors', function() {
 		expect( material.getPalette( 'red' ).length ).toEqual( 5 );
 	} );
 
-	it( 'find all colors', function() {
+	it( 'finds all available colors', function() {
 		let material = new Material();
 		expect( 10 < material.availableColors.length ).toEqual( true );
+	} );
+	it( 'creates all available palettes', function() {
+		let material = new Material();
+		expect( 10 < material.getAllPalettes().length ).toEqual( true );
 	} );
 } );

@@ -5,11 +5,14 @@ import '../scss/pagination.scss';
 import './control.js';
 import ColorPalettes from '../config/color-lover.js';
 import Generate from './generate.js';
+import { Material } from './material.js';
 
 export class Selection {
 	constructor() {
+		this.material = new Material();
+
 		this.pageSize = 6;
-		this.maxPages = 20;
+		this.maxPages = 25;
 
 		this.$control;
 		this.$pagination;
@@ -80,14 +83,17 @@ export class Selection {
 	 */
 	_createAvailablePalettes() {
 		let colors = [],
-			generate = new Generate();
+			generate = new Generate(),
+			palettes = _.shuffle( ColorPalettes );
 
-		for ( let palette of ColorPalettes ) {
-			colors.push( palette );
+		palettes = _.union( this.material.getAllPalettes(), palettes );
+
+		for ( let palette of palettes ) {
 			palette.push( generate.generateNeutralColor( palette ) );
+			colors.push( palette );
 		}
 
-		return _.shuffle( colors );
+		return colors;
 	}
 
 	/**
