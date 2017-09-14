@@ -43,11 +43,26 @@ export class Config {
 		config['color-palette-size'] = config.palettes[0].colors.length;
 		config['palette_formats'] = [ 'palette-primary' ];
 
-		for ( let color of this.samplePalettesColors ) {
-			config.palettes.push( this._createDefault( color ) );
-		}
+		config.palettes = config.palettes.concat( this.getPresetPalettes() );
 
 		return config;
+	}
+
+	/**
+	 * Get all sample palettes.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {array} Palettes.
+	 */
+	getPresetPalettes() {
+		let presets = [];
+
+		for ( let color of this.samplePalettesColors ) {
+			presets.push( this._createDefault( color ) );
+		}
+
+		return presets;
 	}
 
 	/**
@@ -71,6 +86,38 @@ export class Config {
 		paletteConfig['palette_id'] = btoa( paletteConfig.colors );
 
 		return paletteConfig;
+	}
+
+	/**
+	 * Given a state object from the control script. Create an object that can be saved then later reimported.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  {object} controlState Control state.
+	 * @return {object}              Palette Settings to be imported.
+	 */
+	createSavableState( controlState ) {
+		let config = this.createSimpleConfig(),
+			presets = this.getPresetPalettes(),
+			palette = controlState.palettes['palette-primary'];
+
+		// Set the active palette.
+		// @todo: correctly identify if the active palette is one of the default palettes.
+		palette['is_active'] = true;
+		palette.default = false;
+		config.palettes[0] = this.createPalette( palette );
+
+		// Update saved palettes.
+		config['saved_palettes'] = [];
+		if ( controlState['saved_palettes'] ) {
+			for ( let palette of controlState['saved_palettes'] ) {
+				palette.default = false;
+				palette['copy_on_mod'] = false;
+				config['saved_palettes'].push( this.createPalette( palette ) );
+			}
+		}
+
+		return config;
 	}
 
 	/**

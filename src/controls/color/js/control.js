@@ -436,7 +436,7 @@ colorPalette.activate_palette = function( $ul ) {
 	colorPalette.sync_locks();
 
 	if ( ! colorPalette.first_update ) {
-		colorPalette.update_theme_option();
+		colorPalette.update_theme_option( { source: 'activatePalette' } );
 	} else {
 		colorPalette.first_update = false;
 	}
