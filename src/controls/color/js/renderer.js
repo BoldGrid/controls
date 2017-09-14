@@ -9,22 +9,23 @@ import { Config } from './config.js';
 export class Renderer {
 
 	constructor( configs ) {
-		let palettes;
-
 		this.configs = configs || {};
 		this.configs.sass = this.updateSassConfigs( this.configs.sass );
 
-		let output,
-			colorConfig = new Config(),
-			inputValues = {};
-
-		output = colorConfig.createSimpleConfig( inputValues );
-
 		// Clone object to prevent modification of the original.
-		palettes = $.extend( true, {}, output );
+		this.palettes = this._getPaletteSetting( configs.paletteSettings );
 
-		this.palettes = palettes;
 		this.formatConfig();
+	}
+
+	_getPaletteSetting( setting ) {
+		let colorConfig = new Config();
+
+		if ( ! setting ) {
+			setting = colorConfig.createSimpleConfig();
+		}
+
+		return $.extend( true, {}, setting );
 	}
 
 	updateSassConfigs( sassConfigs ) {

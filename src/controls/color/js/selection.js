@@ -205,10 +205,11 @@ export class Selection {
 	 * @since 1.0.0
 	 *
 	 * @param  {array} colors   Colors in config.
-	 * @param  {string} neutral Neutral Color.
 	 * @return {object}         Color Config.
 	 */
-	_formatPalette( colors, neutral ) {
+	_formatPalette( colors ) {
+		let neutral = colors.pop();
+
 		return {
 			'colors': colors,
 			'neutral-color': neutral
