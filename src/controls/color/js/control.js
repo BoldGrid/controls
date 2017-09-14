@@ -32,12 +32,12 @@ colorPalette.init = function( $control, configs ) {
 	self.sassCompiler = new SassCompiler();
 	self.colorPicker = new ColorPicker();
 
-	self.classProperties( $control );
+	self.classProperties();
 	self.setupEvents();
 };
 
-colorPalette.classProperties = function( $control ) {
-	self.$palette_control_wrapper = $control;
+colorPalette.classProperties = function() {
+	self.$palette_control_wrapper = $( '.bgctrl-color-palette' );
 	self.$colorPickerWrap = self.$palette_control_wrapper.find( '.color-picker-wrap' );
 	self.$palette_option_field = self.$palette_control_wrapper.find( '.palette-option-field' );
 	self.generated_palettes_container = self.$palette_control_wrapper.find( '.generated-palettes-container' );
@@ -545,8 +545,6 @@ colorPalette.add_jquery_sortable = function( $ul ) {
 colorPalette.format_current_palette_state = function() {
 	let palettes_object = {},
 		$active_palette = self.$palette_control_wrapper.find( '.boldgrid-active-palette' ).first();
-
-	console.log( self.$palette_control_wrapper, $active_palette );
 
 	// Initialize palette settings.
 	palettes_object['active-palette'] = $active_palette.attr( 'data-color-palette-format' );
