@@ -8,6 +8,18 @@ export class Material {
 	}
 
 	/**
+	 * Get a random palette.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {array} list of Colors.
+	 */
+	getRandomPalette() {
+		let color = _.sample( this.availableColors );
+		return this.getPalette( color );
+	}
+
+	/**
 	 * Create a palette.
 	 *
 	 * @since 1.0.0

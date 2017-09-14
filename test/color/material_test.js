@@ -14,4 +14,8 @@ describe( 'material colors', function() {
 		let material = new Material();
 		expect( 10 < material.getAllPalettes().length ).toEqual( true );
 	} );
+	it( 'gets a random palette', function() {
+		let material = new Material();
+		expect( material.getRandomPalette().length ).toEqual( 5 );
+	} );
 } );

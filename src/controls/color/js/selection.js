@@ -75,6 +75,20 @@ export class Selection {
 	}
 
 	/**
+	 * Get a random selection of palettes.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {Object} Palettes.
+	 */
+	randomSelection() {
+		let colors = this.material.getRandomPalette();
+		colors.push( '#FFF' );
+
+		return this._formatPalette( colors );
+	}
+
+	/**
 	 * Create a list of all available palettes.
 	 *
 	 * @since 1.0.0
@@ -186,6 +200,22 @@ export class Selection {
 	}
 
 	/**
+	 * Format colors and neutral into an object format required for color palette configs.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  {array} colors   Colors in config.
+	 * @param  {string} neutral Neutral Color.
+	 * @return {object}         Color Config.
+	 */
+	_formatPalette( colors, neutral ) {
+		return {
+			'colors': colors,
+			'neutral-color': neutral
+		};
+	}
+
+	/**
 	 * Create a single row with colors in a palette.
 	 *
 	 * @since 1.0.0
@@ -197,11 +227,12 @@ export class Selection {
 		let $li,
 			$row = $( '<ul class="palette-row" data-page-id="' + this.currentPage + '">' );
 
-		$row[0].colors = colors;
 		for ( let color of colors ) {
 			$li = $( '<li>' ).css( 'background-color', color );
 			$row.append( $li );
 		}
+
+		$row[0].colors = this._formatPalette( colors );
 
 		return $row;
 	}
