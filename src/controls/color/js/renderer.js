@@ -13,7 +13,7 @@ export class Renderer {
 		this.configs.sass = this.updateSassConfigs( this.configs.sass );
 
 		// Clone object to prevent modification of the original.
-		this.palettes = this._getPaletteSetting( configs.paletteSettings );
+		this.palettes = this._getPaletteSetting( this.configs.paletteSettings );
 
 		this.formatConfig();
 	}

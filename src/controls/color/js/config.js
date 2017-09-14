@@ -37,6 +37,7 @@ export class Config {
 		colors = colors || {};
 
 		config.palettes = [];
+		colors['is_active'] = true;
 		config.palettes.push( this.createPalette( colors ) );
 
 		config['color-palette-size'] = config.palettes[0].colors.length;
@@ -61,7 +62,7 @@ export class Config {
 		let paletteConfig = _.defaults( colors, {
 			'default': true,
 			'copy_on_mod': true,
-			'is_active': true,
+			'is_active': false,
 			'format': 'palette-primary',
 			'neutral-color': 'white',
 			'colors': this.material.getPalette( this.defaultColor )

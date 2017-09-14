@@ -32,12 +32,12 @@ colorPalette.init = function( $control, configs ) {
 	self.sassCompiler = new SassCompiler();
 	self.colorPicker = new ColorPicker();
 
-	self.classProperties();
+	self.classProperties( $control );
 	self.setupEvents();
 };
 
-colorPalette.classProperties = function() {
-	self.$palette_control_wrapper = $( '.bgctrl-color-palette' );
+colorPalette.classProperties = function( $control ) {
+	self.$palette_control_wrapper = $control;
 	self.$colorPickerWrap = self.$palette_control_wrapper.find( '.color-picker-wrap' );
 	self.$palette_option_field = self.$palette_control_wrapper.find( '.palette-option-field' );
 	self.generated_palettes_container = self.$palette_control_wrapper.find( '.generated-palettes-container' );
@@ -543,9 +543,10 @@ colorPalette.add_jquery_sortable = function( $ul ) {
  * via wp_customizer
  */
 colorPalette.format_current_palette_state = function() {
-	var $active_palette = self.$palette_control_wrapper.find( '.boldgrid-active-palette' ).first();
+	let palettes_object = {},
+		$active_palette = self.$palette_control_wrapper.find( '.boldgrid-active-palette' ).first();
 
-	var palettes_object = {};
+	console.log( self.$palette_control_wrapper, $active_palette );
 
 	// Initialize palette settings.
 	palettes_object['active-palette'] = $active_palette.attr( 'data-color-palette-format' );
@@ -789,7 +790,6 @@ colorPalette.setup_color_picker = function() {
 	var myOptions = {
 		secondaryPalette: secondaryPalette,
 		change: function( event, ui ) {
-
 			if ( self.fadeEffectInProgress ) {
 				return false;
 			}
@@ -999,8 +999,8 @@ colorPalette.get_random_format = function() {
 colorPalette.pickerPostInit = function() {
 
 	// Post Color Picker Load.
-	var $active_palette = self.$palette_control_wrapper.find( '.boldgrid-inactive-palette[data-is-active="1"]' );
-	var $default_palette = self.$palette_control_wrapper.find( '.boldgrid-inactive-palette[data-is-default="1"]' );
+	var $active_palette = self.$palette_control_wrapper.find( '.boldgrid-inactive-palette[data-is-active="1"]' ).first();
+	var $default_palette = self.$palette_control_wrapper.find( '.boldgrid-inactive-palette[data-is-default="1"]' ).first();
 
 	var $palette_to_activate = $default_palette;
 	if ( $active_palette.length ) {
