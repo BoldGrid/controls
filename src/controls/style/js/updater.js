@@ -29,6 +29,23 @@ export class Updater {
 	}
 
 	/**
+	 * Get the stylesheet CSS.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {string} Get the stylesheet CSS.
+	 */
+	getStylesheetCss() {
+		let css = '';
+
+		for ( let style of this.stylesState ) {
+			css += style.css;
+		}
+
+		return css;
+	}
+
+	/**
 	 * Register a new style to be added when the DOM is loaded.
 	 *
 	 * @since 1.0.0
@@ -41,8 +58,8 @@ export class Updater {
 			throw 'Register Sass: Must Provide Name value.';
 		}
 
-		/**
-		 * name, priority, auto_update
+		/*
+		 * Name, priority, auto_update
 		 */
 		this.registeredStyles.push(
 			_.defaults( data, {

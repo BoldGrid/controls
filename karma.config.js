@@ -14,6 +14,8 @@ module.exports = function( config ) {
 			'node_modules/babel-polyfill/dist/polyfill.js',
 			require.resolve( 'jquery' ),
 			'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js',
+			'https://code.jquery.com/ui/1.12.1/jquery-ui.min.js',
+			'node_modules/Iris/dist/iris.min.js',
 
 			// All files ending in "_test"
 			// { pattern: 'test/*_test.js', watched: false }
