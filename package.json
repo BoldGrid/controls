@@ -68,7 +68,7 @@
   "license": "WTFPL",
   "main": "src/controls/index.js",
   "name": "boldgrid-controls",
-  "repository": {},
+  "repository": { "url" : "https://github.com/BoldGrid/controls" },
   "scripts": {
     "start": "http-server dist/ -p $PORT",
     "prod": "http-server dist/ -p 8000 -o",
