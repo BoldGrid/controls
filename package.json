@@ -1,5 +1,5 @@
 {
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": {
     "name": "Rafael Ramos",
     "email": "rramo012@gmail.com"
@@ -68,7 +68,9 @@
   "license": "WTFPL",
   "main": "src/controls/index.js",
   "name": "boldgrid-controls",
-  "repository": { "url" : "https://github.com/BoldGrid/controls" },
+  "repository": {
+    "url": "https://github.com/BoldGrid/controls"
+  },
   "scripts": {
     "start": "http-server dist/ -p $PORT",
     "prod": "http-server dist/ -p 8000 -o",
