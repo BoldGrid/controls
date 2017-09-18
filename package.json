@@ -66,6 +66,7 @@
   "main": "src/controls/index.js",
   "name": "@boldgrid/controls",
   "repository": {
+    "type": "git",
     "url": "git+https://github.com/BoldGrid/controls.git"
   },
   "scripts": {
