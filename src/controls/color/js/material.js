@@ -3,7 +3,7 @@ import MaterialColors from 'google-material-color-palette-json';
 export class Material {
 
 	constructor() {
-		this.paletteLayoutShades = [ '500', '900', '700', '400', '200' ];
+		this.paletteLayoutShades = [ '500', '900', '700', '200', '50' ];
 		this.availableColors = _.without( _.keys( MaterialColors ), 'black', 'white' );
 	}
 
@@ -31,7 +31,11 @@ export class Material {
 		let palette = [];
 
 		for ( let shade of this.paletteLayoutShades ) {
-			palette.push( MaterialColors[color]['shade_' + shade] );
+			if ( -1 !== [ 'black', 'white' ].indexOf( shade ) ) {
+				palette.push( MaterialColors[shade] );
+			} else {
+				palette.push( MaterialColors[color]['shade_' + shade] );
+			}
 		}
 
 		return palette;

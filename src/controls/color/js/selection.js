@@ -103,7 +103,7 @@ export class Selection {
 		palettes = _.union( this.material.getAllPalettes(), palettes );
 
 		for ( let palette of palettes ) {
-			palette.push( generate.generateNeutralColor( palette ) );
+			palette.push( '#FFFFFF' );
 			colors.push( palette );
 		}
 
