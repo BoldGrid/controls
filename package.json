@@ -1,16 +1,13 @@
 {
   "version": "0.0.2",
-  "author": {
-    "name": "Rafael Ramos",
-    "email": "rramo012@gmail.com"
-  },
+  "author": "Rafael Ramos <rramo012@gmail.com>",
   "bundleDependencies": false,
   "dependencies": {
-    "Iris": "https://github.com/Automattic/Iris#master",
+    "Iris": "git+https://github.com/Automattic/Iris.git#master",
     "babel-minify-webpack-plugin": "^0.2.0",
-    "boldgrid-components": "https://github.com/BoldGrid/components#master",
+    "boldgrid-components": "git+https://github.com/BoldGrid/components.git#master",
     "bulma": "^0.4.3",
-    "color": "https://github.com/Automattic/Color.js",
+    "color": "git+https://github.com/Automattic/Color.js.git",
     "color-js": "^1.0.4",
     "eslint-config-wordpress": "^2.0.0",
     "google-material-color-palette-json": "^2.0.1",
@@ -67,9 +64,9 @@
   },
   "license": "WTFPL",
   "main": "src/controls/index.js",
-  "name": "boldgrid-controls",
+  "name": "@boldgrid/controls",
   "repository": {
-    "url": "https://github.com/BoldGrid/controls"
+    "url": "git+https://github.com/BoldGrid/controls.git"
   },
   "scripts": {
     "start": "http-server dist/ -p $PORT",
@@ -82,5 +79,12 @@
     "dev": "npm-run-all -p devserver karmadev",
     "rimraf": "rimraf",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/BoldGrid/controls/issues"
+  },
+  "homepage": "https://github.com/BoldGrid/controls#readme",
+  "directories": {
+    "test": "test"
   }
 }
