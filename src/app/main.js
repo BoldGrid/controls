@@ -1,6 +1,6 @@
-import { Application as ComponentApplication } from 'boldgrid-components/src/app/js/main.js';
+import { Application as ComponentApplication } from '@boldgrid/components/src/app/js/main.js';
 import { ColorPalette, StyleUpdater, ColorPaletteSelection } from '../controls';
-import 'boldgrid-components/src/app/scss/main.scss';
+import '@boldgrid/components/src/app/scss/main.scss';
 import './main.scss';
 
 export class Application {
