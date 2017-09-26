@@ -63,7 +63,7 @@ export class Updater {
 		 */
 		this.registeredStyles.push(
 			_.defaults( data, {
-				priority: 99
+				priority: 50
 			} )
 		);
 

@@ -4,6 +4,7 @@
   "bundleDependencies": false,
   "dependencies": {
     "@boldgrid/components": "^2.3.0",
+    "Buttons": "https://github.com/alexwolfe/Buttons",
     "Iris": "git+https://github.com/Automattic/Iris.git#master",
     "babel-minify-webpack-plugin": "^0.2.0",
     "bulma": "^0.4.3",

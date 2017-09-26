@@ -60,6 +60,13 @@ export class Application {
 				scss: data.scss
 			} );
 
+			this.styleUpdater.update( {
+				id: 'bg-controls-buttons',
+				css: '*{color:red}',
+				scss: 'dddd',
+				proirity: 30
+			} );
+
 			$tab.find( '.css .content' ).html( data.result.text );
 			$tab.find( '.scss .content' ).html( data.scss );
 		} );

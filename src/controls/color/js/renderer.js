@@ -5,12 +5,14 @@ import SampleConfig from './sampleConfig.js';
 import './control.js';
 import BaseStyles from 'raw-loader!../scss/utilities/color-classes.sass';
 import { Config } from './config.js';
+import { Button } from './button';
 
 export class Renderer {
 
 	constructor( configs ) {
 		this.configs = configs || {};
 		this.configs.sass = this.updateSassConfigs( this.configs.sass );
+		new Button().init();
 
 		// Clone object to prevent modification of the original.
 		this.palettes = this._getPaletteSetting( this.configs.paletteSettings );
@@ -74,7 +76,7 @@ export class Renderer {
 	getHtml( colorPalettes ) {
 		let file = require( '../template.html' );
 
-		return _.template( file )( { 'config': this.palettes } );
+		return _.template( file )( { config: this.palettes } );
 	}
 }
 
