@@ -56,7 +56,10 @@ module.exports = {
 			},
 			{
 				test: /\.(scss|css)$/,
-				exclude: [ src + '/controls/color/scss/utilities/color-classes.scss' ],
+				exclude: [
+					src + '/controls/color/scss/utilities/color-classes.scss',
+					require.resolve( 'Buttons/scss/buttons.scss' )
+				],
 				use: [
 					{
 						loader: 'style-loader'
@@ -93,6 +96,10 @@ module.exports = {
 			{
 				from: require.resolve( 'sass.js/dist/sass.worker.js' ),
 				to: './static'
+			},
+			{
+				from: require.resolve( 'Buttons/scss/buttons.scss' ) + '/../',
+				to: './sass/button-scss'
 			}
 		] ),
 

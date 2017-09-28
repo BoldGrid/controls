@@ -10,7 +10,7 @@ export class SassCompiler {
 	constructor( options ) {
 
 		// Singleton.
-		if ( BOLDGRID.Sass.instance ) {
+		if ( BOLDGRID.Sass && BOLDGRID.Sass.instance ) {
 			return BOLDGRID.Sass.instance;
 		}
 
@@ -20,10 +20,10 @@ export class SassCompiler {
 	init( options ) {
 		this.instance = this;
 
-		this.options = _.defaults( {
+		this.options = _.defaults( options || {}, {
 			'enableLogging': false,
-			'workerURL': BOLDGRIDSass.WorkerUrl
-		}, options );
+			'workerURL': window.BOLDGRIDSass ? window.BOLDGRIDSass.WorkerUrl : null
+		} );
 
 		this.processing = false;
 		this.compileCount = 0;
@@ -47,6 +47,8 @@ export class SassCompiler {
 	 * Setup a compile function.
 	 */
 	compile( scss, options ) {
+		let $deferred = $.Deferred();
+
 		options = options || {};
 
 		this.processing = true;
@@ -63,7 +65,8 @@ export class SassCompiler {
 			let data = {
 				result: result,
 				scss: scss,
-				source: options.source
+				source: options.source,
+				options: options
 			};
 
 			this.processing = false;
@@ -75,7 +78,11 @@ export class SassCompiler {
 			this.$window.trigger( this.compileDone, data );
 
 			this.outputLogs( result, scss );
+
+			$deferred.resolve( data );
 		} );
+
+		return $deferred;
 	}
 
 	outputLogs( result, scss ) {

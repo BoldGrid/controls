@@ -11,6 +11,15 @@ export class Generate {
 	constructor() {
 
 		/**
+		 * Colors to use for contrast calculations.
+		 * @type {Object}
+		 */
+		this.contrast = {
+			light: '#1a1a1a',
+			dark: '#ffffff'
+		};
+
+		/**
 		 * Methods used to generate palettes based on only 1 color.
 		 * These methods are included in color.js
 		 */
@@ -98,6 +107,26 @@ export class Generate {
 			color += letters[Math.floor( Math.random() * 16 )];
 		}
 		return color;
+	}
+
+	/**
+	 * Get contrast for a given color.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  {string} color Color value, ex #fff.
+	 * @return {string}       Color value.
+	 */
+	getContrast( color ) {
+		let colorObj = BrehautColorJs( color ),
+			contrast = this.contrast.light,
+			lightness = colorObj.getLightness();
+
+		if ( 0.5 > lightness ) {
+			contrast = this.contrast.dark;
+		}
+
+		return contrast;
 	}
 
 	/**
