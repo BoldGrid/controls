@@ -662,6 +662,7 @@ colorPalette.update_theme_option = function( options ) {
 	options = options || {};
 	colorPalette.state = colorPalette.format_current_palette_state();
 	var scss_file = colorPalette.create_color_scss_file( colorPalette.state );
+	options.colorConfig = colorPalette.state;
 	colorPalette.compile( scss_file + BOLDGRIDSass.ScssFormatFileContents, options );
 };
 

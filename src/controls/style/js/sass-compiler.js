@@ -65,7 +65,8 @@ export class SassCompiler {
 			let data = {
 				result: result,
 				scss: scss,
-				source: options.source
+				source: options.source,
+				options: options
 			};
 
 			this.processing = false;
@@ -79,11 +80,6 @@ export class SassCompiler {
 			this.outputLogs( result, scss );
 
 			$deferred.resolve( data );
-
-			this.compiler.compileFile( '/button-scss/buttons.scss', result => {
-				console.log( result );
-			} );
-
 		} );
 
 		return $deferred;

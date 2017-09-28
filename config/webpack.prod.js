@@ -95,6 +95,10 @@ module.exports = {
 			{
 				from: require.resolve( 'sass.js/dist/sass.worker.js' ),
 				to: './static'
+			},
+			{
+				from: require.resolve( 'Buttons/scss/buttons.scss' ) + '/../',
+				to: './sass/button-scss'
 			}
 		] ),
 

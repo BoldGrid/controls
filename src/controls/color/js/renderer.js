@@ -5,19 +5,25 @@ import SampleConfig from './sampleConfig.js';
 import './control.js';
 import BaseStyles from 'raw-loader!../scss/utilities/color-classes.sass';
 import { Config } from './config.js';
-import { Button } from './button';
+import { Button as ButtonColors } from './button.js';
+import { SassCompiler } from '../../style/js/sass-compiler.js';
 
 export class Renderer {
 
 	constructor( configs ) {
 		this.configs = configs || {};
 		this.configs.sass = this.updateSassConfigs( this.configs.sass );
-		new Button().init();
 
 		// Clone object to prevent modification of the original.
 		this.palettes = this._getPaletteSetting( this.configs.paletteSettings );
 
 		this.formatConfig();
+
+		this.buttonColors = new ButtonColors( {
+			sassCompiler: new SassCompiler()
+		} );
+
+		this.buttonColors.init();
 	}
 
 	_getPaletteSetting( setting ) {
@@ -66,9 +72,9 @@ export class Renderer {
 
 		$target.append( html );
 
-		$( function() {
-			window.BOLDGRID.COLOR_PALETTE.Modify.init( $control );
-		} );
+		window.BOLDGRID.COLOR_PALETTE.Modify.init( $control );
+
+		this.$control = $control;
 
 		return $control;
 	}
@@ -77,6 +83,14 @@ export class Renderer {
 		let file = require( '../template.html' );
 
 		return _.template( file )( { config: this.palettes } );
+	}
+
+	updateButtons( cb ) {
+		this.buttonColors.compile( {
+			colors: this.buttonColors.convertColorState( BOLDGRID.COLOR_PALETTE.Modify.state )
+		}, ( result ) => {
+			cb( result );
+		} );
 	}
 }
 

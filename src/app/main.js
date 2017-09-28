@@ -60,11 +60,18 @@ export class Application {
 				scss: data.scss
 			} );
 
-			this.styleUpdater.update( {
-				id: 'bg-controls-buttons',
-				css: '*{color:red}',
-				scss: 'dddd',
-				proirity: 30
+			colorPalette.updateButtons( ( result ) => {
+				let scss = result.map.sourcesContent.join( '' );
+
+				this.styleUpdater.update( {
+					id: 'bg-controls-buttons',
+					css: result.text,
+					scss: scss,
+					proirity: 30
+				} );
+
+				$tab.find( '.css .content' ).append( result.text );
+				$tab.find( '.scss .content' ).append( scss );
 			} );
 
 			$tab.find( '.css .content' ).html( data.result.text );
