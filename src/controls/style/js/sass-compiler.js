@@ -21,8 +21,9 @@ export class SassCompiler {
 		this.instance = this;
 
 		this.options = _.defaults( options || {}, {
-			'enableLogging': false,
-			'workerURL': window.BOLDGRIDSass ? window.BOLDGRIDSass.WorkerUrl : null
+			enableLogging: false,
+			basePath: '../scss/',
+			workerURL: './static/sass.worker.js'
 		} );
 
 		this.processing = false;
@@ -114,5 +115,26 @@ export class SassCompiler {
 
 			this.compiler = new Sassjs( this.options.workerURL );
 		}
+	}
+
+	/**
+	 * Load files into sass compiler.
+	 *
+	 * @since 1.0.0
+	 */
+	preload( files ) {
+		let $deferred = $.Deferred();
+
+		// Preload a set of files.
+		this.compiler.preloadFiles(
+			this.options.basePath,
+			'',
+			files,
+			( data ) => {
+				$deferred.resolve( data );
+			}
+		);
+
+		return $deferred;
 	}
 }

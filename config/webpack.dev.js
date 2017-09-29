@@ -99,7 +99,7 @@ module.exports = {
 			},
 			{
 				from: path.resolve( require.resolve( 'Buttons/scss/buttons.scss' ), '..' ),
-				to: './sass/button-scss'
+				to: './scss/button-scss'
 			}
 		] ),
 

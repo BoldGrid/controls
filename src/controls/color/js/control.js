@@ -1,12 +1,14 @@
 window.BOLDGRID = window.BOLDGRID || {};
 window.BOLDGRID.COLOR_PALETTE = window.BOLDGRID.COLOR_PALETTE || {};
 window.BOLDGRID.COLOR_PALETTE.Modify = window.BOLDGRID.COLOR_PALETTE.Modify || {};
+window.BOLDGRIDSass = window.BOLDGRIDSass || {};
 
 import './transitions.js';
 import { SassCompiler }from '../../style/js/sass-compiler.js';
 import { Generate } from './generate.js';
 import { Picker as ColorPicker } from '../../color-picker';
 import BrehautColorJs from 'color-js/color';
+import BaseStyles from 'raw-loader!../scss/utilities/color-classes.sass';
 
 var $ = jQuery,
 	$window = $( window ),
@@ -636,7 +638,13 @@ colorPalette.create_color_scss_file = function( palette_config ) {
 	scss_file += '$light-text:' + text_light + ';';
 	scss_file += '$dark-text:' + text_dark + ';';
 
-	if ( typeof BOLDGRIDSass.ButtonVariables !== 'undefined' ) {
+	scss_file = self.appendButtonRules( scss_file );
+
+	return scss_file;
+};
+
+colorPalette.appendButtonRules = function ( scss_file ) {
+	if ( BOLDGRIDSass.ButtonVariables ) {
 		scss_file += '$ubtn-namespace: "' + BOLDGRIDSass.ButtonVariables['ubtn-namespace'] + '";';
 		scss_file += '$ubtn-bgcolor: ' + BOLDGRIDSass.ButtonVariables['ubtn-bgcolor'];
 		scss_file += '$ubtn-font-color: ' + BOLDGRIDSass.ButtonVariables['ubtn-font-color'];
@@ -653,7 +661,7 @@ colorPalette.create_color_scss_file = function( palette_config ) {
 	}
 
 	return scss_file;
-};
+}
 
 /**
  * Update the theme option
@@ -663,7 +671,7 @@ colorPalette.update_theme_option = function( options ) {
 	colorPalette.state = colorPalette.format_current_palette_state();
 	var scss_file = colorPalette.create_color_scss_file( colorPalette.state );
 	options.colorConfig = colorPalette.state;
-	colorPalette.compile( scss_file + BOLDGRIDSass.ScssFormatFileContents, options );
+	colorPalette.compile( scss_file + BaseStyles, options );
 };
 
 /**

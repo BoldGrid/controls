@@ -36,12 +36,8 @@ $ubtn-colors: ();
 		}
 	}
 	$ubtn-colors: append($ubtn-colors,('color-1' $palette-primary_1 $text-contrast-palette-primary_1));
-	@if $ubtn-theme-color == 'palette-primary_1' {
-		$ubtn-bgcolor: $palette-primary_1;
-		$ubtn-font-color: $text-contrast-palette-primary_1;
-	}
 }
-@if variable-exists( palette-primary_2  ) {
+@if variable-exists( palette-primary_2 ) {
 	$text-contrast-palette-primary_2: text-contrast( $palette-primary_2 );
 	.color2-text-default { color: $text-contrast-palette-primary_2; }
 	.color-2-text-contrast {
@@ -54,10 +50,6 @@ $ubtn-colors: ();
 		}
 	}
 	$ubtn-colors: append($ubtn-colors,('color-2' $palette-primary_2 $text-contrast-palette-primary_2));
-	@if $ubtn-theme-color == 'palette-primary_2' {
-		$ubtn-bgcolor: $palette-primary_2;
-		$ubtn-font-color: $text-contrast-palette-primary_2;
-	}
 }
 @if variable-exists( palette-primary_3 ) {
 	$text-contrast-palette-primary_3: text-contrast( $palette-primary_3 );
@@ -68,10 +60,6 @@ $ubtn-colors: ();
 	}
 	@if $text-contrast-palette-primary_3 != null {
 		$ubtn-colors: append($ubtn-colors,('color-3' $palette-primary_3 $text-contrast-palette-primary_3));
-		@if $ubtn-theme-color == 'palette-primary_3' {
-			$ubtn-bgcolor: $palette-primary_3;
-			$ubtn-font-color: $text-contrast-palette-primary_3;
-		}
 	}
 }
 @if variable-exists( palette-primary_4 ) {
@@ -83,10 +71,6 @@ $ubtn-colors: ();
 	}
 	@if $text-contrast-palette-primary_4 != null {
 		$ubtn-colors: append($ubtn-colors,('color-4' $palette-primary_4 $text-contrast-palette-primary_4));
-		@if $ubtn-theme-color == 'palette-primary_4' {
-			$ubtn-bgcolor: $palette-primary_4;
-			$ubtn-font-color: $text-contrast-palette-primary_4;
-		}
 	}
 }
 @if variable-exists( palette-primary_5 ) {
@@ -98,10 +82,6 @@ $ubtn-colors: ();
 	}
 	@if $text-contrast-palette-primary_5 != null {
 		$ubtn-colors: append($ubtn-colors,('color-5' $palette-primary_5 $text-contrast-palette-primary_5));
-		@if $ubtn-theme-color == 'palette-primary_5' {
-			$ubtn-bgcolor: $palette-primary_5;
-			$ubtn-font-color: $text-contrast-palette-primary_5;
-		}
 	}
 }
 @if variable-exists( palette-primary-neutral-color ) {
@@ -113,10 +93,6 @@ $ubtn-colors: ();
 	}
 	@if $text-contrast-palette-primary-neutral-color != null {
 		$ubtn-colors: append($ubtn-colors,('neutral-color' $palette-primary-neutral-color $text-contrast-palette-primary-neutral-color));
-		@if $ubtn-theme-color == 'palette-primary-neutral-color' {
-			$ubtn-bgcolor: $palette-primary-neutral-color;
-			$ubtn-font-color: $text-contrast-palette-primary-neutral-color;
-		}
 	}
 }
 

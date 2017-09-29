@@ -3,7 +3,6 @@ var $ = window.jQuery;
 import '../scss/control.scss';
 import SampleConfig from './sampleConfig.js';
 import './control.js';
-import BaseStyles from 'raw-loader!../scss/utilities/color-classes.sass';
 import { Config } from './config.js';
 import { Button as ButtonColors } from './button.js';
 import { SassCompiler } from '../../style/js/sass-compiler.js';
@@ -12,15 +11,17 @@ export class Renderer {
 
 	constructor( configs ) {
 		this.configs = configs || {};
-		this.configs.sass = this.updateSassConfigs( this.configs.sass );
 
 		// Clone object to prevent modification of the original.
 		this.palettes = this._getPaletteSetting( this.configs.paletteSettings );
 
 		this.formatConfig();
 
+		// Create a new compiler.
+		this.sassCompiler = new SassCompiler( this.configs.sass || {} );
+
 		this.buttonColors = new ButtonColors( {
-			sassCompiler: new SassCompiler()
+			sassCompiler: this.sassCompiler
 		} );
 
 		this.buttonColors.init();
@@ -34,22 +35,6 @@ export class Renderer {
 		}
 
 		return $.extend( true, {}, setting );
-	}
-
-	updateSassConfigs( sassConfigs ) {
-		window.BOLDGRIDSass = _.defaults( sassConfigs || {}, {
-			WorkerUrl: './static/sass.worker.js',
-			ScssFormatFileContents: this.baseStyles(),
-			outputCssFilename: ''
-		} );
-
-		sassConfigs = window.BOLDGRIDSass;
-
-		return sassConfigs;
-	}
-
-	baseStyles() {
-		return '$ubtn-theme-color: palette-primary_1;' + BaseStyles;
 	}
 
 	formatConfig() {
