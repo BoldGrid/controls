@@ -78,6 +78,7 @@ export class Updater {
 	 * @param  {array} configuration Configuration.
 	 */
 	loadSavedConfig( configuration ) {
+		configuration = JSON.parse( JSON.stringify( configuration ) );
 		for ( let config of configuration ) {
 			this.register( config );
 		}
