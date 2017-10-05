@@ -26,22 +26,22 @@ export class Button {
 
 	init() {
 		this.sassCompiler.preload( [
-			'button-scss/buttons.scss',
-			'button-scss/_options.scss',
-			'button-scss/types/_3d.scss',
-			'button-scss/types/_border.scss',
-			'button-scss/types/_borderless.scss',
-			'button-scss/types/_dropdown.scss',
-			'button-scss/types/_glow.scss',
-			'button-scss/types/_groups.scss',
-			'button-scss/types/_longshadow.scss',
-			'button-scss/types/_raised.scss',
-			'button-scss/types/_shapes.scss',
-			'button-scss/types/_sizes.scss',
-			'button-scss/types/_wrapper.scss',
-			'button-scss/_layout.scss',
-			'button-scss/_base.scss',
-			'button-scss/_mixins.scss'
+			'color-palette-scss/buttons/buttons.scss',
+			'color-palette-scss/buttons/_options.scss',
+			'color-palette-scss/buttons/types/_3d.scss',
+			'color-palette-scss/buttons/types/_border.scss',
+			'color-palette-scss/buttons/types/_borderless.scss',
+			'color-palette-scss/buttons/types/_dropdown.scss',
+			'color-palette-scss/buttons/types/_glow.scss',
+			'color-palette-scss/buttons/types/_groups.scss',
+			'color-palette-scss/buttons/types/_longshadow.scss',
+			'color-palette-scss/buttons/types/_raised.scss',
+			'color-palette-scss/buttons/types/_shapes.scss',
+			'color-palette-scss/buttons/types/_sizes.scss',
+			'color-palette-scss/buttons/types/_wrapper.scss',
+			'color-palette-scss/buttons/_layout.scss',
+			'color-palette-scss/buttons/_base.scss',
+			'color-palette-scss/buttons/_mixins.scss'
 		] );
 	}
 
@@ -106,6 +106,22 @@ export class Button {
 	}
 
 	/**
+	 * Return the scss string needed to compile the button library.
+	 *
+	 * @since. 1.0.0
+	 *
+	 * @param  {object} colorsState State of the color compiler.
+	 * @return {string}             SCSS.
+	 */
+	getCompileString( colorsState ) {
+		let variablesString = this.formatColorSass( this.convertColorState( colorsState ) ),
+			namespaceString = '$ubtn-namespace: \'' + this.namespace + '\';',
+			compileString = namespaceString + variablesString + '@import "color-palette-scss/buttons/buttons.scss";';
+
+		return compileString;
+	}
+
+	/**
 	 * Compile the colors lib.
 	 *
 	 * @since 1.0.0
@@ -114,10 +130,6 @@ export class Button {
 	 * @param  {Function} cb      Callback for the complete process.
 	 */
 	compile( options, cb ) {
-		let variablesString = this.formatColorSass( options.colors ),
-			namespaceString = '$ubtn-namespace: \'' + this.namespace + '\';',
-			compileString =  namespaceString + variablesString + '@import "button-scss/buttons.scss";';
-
 		this.sassCompiler.compiler.compile( compileString, ( result ) => {
 			cb( result );
 		} );
