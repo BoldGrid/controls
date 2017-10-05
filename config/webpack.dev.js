@@ -3,10 +3,10 @@ const webpack = require( 'webpack' );
 const HtmlWebpackPlugin = require( 'html-webpack-plugin' );
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
 
-const src = path.resolve( __dirname, '..', 'src' );
+const srcDir = path.resolve( __dirname, '..', 'src' );
 
 module.exports = {
-	context: src,
+	context: srcDir,
 
 	entry: [ './index.js' ],
 
@@ -17,7 +17,7 @@ module.exports = {
 	},
 
 	devServer: {
-		contentBase: src,
+		contentBase: srcDir,
 		publicPath: '/',
 		historyApiFallback: true,
 		port: 3000,
@@ -57,7 +57,7 @@ module.exports = {
 			{
 				test: /\.(scss|css)$/,
 				exclude: [
-					src + '/controls/color/scss/utilities/color-classes.scss',
+					srcDir + '/controls/color/scss/utilities/color-classes.scss',
 					require.resolve( 'Buttons/scss/buttons.scss' )
 				],
 				use: [
@@ -99,7 +99,11 @@ module.exports = {
 			},
 			{
 				from: path.resolve( require.resolve( 'Buttons/scss/buttons.scss' ), '..' ),
-				to: './scss/button-scss'
+				to: './scss/color-palette-scss/buttons'
+			},
+			{
+				from: srcDir + '/controls/color/scss/utilities/color-classes.sass',
+				to: './scss/color-palette-scss/classes/color-classes.scss'
 			}
 		] ),
 
@@ -108,7 +112,7 @@ module.exports = {
 		new webpack.NamedModulesPlugin(),
 
 		new HtmlWebpackPlugin( {
-			template: path.join( src, 'index.ejs' ),
+			template: path.join( srcDir, 'index.ejs' ),
 			path: path.resolve( __dirname, '..', 'dist' ),
 			filename: 'index.html'
 		} )

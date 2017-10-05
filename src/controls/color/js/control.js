@@ -28,7 +28,7 @@ colorPalette.themePalettes = [];
 var default_neutrals =  [ '#232323', '#FFFFFF', '#FF5F5F', '#FFDBB8', '#FFFFB2', '#bad6b1', '#99acbf', '#cdb5e2' ];
 
 colorPalette.init = function( $control, configs ) {
-	self.configs = self.initConfigs();
+	self.configs = self.initConfigs( configs );
 	self.$control = $control;
 	self.sassCompiler = new SassCompiler();
 	self.colorPicker = new ColorPicker();
@@ -607,12 +607,9 @@ colorPalette.getContrastColor = function( type ) {
  * Take the colors in a palette and format them into an SCSS format
  */
 colorPalette.create_color_scss_file = function( palette_config ) {
-	var scss_file = '';
+	var scss_file = '',
+		colors_prefix = '$colors: ';
 
-	// Null out variables before use.
-	scss_file += '$palette-primary_1: null;$palette-primary_2: null;$palette-primary_3: null;$palette-primary_4: null;$palette-primary_5: null;$palette-primary-neutral-color: null;$text-contrast-palette-primary-1: null;$text-contrast-palette-primary-2: null;$text-contrast-palette-primary-3: null;$text-contrast-palette-primary-4: null;$text-contrast-palette-primary-5: null;$text-contrast-palette-primary-neutral-color: null;';
-
-	var colors_prefix = '$colors: ';
 	$.each( palette_config.palettes, function( format ) {
 		if ( this.colors ) {
 			var class_colors = colors_prefix;
@@ -671,7 +668,22 @@ colorPalette.update_theme_option = function( options ) {
 	colorPalette.state = colorPalette.format_current_palette_state();
 	var scss_file = colorPalette.create_color_scss_file( colorPalette.state );
 	options.colorConfig = colorPalette.state;
-	colorPalette.compile( scss_file + BaseStyles, options );
+
+	colorPalette.compile( self.getScss(), options );
+};
+
+/**
+ * Get the sass needed to pass into the compiler.
+ *
+ * @since 1.0.0
+ *
+ * @return {string}         Compiler content.
+ */
+colorPalette.getScss = function() {
+	let scss_file = colorPalette.create_color_scss_file( colorPalette.state ),
+		colorClasses = scss_file + self.configs.renderer.getImportString();
+
+	return colorClasses + self.configs.renderer.buttonColors.getCompileString( colorPalette.state );
 };
 
 /**

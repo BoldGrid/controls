@@ -38,7 +38,7 @@ describe( 'default configurations', function() {
 
 		results = colorConfig.createSavableState( controlState );
 
-		expect( results.palettes.length ).toEqual( 7 );
+		expect( results.palettes.length ).toEqual( 5 );
 		expect( results['saved_palettes'].length ).toEqual( 1 );
 	} );
 } );

@@ -98,7 +98,11 @@ module.exports = {
 			},
 			{
 				from: path.resolve( require.resolve( 'Buttons/scss/buttons.scss' ), '..' ),
-				to: './sass/button-scss'
+				to: './scss/color-palette-scss/buttons'
+			},
+			{
+				from: srcDir + '/controls/color/scss/utilities/color-classes.sass',
+				to: './scss/color-palette-scss/classes/color-classes.scss'
 			}
 		] ),
 

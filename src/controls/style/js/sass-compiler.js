@@ -56,7 +56,7 @@ export class SassCompiler {
 
 		this.compileCount++;
 
-		this.resetCompiler();
+		// This.resetCompiler();
 
 		if ( this.options.enableLogging ) {
 			this.log.startTime = new Date().getTime();
