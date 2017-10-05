@@ -5,28 +5,32 @@
 		data-has-neutral='<%=config.hasNeutralColor %>'
 		data-num-colors='<%=config.colorPaletteColumns %>'>
 
-	<% _.each( config.palettes, function ( palette, name ) { %>
+	<%
+	let savedPalettes = config.saved_palettes || [],
+		palettes = savedPalettes.concat( config.palettes );
+
+	_.each( palettes, function ( palette, name ) { %>
 	<div data-palette-wrapper='true'>
-	<ul class='boldgrid-inactive-palette'
-		 data-is-default="<%= ~~palette.default %>"
-		 data-is-active="<%= ~~palette.is_active %>"
-		 data-color-palette-format="<%=palette.format %>"
-		 data-copy-on-mod="<%= ~~palette.copy_on_mod %>"
-		 data-palette-id="<%=palette.palette_id %>"
-		 <% if ( palette['neutral-color'] ) { %>
-			 data-neutral-color="<%= palette['neutral-color'] %>"
-		 <% } %>
-		 >
-		<li class='boldgrid-palette-colors'>
-			<% _.each( palette.colors, function ( color ) { %>
-				<span data-color="<%=color %>" style="background: <%=color %>"></span>
-			<% } ); %>
-			<div class='boldgrid-duplicate-dashicons'>
-				<span class="dashicons dashicons-admin-post boldgrid-copy-palette" title="Save Palette"></span>
-				<span class="dashicons dashicons-no boldgrid-remove-palette" title="Remove Palette"></span>
-			</div>
-		</li>
-	</ul>
+		<ul class='boldgrid-inactive-palette'
+			 data-is-default="<%= ~~palette.default %>"
+			 data-is-active="<%= ~~palette.is_active %>"
+			 data-color-palette-format="<%=palette.format %>"
+			 data-copy-on-mod="<%= ~~palette.copy_on_mod %>"
+			 data-palette-id="<%=palette.palette_id %>"
+			 <% if ( palette['neutral-color'] ) { %>
+				 data-neutral-color="<%= palette['neutral-color'] %>"
+			 <% } %>
+			 >
+			<li class='boldgrid-palette-colors'>
+				<% _.each( palette.colors, function ( color ) { %>
+					<span data-color="<%=color %>" style="background: <%=color %>"></span>
+				<% } ); %>
+				<div class='boldgrid-duplicate-dashicons'>
+					<span class="dashicons dashicons-admin-post boldgrid-copy-palette" title="Save Palette"></span>
+					<span class="dashicons dashicons-no boldgrid-remove-palette" title="Remove Palette"></span>
+				</div>
+			</li>
+		</ul>
 	</div>
 	<% } ); %>
 

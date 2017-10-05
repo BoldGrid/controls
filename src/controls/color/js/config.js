@@ -111,6 +111,7 @@ export class Config {
 		config['saved_palettes'] = [];
 		if ( controlState['saved_palettes'] ) {
 			for ( let palette of controlState['saved_palettes'] ) {
+				palette.colors.push( palette.colors['neutral-color'] );
 				palette.default = false;
 				palette['copy_on_mod'] = false;
 				config['saved_palettes'].push( this.createPalette( palette ) );
