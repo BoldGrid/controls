@@ -28,10 +28,13 @@ colorPalette.themePalettes = [];
 var default_neutrals =  [ '#232323', '#FFFFFF', '#FF5F5F', '#FFDBB8', '#FFFFB2', '#bad6b1', '#99acbf', '#cdb5e2' ];
 
 colorPalette.init = function( $control, configs ) {
-	self.configs = self.initConfigs();
+	colorPalette.first_update = true;
+
+	self.configs = self.initConfigs( configs );
 	self.$control = $control;
 	self.sassCompiler = new SassCompiler();
 	self.colorPicker = new ColorPicker();
+	self.pausePickerChanges();
 
 	self.classProperties();
 	self.setupEvents();
@@ -507,7 +510,7 @@ colorPalette.add_jquery_sortable = function( $ul ) {
 
 			colorPalette.addColorTransition();
 
-			colorPalette.update_theme_option();
+			colorPalette.update_theme_option( { source: 'dragColor' } );
 			colorPalette.open_picker();
 			if ( ui.item ) {
 				var $to_element = ui.item;
@@ -607,12 +610,9 @@ colorPalette.getContrastColor = function( type ) {
  * Take the colors in a palette and format them into an SCSS format
  */
 colorPalette.create_color_scss_file = function( palette_config ) {
-	var scss_file = '';
+	var scss_file = '',
+		colors_prefix = '$colors: ';
 
-	// Null out variables before use.
-	scss_file += '$palette-primary_1: null;$palette-primary_2: null;$palette-primary_3: null;$palette-primary_4: null;$palette-primary_5: null;$palette-primary-neutral-color: null;$text-contrast-palette-primary-1: null;$text-contrast-palette-primary-2: null;$text-contrast-palette-primary-3: null;$text-contrast-palette-primary-4: null;$text-contrast-palette-primary-5: null;$text-contrast-palette-primary-neutral-color: null;';
-
-	var colors_prefix = '$colors: ';
 	$.each( palette_config.palettes, function( format ) {
 		if ( this.colors ) {
 			var class_colors = colors_prefix;
@@ -671,7 +671,22 @@ colorPalette.update_theme_option = function( options ) {
 	colorPalette.state = colorPalette.format_current_palette_state();
 	var scss_file = colorPalette.create_color_scss_file( colorPalette.state );
 	options.colorConfig = colorPalette.state;
-	colorPalette.compile( scss_file + BaseStyles, options );
+
+	colorPalette.compile( self.getScss(), options );
+};
+
+/**
+ * Get the sass needed to pass into the compiler.
+ *
+ * @since 1.0.0
+ *
+ * @return {string}         Compiler content.
+ */
+colorPalette.getScss = function() {
+	let scss_file = colorPalette.create_color_scss_file( colorPalette.state ),
+		colorClasses = scss_file + self.configs.renderer.getImportString();
+
+	return colorClasses + self.configs.renderer.buttonColors.getCompileString( colorPalette.state );
 };
 
 /**
@@ -739,7 +754,7 @@ colorPalette.activate_color = function( e, $element, ignoreColorChange ) {
 		colorPalette.open_picker();
 
 		if ( ignoreColorChange ) {
-			self.pause_color_changes();
+			self.pausePickerChanges();
 		}
 
 		self.colorPicker.setColor( $this.css( 'background-color' ) );
@@ -751,7 +766,7 @@ colorPalette.activate_color = function( e, $element, ignoreColorChange ) {
  *
  * @since 1.1.7
  */
-colorPalette.pause_color_changes = function() {
+colorPalette.pausePickerChanges = function() {
 	self.ignoreColorChange = true;
 	setTimeout( function() {
 		self.ignoreColorChange = false;
@@ -788,6 +803,10 @@ colorPalette.updateNeutralData = function() {
  */
 colorPalette.setup_color_picker = function() {
 
+	let throttled = _.throttle( () => {
+		colorPalette.update_theme_option( { source: 'updatePicker' } );
+	}, 100 );
+
 	// Hack, colors are updated shortly after, just give it an array.
 	var secondaryPalette = colorPalette.themePalettes[0];
 	if ( self.hasNeutral ) {
@@ -800,7 +819,6 @@ colorPalette.setup_color_picker = function() {
 			if ( self.fadeEffectInProgress ) {
 				return false;
 			}
-
 			var color = ui.color.toString();
 
 			self.$palette_control_wrapper
@@ -814,21 +832,7 @@ colorPalette.setup_color_picker = function() {
 			if ( self.ignoreColorChange ) {
 				return;
 			}
-
-			colorPalette.last_refresh_time = new Date().getTime();
-			var current_refreshtime = colorPalette.last_refresh_time;
-
-			// Update every 100 ms.
-			setTimeout( function() {
-				var isMostRecent = current_refreshtime === colorPalette.last_refresh_time,
-					progressiveUpdate = self.most_recent_update + colorPalette.pickerCompileDelay < new Date().getTime();
-
-				if ( isMostRecent || progressiveUpdate ) {
-					colorPalette.update_theme_option();
-					self.most_recent_update = new Date().getTime();
-				}
-			}, colorPalette.pickerCompileDelay, current_refreshtime );
-
+			throttled();
 		}
 	};
 
@@ -1030,24 +1034,23 @@ colorPalette.pickerPostInit = function() {
 
 	// TODO this doesnt work on auto close.
 	self.$palette_control_wrapper.find( '.wp-color-result' ).on( 'click', function() {
-			var $this = $( this );
-			var picker_visible = $this.parent().find( '.iris-picker' ).is( ':visible' );
-			if ( picker_visible ) {
-				$this.removeClass( 'expanded-wp-colorpicker' );
+		var $this = $( this );
+		var picker_visible = $this.parent().find( '.iris-picker' ).is( ':visible' );
+		if ( picker_visible ) {
+			$this.removeClass( 'expanded-wp-colorpicker' );
 
-				// Auto Select first color.
-				if ( ! self.$palette_control_wrapper.find( '.active-palette-section' ).length ) {
-					self.$palette_control_wrapper.find( '.boldgrid-active-palette li:first' ).click();
-				}
+			// Auto Select first color.
+			if ( ! self.$palette_control_wrapper.find( '.active-palette-section' ).length ) {
+				self.$palette_control_wrapper.find( '.boldgrid-active-palette li:first' ).click();
 			}
-		} );
+		}
+	} );
 
 	self.active_body_class = self.$palette_control_wrapper
-	.find( '.boldgrid-active-palette' )
-	.first()
-	.attr( 'data-color-palette-format' );
+		.find( '.boldgrid-active-palette' )
+		.first()
+		.attr( 'data-color-palette-format' );
 };
-
 
 /**
  * Upon clicking a color in the active palette, fade in and out the color on the iframe.

@@ -6,7 +6,7 @@
 		data-num-colors='<%=config.colorPaletteColumns %>'>
 
 	<%
-	let savedPalettes = config.saved_palettes || [],
+	var savedPalettes = config.saved_palettes || [],
 		palettes = savedPalettes.concat( config.palettes );
 
 	_.each( palettes, function ( palette, name ) { %>
