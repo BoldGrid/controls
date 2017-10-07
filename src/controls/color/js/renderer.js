@@ -18,11 +18,6 @@ export class Renderer {
 		// Merge all sass files.
 		this.configs.sassFiles = this.configs.sassFiles.concat( this.configs.defaultSassFiles );
 
-		// Clone object to prevent modification of the original.
-		this.palettes = this._getPaletteSetting( this.configs.paletteSettings );
-
-		this.formatConfig();
-
 		// Create a new compiler.
 		this.sassCompiler = new SassCompiler( this.configs.sass || {} );
 
@@ -33,6 +28,11 @@ export class Renderer {
 		this.buttonColors.init();
 
 		this.sassCompiler.preload( this.configs.sassFiles );
+	}
+
+	setPaletteSettings( settings ) {
+		this.palettes = this._createPaletteSetting( settings );
+		this.formatConfig();
 	}
 
 	/**
@@ -84,9 +84,13 @@ export class Renderer {
 	 * @param  {jQuery} $target Location to put the control.
 	 * @return {jQuery}         Control Element.
 	 */
-	render( $target ) {
-		let html = this.getHtml(),
-			$control = $( html );
+	render( $target, settings ) {
+		let $control, html;
+
+		this.setPaletteSettings( settings );
+
+		html = this._createHtml();
+		$control = $( html );
 
 		$target.append( html );
 
@@ -107,7 +111,7 @@ export class Renderer {
 	 * @param  {object} colorPalettes Color palettes configuration.
 	 * @return {string}               Control Markup.
 	 */
-	getHtml( colorPalettes ) {
+	_createHtml( colorPalettes ) {
 		let file = require( '../template.html' );
 		return _.template( file )( { config: this.palettes } );
 	}
@@ -120,7 +124,7 @@ export class Renderer {
 	 * @param  {object} setting Configurations.
 	 * @return {object}         A full set of configs for the control.
 	 */
-	_getPaletteSetting( setting ) {
+	_createPaletteSetting( setting ) {
 		let colorConfig = new Config();
 
 		if ( ! setting ) {

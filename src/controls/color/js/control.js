@@ -28,10 +28,13 @@ colorPalette.themePalettes = [];
 var default_neutrals =  [ '#232323', '#FFFFFF', '#FF5F5F', '#FFDBB8', '#FFFFB2', '#bad6b1', '#99acbf', '#cdb5e2' ];
 
 colorPalette.init = function( $control, configs ) {
+	colorPalette.first_update = true;
+
 	self.configs = self.initConfigs( configs );
 	self.$control = $control;
 	self.sassCompiler = new SassCompiler();
 	self.colorPicker = new ColorPicker();
+	self.pausePickerChanges();
 
 	self.classProperties();
 	self.setupEvents();
@@ -507,7 +510,7 @@ colorPalette.add_jquery_sortable = function( $ul ) {
 
 			colorPalette.addColorTransition();
 
-			colorPalette.update_theme_option();
+			colorPalette.update_theme_option( { source: 'dragColor' } );
 			colorPalette.open_picker();
 			if ( ui.item ) {
 				var $to_element = ui.item;
@@ -751,7 +754,7 @@ colorPalette.activate_color = function( e, $element, ignoreColorChange ) {
 		colorPalette.open_picker();
 
 		if ( ignoreColorChange ) {
-			self.pause_color_changes();
+			self.pausePickerChanges();
 		}
 
 		self.colorPicker.setColor( $this.css( 'background-color' ) );
@@ -763,7 +766,7 @@ colorPalette.activate_color = function( e, $element, ignoreColorChange ) {
  *
  * @since 1.1.7
  */
-colorPalette.pause_color_changes = function() {
+colorPalette.pausePickerChanges = function() {
 	self.ignoreColorChange = true;
 	setTimeout( function() {
 		self.ignoreColorChange = false;
@@ -800,6 +803,10 @@ colorPalette.updateNeutralData = function() {
  */
 colorPalette.setup_color_picker = function() {
 
+	let throttled = _.throttle( () => {
+		colorPalette.update_theme_option( { source: 'updatePicker' } );
+	}, 100 );
+
 	// Hack, colors are updated shortly after, just give it an array.
 	var secondaryPalette = colorPalette.themePalettes[0];
 	if ( self.hasNeutral ) {
@@ -812,7 +819,6 @@ colorPalette.setup_color_picker = function() {
 			if ( self.fadeEffectInProgress ) {
 				return false;
 			}
-
 			var color = ui.color.toString();
 
 			self.$palette_control_wrapper
@@ -826,21 +832,7 @@ colorPalette.setup_color_picker = function() {
 			if ( self.ignoreColorChange ) {
 				return;
 			}
-
-			colorPalette.last_refresh_time = new Date().getTime();
-			var current_refreshtime = colorPalette.last_refresh_time;
-
-			// Update every 100 ms.
-			setTimeout( function() {
-				var isMostRecent = current_refreshtime === colorPalette.last_refresh_time,
-					progressiveUpdate = self.most_recent_update + colorPalette.pickerCompileDelay < new Date().getTime();
-
-				if ( isMostRecent || progressiveUpdate ) {
-					colorPalette.update_theme_option();
-					self.most_recent_update = new Date().getTime();
-				}
-			}, colorPalette.pickerCompileDelay, current_refreshtime );
-
+			throttled();
 		}
 	};
 
@@ -1042,24 +1034,23 @@ colorPalette.pickerPostInit = function() {
 
 	// TODO this doesnt work on auto close.
 	self.$palette_control_wrapper.find( '.wp-color-result' ).on( 'click', function() {
-			var $this = $( this );
-			var picker_visible = $this.parent().find( '.iris-picker' ).is( ':visible' );
-			if ( picker_visible ) {
-				$this.removeClass( 'expanded-wp-colorpicker' );
+		var $this = $( this );
+		var picker_visible = $this.parent().find( '.iris-picker' ).is( ':visible' );
+		if ( picker_visible ) {
+			$this.removeClass( 'expanded-wp-colorpicker' );
 
-				// Auto Select first color.
-				if ( ! self.$palette_control_wrapper.find( '.active-palette-section' ).length ) {
-					self.$palette_control_wrapper.find( '.boldgrid-active-palette li:first' ).click();
-				}
+			// Auto Select first color.
+			if ( ! self.$palette_control_wrapper.find( '.active-palette-section' ).length ) {
+				self.$palette_control_wrapper.find( '.boldgrid-active-palette li:first' ).click();
 			}
-		} );
+		}
+	} );
 
 	self.active_body_class = self.$palette_control_wrapper
-	.find( '.boldgrid-active-palette' )
-	.first()
-	.attr( 'data-color-palette-format' );
+		.find( '.boldgrid-active-palette' )
+		.first()
+		.attr( 'data-color-palette-format' );
 };
-
 
 /**
  * Upon clicking a color in the active palette, fade in and out the color on the iframe.
