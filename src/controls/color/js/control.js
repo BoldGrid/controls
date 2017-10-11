@@ -561,10 +561,12 @@ colorPalette.format_current_palette_state = function() {
 	self.active_body_class = palettes_object['active-palette'];
 
 	var palette_routine = function() {
-		var $this = $( this );
+		var $this = $( this ),
+			$color_backgrounds = {},
+			copyOnMod =  parseInt( $this.attr( 'data-copy-on-mod' ) ),
+			isActivePalette = $this.hasClass( 'boldgrid-active-palette' );
 
-		var $color_backgrounds = {};
-		if ( $this.hasClass( 'boldgrid-active-palette' ) ) {
+		if ( isActivePalette ) {
 			$color_backgrounds = $this.find( 'li.boldgrid-palette-colors' );
 		} else {
 			$color_backgrounds = $this.find( '.boldgrid-palette-colors > span' );
@@ -580,9 +582,12 @@ colorPalette.format_current_palette_state = function() {
 			'colors': colors,
 			'neutral-color': $this.attr( 'data-neutral-color' )
 		};
-		palettes_object.palettes[ $this.attr( 'data-color-palette-format' ) ] = palette;
 
-		if ( ! $this.attr( 'data-copy-on-mod' ) ) {
+		if ( isActivePalette ) {
+			palettes_object.palettes[ $this.attr( 'data-color-palette-format' ) ] = palette;
+		}
+
+		if ( ! isActivePalette && ! copyOnMod ) {
 			palettes_object.saved_palettes.push( palette );
 		}
 	};

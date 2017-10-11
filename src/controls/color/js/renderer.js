@@ -41,6 +41,9 @@ export class Renderer {
 	 * @since 1.0.0
 	 */
 	formatConfig() {
+		this.palettes['saved_palettes'] = this.palettes.saved_palettes || [];
+		this.palettes.palettes = this.palettes['saved_palettes'].concat( this.palettes.palettes );
+
 		this.palettes.hasNeutralColor = this.palettes.palettes[0]['neutral-color'] ? 1 : 0;
 		this.palettes.colorPaletteColumns = this.palettes['color-palette-size'] + this.palettes.hasNeutralColor;
 		this.assignNeutral();
@@ -129,6 +132,8 @@ export class Renderer {
 
 		if ( ! setting ) {
 			setting = colorConfig.createSimpleConfig();
+		} else {
+			setting = colorConfig.mergeDefaults( setting );
 		}
 
 		return $.extend( true, {}, setting );

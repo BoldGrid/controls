@@ -11,7 +11,7 @@ export class Config {
 		 *
 		 * @type {String}
 		 */
-		this.defaultColor = 'deepOrange';
+		this.defaultColor = 'blue';
 
 		/**
 		 * Palette colors used for default list.
@@ -19,7 +19,7 @@ export class Config {
 		 * @type {Array}
 		 */
 		this.samplePalettesColors = [
-			'red', 'blue', 'teal', 'grey'
+			'red', 'teal', 'grey', 'pink', 'brown'
 		];
 	}
 
@@ -32,14 +32,18 @@ export class Config {
 	 * @return {Object}       Configuration for palette system.
 	 */
 	createSimpleConfig( colors ) {
-		let config = {};
-
-		colors = colors || {};
-
+		let config = {},
+			formattedPalette;
 		config.palettes = [];
-		colors['is_active'] = true;
-		config.palettes.push( this.createPalette( colors ) );
 
+		if ( ! colors ) {
+			formattedPalette = this._createDefault( this.defaultColor );
+		} else {
+			formattedPalette = this.createPalette( colors );
+		}
+
+		formattedPalette['is_active'] = true;
+		config.palettes.push( formattedPalette );
 		config['color-palette-size'] = config.palettes[0].colors.length;
 		config['palette_formats'] = [ 'palette-primary' ];
 
@@ -79,13 +83,25 @@ export class Config {
 			'copy_on_mod': true,
 			'is_active': false,
 			'format': 'palette-primary',
-			'neutral-color': 'white',
 			'colors': this.material.getPalette( this.defaultColor )
 		} );
 
 		paletteConfig['palette_id'] = btoa( paletteConfig.colors );
 
 		return paletteConfig;
+	}
+
+	/**
+	 * Merge in the default color palettes to the saved state.
+	 *
+	 * @since 1.6
+	 *
+	 * @param  {object} settings Requested configs.
+	 * @return {object}          Configs.
+	 */
+	mergeDefaults( settings ) {
+		settings.palettes = settings.palettes.concat( this.getPresetPalettes() );
+		return settings;
 	}
 
 	/**
@@ -98,8 +114,9 @@ export class Config {
 	 */
 	createSavableState( controlState ) {
 		let config = this.createSimpleConfig(),
-			presets = this.getPresetPalettes(),
 			palette = controlState.palettes['palette-primary'];
+
+		config.palettes = [];
 
 		// Set the active palette.
 		// @todo: correctly identify if the active palette is one of the default palettes.
@@ -109,17 +126,23 @@ export class Config {
 
 		// Update saved palettes.
 		config['saved_palettes'] = [];
-		if ( controlState['saved_palettes'] ) {
-			for ( let palette of controlState['saved_palettes'] ) {
+		controlState['saved_palettes'] = controlState['saved_palettes'] || [];
+		for ( let curPalette of controlState['saved_palettes'] ) {
+			let formattedPalette = this.createPalette( curPalette );
 
-				if ( palette.colors['neutral-color'] ) {
-					palette.colors.push( palette.colors['neutral-color'] );
-				}
-
-				palette.default = false;
-				palette['copy_on_mod'] = false;
-				config['saved_palettes'].push( this.createPalette( palette ) );
+			if ( formattedPalette.palette_id === config.palettes[0].palette_id ) {
+				continue;
 			}
+
+			/*
+			if ( formattedPalette['neutral-color'] ) {
+				formattedPalette.colors.push( formattedPalette['neutral-color'] );
+			}
+			*/
+
+			formattedPalette.default = false;
+			formattedPalette['copy_on_mod'] = false;
+			config['saved_palettes'].push( formattedPalette );
 		}
 
 		return config;

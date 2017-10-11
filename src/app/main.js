@@ -1,5 +1,5 @@
 import { Application as ComponentApplication } from '@boldgrid/components/src/app/js/main.js';
-import { ColorPalette, StyleUpdater, ColorPaletteSelection } from '../controls';
+import { ColorPalette, StyleUpdater, ColorPaletteSelection, PaletteConfiguration } from '../controls';
 import '@boldgrid/components/src/app/scss/main.scss';
 import './main.scss';
 
@@ -11,6 +11,8 @@ export class Application {
 	 * @since 1.0.0
 	 */
 	init() {
+		this.paletteConfig = new PaletteConfiguration();
+
 		new ComponentApplication().init();
 
 		// Instantiate the css loader.
@@ -51,6 +53,7 @@ export class Application {
 	paletteCustomize() {
 		let $tab = $( '.colors-tab' ),
 			colorPalette = new ColorPalette(),
+			testData = require( '../../test/data/palette-source-1.json' ),
 			$control = colorPalette.render( $tab.find( '.control' ) );
 
 		$control.on( 'sass_compiled', ( e, data ) => {
@@ -59,6 +62,10 @@ export class Application {
 				css: data.result.text,
 				scss: data.scss
 			} );
+
+			let savableState = this.paletteConfig.createSavableState( BOLDGRID.COLOR_PALETTE.Modify.state );
+			console.log( 'State', savableState );
+			console.log( 'State', JSON.stringify( savableState ) );
 
 			$tab.find( '.css .content' ).html( data.result.text );
 			$tab.find( '.scss .content' ).html( data.scss );
