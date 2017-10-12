@@ -673,11 +673,11 @@ colorPalette.appendButtonRules = function ( scss_file ) {
  */
 colorPalette.update_theme_option = function( options ) {
 	options = options || {};
-	colorPalette.state = colorPalette.format_current_palette_state();
-	var scss_file = colorPalette.create_color_scss_file( colorPalette.state );
+
+	let scss = self.getScss();
 	options.colorConfig = colorPalette.state;
 
-	colorPalette.compile( self.getScss(), options );
+	colorPalette.compile( scss, options );
 };
 
 /**
@@ -688,6 +688,8 @@ colorPalette.update_theme_option = function( options ) {
  * @return {string}         Compiler content.
  */
 colorPalette.getScss = function() {
+	colorPalette.state = colorPalette.format_current_palette_state();
+
 	let scss_file = colorPalette.create_color_scss_file( colorPalette.state ),
 		colorClasses = scss_file + self.configs.renderer.getImportString();
 

@@ -6,6 +6,25 @@ export class Button {
 	constructor( options ) {
 		options = options || {};
 
+		this.files = [
+			'color-palette-scss/buttons/buttons.scss',
+			'color-palette-scss/buttons/_options.scss',
+			'color-palette-scss/buttons/types/_3d.scss',
+			'color-palette-scss/buttons/types/_border.scss',
+			'color-palette-scss/buttons/types/_borderless.scss',
+			'color-palette-scss/buttons/types/_dropdown.scss',
+			'color-palette-scss/buttons/types/_glow.scss',
+			'color-palette-scss/buttons/types/_groups.scss',
+			'color-palette-scss/buttons/types/_longshadow.scss',
+			'color-palette-scss/buttons/types/_raised.scss',
+			'color-palette-scss/buttons/types/_shapes.scss',
+			'color-palette-scss/buttons/types/_sizes.scss',
+			'color-palette-scss/buttons/types/_wrapper.scss',
+			'color-palette-scss/buttons/_layout.scss',
+			'color-palette-scss/buttons/_base.scss',
+			'color-palette-scss/buttons/_mixins.scss'
+		];
+
 		this.namespace = '.btn';
 
 		/**
@@ -25,24 +44,11 @@ export class Button {
 	}
 
 	init() {
-		this.sassCompiler.preload( [
-			'color-palette-scss/buttons/buttons.scss',
-			'color-palette-scss/buttons/_options.scss',
-			'color-palette-scss/buttons/types/_3d.scss',
-			'color-palette-scss/buttons/types/_border.scss',
-			'color-palette-scss/buttons/types/_borderless.scss',
-			'color-palette-scss/buttons/types/_dropdown.scss',
-			'color-palette-scss/buttons/types/_glow.scss',
-			'color-palette-scss/buttons/types/_groups.scss',
-			'color-palette-scss/buttons/types/_longshadow.scss',
-			'color-palette-scss/buttons/types/_raised.scss',
-			'color-palette-scss/buttons/types/_shapes.scss',
-			'color-palette-scss/buttons/types/_sizes.scss',
-			'color-palette-scss/buttons/types/_wrapper.scss',
-			'color-palette-scss/buttons/_layout.scss',
-			'color-palette-scss/buttons/_base.scss',
-			'color-palette-scss/buttons/_mixins.scss'
-		] );
+		return this.preload();
+	}
+
+	preload() {
+		return this.sassCompiler.preload( this.files );
 	}
 
 	/**

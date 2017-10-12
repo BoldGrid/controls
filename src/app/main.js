@@ -51,10 +51,14 @@ export class Application {
 	}
 
 	paletteCustomize() {
-		let $tab = $( '.colors-tab' ),
+		let $control,
+			$tab = $( '.colors-tab' ),
 			colorPalette = new ColorPalette(),
-			testData = require( '../../test/data/palette-source-1.json' ),
-			$control = colorPalette.render( $tab.find( '.control' ) );
+			testData = require( '../../test/data/palette-source-1.json' );
+
+		colorPalette.init();
+
+		$control = colorPalette.render( $tab.find( '.control' ) );
 
 		$control.on( 'sass_compiled', ( e, data ) => {
 			this.styleUpdater.update( {
@@ -63,9 +67,11 @@ export class Application {
 				scss: data.scss
 			} );
 
-			let savableState = this.paletteConfig.createSavableState( BOLDGRID.COLOR_PALETTE.Modify.state );
-			console.log( 'State', savableState );
-			console.log( 'State', JSON.stringify( savableState ) );
+			if ( BOLDGRID.COLOR_PALETTE.Modify.state  ) {
+				let savableState = this.paletteConfig.createSavableState( BOLDGRID.COLOR_PALETTE.Modify.state );
+				console.log( 'State', savableState );
+				console.log( 'State', JSON.stringify( savableState ) );
+			}
 
 			$tab.find( '.css .content' ).html( data.result.text );
 			$tab.find( '.scss .content' ).html( data.scss );

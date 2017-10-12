@@ -10,6 +10,10 @@ import { SassCompiler } from '../../style/js/sass-compiler.js';
 export class Renderer {
 
 	constructor( configs ) {
+		this.preloadedFiles = false;
+		this.initialCompilesDone = false;
+		this.initialCompileCount = 0;
+
 		this.configs = _.defaults( configs || {}, {
 			sassFiles: [],
 			defaultSassFiles: [ 'color-palette-scss/classes/color-classes.scss' ]
@@ -25,9 +29,35 @@ export class Renderer {
 			sassCompiler: this.sassCompiler
 		} );
 
-		this.buttonColors.init();
+	}
 
-		this.sassCompiler.preload( this.configs.sassFiles );
+	init() {
+		return this._preloadFiles();
+	}
+
+	/**
+	 * Perform a number of compiles that do not update the css.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  {integer} numCompiles Number of compiles to perform.
+	 * @return {$.Deferred}          Deferred object.
+	 */
+	initialCompiles( numCompiles ) {
+		let $deferred = $.Deferred(),
+			scss = window.BOLDGRID.COLOR_PALETTE.Modify.getScss();
+
+		this.sassCompiler.compile( scss, { source: 'setup' } ).done( () => {
+			if ( numCompiles > this.compileCount ) {
+				this.compileCount++;
+				this.initialCompiles( numCompiles );
+			} else {
+				this.initialCompilesDone = true;
+				$deferred.resolve();
+			}
+		} );
+
+		return $deferred;
 	}
 
 	setPaletteSettings( settings ) {
@@ -117,6 +147,26 @@ export class Renderer {
 	_createHtml( colorPalettes ) {
 		let file = require( '../template.html' );
 		return _.template( file )( { config: this.palettes } );
+	}
+
+	/**
+	 * Preload the files.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {$.Deferred} Deferred object.
+	 */
+	_preloadFiles() {
+		let $deferred = $.Deferred(),
+			allFiles = this.configs.sassFiles.concat( this.buttonColors.files );
+
+		this.sassCompiler.preload( allFiles ).done( () => {
+			this.preloadedFiles = true;
+
+			$deferred.resolve( allFiles );
+		} );
+
+		return $deferred;
 	}
 
 	/**

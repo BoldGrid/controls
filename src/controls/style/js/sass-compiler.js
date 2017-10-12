@@ -76,7 +76,9 @@ export class SassCompiler {
 				console.error( result.formatted );
 			}
 
-			this.$window.trigger( this.compileDone, data );
+			if ( 'setup' !== data.source ) {
+				this.$window.trigger( this.compileDone, data );
+			}
 
 			this.outputLogs( result, scss );
 
