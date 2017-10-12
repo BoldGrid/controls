@@ -19,7 +19,7 @@ export class Config {
 		 * @type {Array}
 		 */
 		this.samplePalettesColors = [
-			'red', 'teal', 'grey', 'pink', 'brown'
+			'blue', 'teal', 'red', 'pink', 'grey', 'brown'
 		];
 	}
 
@@ -33,21 +33,22 @@ export class Config {
 	 */
 	createSimpleConfig( colors ) {
 		let config = {},
-			formattedPalette;
+			formattedPalette,
+			presetPalettes = this.getPresetPalettes();
+
 		config.palettes = [];
 
 		if ( ! colors ) {
-			formattedPalette = this._createDefault( this.defaultColor );
+			config.palettes = presetPalettes;
 		} else {
 			formattedPalette = this.createPalette( colors );
+			config.palettes.push( formattedPalette );
+			config.palettes = config.palettes.concat( presetPalettes );
 		}
 
-		formattedPalette['is_active'] = true;
-		config.palettes.push( formattedPalette );
+		config.palettes[0]['is_active'] = true;
 		config['color-palette-size'] = config.palettes[0].colors.length;
 		config['palette_formats'] = [ 'palette-primary' ];
-
-		config.palettes = config.palettes.concat( this.getPresetPalettes() );
 
 		return config;
 	}
@@ -135,7 +136,7 @@ export class Config {
 			}
 
 			/*
-			if ( formattedPalette['neutral-color'] ) {
+			If ( formattedPalette['neutral-color'] ) {
 				formattedPalette.colors.push( formattedPalette['neutral-color'] );
 			}
 			*/
