@@ -443,6 +443,7 @@ colorPalette.activate_palette = function( $ul ) {
 	if ( ! colorPalette.first_update ) {
 		colorPalette.update_theme_option( { source: 'activatePalette' } );
 	} else {
+		self.$control.trigger( 'rendered' );
 		colorPalette.first_update = false;
 	}
 };
