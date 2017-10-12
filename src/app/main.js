@@ -53,8 +53,9 @@ export class Application {
 	paletteCustomize() {
 		let $control,
 			$tab = $( '.colors-tab' ),
-			colorPalette = new ColorPalette(),
-			testData = require( '../../test/data/palette-source-1.json' );
+			colorPalette = new ColorPalette();
+
+		//TestData = require( '../../test/data/palette-source-1.json' );
 
 		colorPalette.init();
 
