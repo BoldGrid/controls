@@ -20,7 +20,8 @@
     "npm-run-all": "^4.1.1",
     "raw-loader": "^0.5.1",
     "rimraf": "^2.6.1",
-    "sass.js": "0.10.4"
+    "sass.js": "0.10.4",
+    "svg-inline-loader": "^0.8.0"
   },
   "deprecated": false,
   "description": "BoldGrid Controls",

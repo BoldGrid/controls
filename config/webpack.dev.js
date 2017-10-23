@@ -73,7 +73,11 @@ module.exports = {
 				]
 			},
 			{
-				test: /\.(jpg|jpeg|png|gif|ico|svg)$/,
+				test: /\.svg$/,
+				loader: 'svg-inline-loader'
+			},
+			{
+				test: /\.(jpg|jpeg|png|gif|ico)$/,
 				loader: 'url-loader',
 				query: {
 					limit: 10000, // Use data url for assets <= 10KB
