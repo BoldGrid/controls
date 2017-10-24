@@ -1,14 +1,14 @@
 import { Direction } from '../direction';
 
-export class Padding extends Direction {
+export class Margin extends Direction {
 
 	constructor( options ) {
 		super( options );
 
 		this.controlOptions = {
 			'control': {
-				'title': 'Padding',
-				'name': 'padding',
+				'title': 'Margin',
+				'name': 'margin',
 				'units': {
 					'default': 'px',
 					'enabled': [
@@ -18,16 +18,12 @@ export class Padding extends Direction {
 			},
 			'slider': {
 				'px': {
-					'min': 0,
+					'min': -100,
 					'max': 100
 				},
 				'%': {
-					'min': 0,
+					'min': -100,
 					'max': 100
-				},
-				'em': {
-					'min': .1,
-					'max': 5
 				}
 			}
 		};
@@ -44,14 +40,14 @@ export class Padding extends Direction {
 	bindEvents() {
 		this.$control.on( 'slide-change', ( e, data ) => {
 			this.$target.css( {
-				'padding-left': data.left,
-				'padding-right': data.right,
-				'padding-top': data.top,
-				'padding-bottom': data.bottom
+				'margin-left': data.left,
+				'margin-right': data.right,
+				'margin-top': data.top,
+				'margin-bottom': data.bottom
 			} );
 		} );
 	}
 
 }
 
-export { Padding as default };
+export { Margin as default };

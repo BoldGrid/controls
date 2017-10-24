@@ -1,46 +1,46 @@
 <div class="directional-control" style="width: 400px;">
-	<h3 class="control-name"><%=control.title %></h3>
+	<h3 class="control-name"><%=control.title %><a href="#" class="refresh"><%= svg.refresh %></a></h3>
 	<p class="units">
 		<% if ( -1 !== control.units.enabled.indexOf( 'px' ) ) { %>
-		<label><input type="radio" name="unit" class="unit" value="px"><span>PX</span></label>
+		<label><input type="radio" name="<%=control.name %>-unit" class="unit" value="px"><span>PX</span></label>
 		<% } %>
 		<% if ( -1 !== control.units.enabled.indexOf( 'percentage' ) ) { %>
-		<label><input type="radio" name="unit" class="unit" value="percentage"><span>%</span></label>
+		<label><input type="radio" name="<%=control.name %>-unit" class="unit" value="percentage"><span>%</span></label>
 		<% } %>
 		<% if ( -1 !== control.units.enabled.indexOf( 'em' ) ) { %>
-		<label><input type="radio" name="unit" class="unit" value="em"><span>EM</span></label>
+		<label><input type="radio" name="<%=control.name %>-unit" class="unit" value="em"><span>EM</span></label>
 		<% } %>
 	</p>
 	<div class="direction">
 		<label>Top</label>
 		<div class="bg-control">
 			<div class="slider" data-name="top"></div>
-			<input class="number" type="number">
-			<a class="link" href="#"><%= svgLink %></a>
+			<input class="number" type="number" name="top">
+			<a class="link" href="#"><%= svg.link %></a>
 		</div>
   </div>
   <div class="direction">
 	  <label>Right</label>
 	  <div class="bg-control">
 			<div class="slider" data-name="right"></div>
-			<input class="number" type="number">
-			<a class="link" href="#"><%= svgLink %></a>
+			<input class="number" type="number" name="right">
+			<a class="link" href="#"><%= svg.link %></a>
   	</div>
   </div>
   <div class="direction">
 	  <label>Bottom</label>
 	  <div class="bg-control">
 			<div class="slider" data-name="bottom"></div>
-			<input class="number" type="number">
-			<a class="link" href="#"><%= svgLink %></a>
+			<input class="number" type="number" name="bottom">
+			<a class="link" href="#"><%= svg.link %></a>
   	</div>
   </div>
   <div class="direction">
 	  <label>Left</label>
 	  <div class="bg-control">
 			<div class="slider" data-name="left"></div>
-			<input class="number" type="number">
-			<a class="link" href="#"><%= svgLink %></a>
+			<input class="number" type="number" name="left">
+			<a class="link" href="#"><%= svg.link %></a>
 		</div>
   </div>
 </div>

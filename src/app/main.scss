@@ -60,4 +60,13 @@
 	.control, .log {
 		flex: 1;
 	}
+
+}
+
+.bg-tabs-content.directional-control.current {
+	display: flex;
+
+	> * {
+		padding: 0 20px;
+	}
 }

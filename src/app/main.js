@@ -1,5 +1,5 @@
 import { Application as ComponentApplication } from '@boldgrid/components/src/app/js/main.js';
-import { ColorPalette, StyleUpdater, ColorPaletteSelection, PaletteConfiguration, Padding } from '../controls';
+import { ColorPalette, StyleUpdater, ColorPaletteSelection, PaletteConfiguration, Padding, Margin } from '../controls';
 import '@boldgrid/components/src/app/scss/main.scss';
 import './main.scss';
 
@@ -34,13 +34,18 @@ export class Application {
 	}
 
 	directionControl() {
-		let $tab = $( '.directional-control .control' ),
-			direction = new Padding( {
-				target: $( '.directional-control .test-case p' )
+		let $tab = $( '.directional-control' ),
+			$paddingControl = $tab.find( '.padding-control' ),
+			$marginControl = $tab.find( '.margin-control' ),
+			padding = new Padding( {
+				target: $paddingControl.find( '.test-case p' )
 			} ),
-			$control = direction.render();
+			margin = new Margin( {
+				target: $marginControl.find( '.test-case p' )
+			} );
 
-		$tab.html( $control );
+		$paddingControl.find( '.control' ).html( padding.render() );
+		$marginControl.find( '.control' ).html( margin.render() );
 	}
 
 	paletteSelection() {

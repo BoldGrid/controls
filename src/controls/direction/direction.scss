@@ -7,6 +7,17 @@
 		display: flex;
 	}
 
+	.refresh svg {
+		width: 19px;
+		margin: 0 20px 0;
+		position: absolute;
+		transition: fill .25s;
+
+		&:hover {
+			fill: $accentColor;
+		}
+	}
+
 	.units {
 		font-size: 12px;
 		position: absolute;

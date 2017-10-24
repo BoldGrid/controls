@@ -1,11 +1,10 @@
 var $ = window.jQuery;
 import './direction.scss';
 import template from './template.html';
-
-import linkSvg from './img/link.svg';
+import linkSvg from 'svg-inline-loader!./img/link.svg';
+import refreshSvg from 'svg-inline-loader!./img/refresh.svg';
 
 export class Direction {
-
 	constructor( options ) {
 		options = options || {};
 		this.$target = options.target;
@@ -18,20 +17,26 @@ export class Direction {
 
 	mergeDefaultConfigs() {
 		this.controlOptions = _.defaults( this.controlOptions, {
-			'control': {
-				'title': 'Universal',
-				'default': 'percentage',
-				'units': {
-					'enabled': [
-						'px',
-						'percentage',
-						'em'
-					]
+			control: {
+				title: 'Universal',
+				units: {
+					default: 'percentage',
+					enabled: [ 'px', 'percentage', 'em' ]
 				}
 			},
-			'slider': {
-				'min': -200,
-				'max': 200
+			slider: {
+				px: {
+					min: 0,
+					max: 100
+				},
+				'%': {
+					min: 0,
+					max: 100
+				},
+				em: {
+					min: 0.1,
+					max: 5
+				}
 			}
 		} );
 	}
@@ -46,19 +51,78 @@ export class Direction {
 	render() {
 		this.mergeDefaultConfigs();
 
-		this.controlOptions.svgLink = linkSvg;
+		this.controlOptions.svg = {};
+		this.controlOptions.svg.link = linkSvg;
+		this.controlOptions.svg.refresh = refreshSvg;
 
 		this.$control = $( this.template( this.controlOptions ) );
 		this.$sliders = this.$control.find( '.slider' );
 		this.$inputs = this.$control.find( 'input.number' );
 		this.$links = this.$control.find( '.link' );
+		this.$units = this.$control.find( '.unit' );
+		this.$revert = this.$control.find( '.refresh' );
 
-		this._bindSlider();
+		this._bindUnits();
+		this.setUnits( this.controlOptions.control.units.default );
+		this._storeDefaultValues();
 		this._bindInput();
 		this._bindLinked();
-		this._bindUnits();
+		this._bindRevert();
 
 		return this.$control;
+	}
+
+	/**
+	 * Apply the settings to the control.
+	 *
+	 * @since 1.0
+	 *
+	 * @param  {object} settings Settings.
+	 */
+	applySettings( settings ) {
+		this.setUnits( settings.unit );
+
+		for ( let key in settings.values ) {
+			let value = settings.values[ key ];
+			this.$sliders.filter( '[data-name="' + key + '"]' ).slider( 'option', 'value', value );
+		}
+	}
+
+	/**
+	 * Update the target.
+	 *
+	 * @since 1.0
+	 *
+	 * @param  {jQuery} $target New Target.
+	 */
+	updateTarget( $target ) {
+		this.$target = $target;
+	}
+
+	/**
+	 * Set the unit to use.
+	 *
+	 * @since 1.0
+	 *
+	 * @param {string} unit Units.
+	 */
+	setUnits( unit ) {
+		this.$units
+			.filter( '[value="' + unit + '"]' )
+			.prop( 'checked', true )
+			.change();
+	}
+
+	/**
+	 * Save the default values for reverts.
+	 *
+	 * @since 1.0
+	 */
+	_storeDefaultValues() {
+		this.defaultValues = {
+			'unit': this.controlOptions.control.units.default,
+			'values': this.getValues()
+		};
 	}
 
 	/**
@@ -73,28 +137,35 @@ export class Direction {
 
 		this.$sliders.each( ( index, element ) => {
 			let $this = $( element );
-			values[ $this.attr( 'data-name' ) ] = $this.slider( 'value' );
+			values[$this.attr( 'data-name' )] = $this.slider( 'value' );
 		} );
 
 		return values;
 	}
 
 	/**
-	 * Update the target.
+	 * Bind reverting changes to original.
 	 *
 	 * @since 1.0
-	 *
-	 * @param  {jQuery} $target New Target.
 	 */
-	updateTarget( $target ) {
-		this.$target = $target;
+	_bindRevert() {
+		this.$revert.on( 'click', ( event ) => {
+			event.preventDefault();
+			this.applySettings( this.defaultValues );
+		} );
 	}
 
+	/**
+	 * Bind changing of units.
+	 *
+	 * @since 1.0
+	 */
 	_bindUnits() {
-		this.$control.find( '.unit[name="unit"]' ).on( 'change', ( e ) => {
+		this.$control.find( '.unit' ).on( 'change', e => {
 			let $target = $( e.target );
 
-			console.log( $target.val() );
+			this.selectedUnit = $target.val();
+			this._bindSlider();
 		} );
 	}
 
@@ -103,7 +174,7 @@ export class Direction {
 	 * @return {[type]} [description]
 	 */
 	_bindLinked() {
-		this.$links.on( 'click', ( event ) => {
+		this.$links.on( 'click', event => {
 			let $target = $( event.target ).closest( 'a' );
 			event.preventDefault();
 			$target.toggleClass( 'linked' );
@@ -118,13 +189,15 @@ export class Direction {
 	 * @since 1.0
 	 */
 	_bindInput() {
-		this.$inputs.on( 'input', ( event ) => {
+		this.$inputs.on( 'input', event => {
 			let $this = $( event.target ),
 				$slider = $this.prev(),
 				val = $this.val();
 
-			val = Math.min( $this.val(), this.controlOptions.slider.max );
-			val = Math.max( $this.val(), this.controlOptions.slider.min );
+			val = Math.min( $this.val(), this.controlOptions.slider[this.selectedUnit].max );
+			val = Math.max( val, this.controlOptions.slider[this.selectedUnit].min );
+
+			$this.val( val );
 
 			$slider.slider( 'value', val );
 		} );
@@ -136,12 +209,13 @@ export class Direction {
 	 * @since 1.0
 	 */
 	_bindSlider() {
-		console.log( this.controlOptions );
-		this.$sliders.slider( _.defaults( this.controlOptions.slider, {
-			animate: 'fast',
-			slide: event => this._onSliderChange( event ),
-			change: event => this._onSliderChange( event )
-		} ) );
+		this.$sliders.slider(
+			_.defaults( this.controlOptions.slider[this.selectedUnit], {
+				animate: 'fast',
+				slide: event => this._onSliderChange( event ),
+				change: event => this._onSliderChange( event )
+			} )
+		);
 
 		this.$sliders.each( ( index, slider ) => {
 			this._updateInput( $( slider ) );
