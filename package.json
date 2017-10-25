@@ -18,6 +18,7 @@
     "jshint-loader": "^0.8.4",
     "normalize.css": "^7.0.0",
     "npm-run-all": "^4.1.1",
+    "postcss-loader": "^2.0.8",
     "raw-loader": "^0.5.1",
     "rimraf": "^2.6.1",
     "sass.js": "0.10.4"
