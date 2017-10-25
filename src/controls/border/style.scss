@@ -1,0 +1,51 @@
+.border-width-control {
+	display: none;
+}
+
+.border-type-control {
+	ul {
+		list-style: none;
+		padding-left: 5px;
+		font-size: 15px;
+
+		li {
+			margin: 6px 0;
+
+			label {
+				cursor: pointer;
+				position: relative;
+				display: block;
+
+				input:after {
+					content: '';
+				    max-width: 100px;
+				    border-top: 4px dashed black;
+				    position: absolute;
+				    left: 33%;
+				    width: 33%;
+				    top: 6px;
+					border-bottom: transparent;
+				    border-left: transparent;
+				    border-right: transparent;
+				}
+
+				input[value="solid"]:after {
+					border-style: solid;
+				}
+				input[value="dotted"]:after {
+					border-style: dotted;
+				}
+				input[value="double"]:after {
+					border-style: double;
+				}
+				input[value=""]:after {
+					border-color: transparent;
+				}
+			}
+
+			input {
+				margin: 0 7px;
+			}
+		}
+	}
+}

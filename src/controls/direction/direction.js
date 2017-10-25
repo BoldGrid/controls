@@ -7,6 +7,9 @@ import refreshSvg from 'svg-inline-loader!./img/refresh.svg';
 export class Direction {
 	constructor( options ) {
 		options = options || {};
+
+
+		this.slidersLinked = true;
 		this.$target = options.target;
 		this.template = _.template( template );
 
@@ -174,12 +177,16 @@ export class Direction {
 	 * @return {[type]} [description]
 	 */
 	_bindLinked() {
+		if ( this.slidersLinked ) {
+			this.$links.addClass( 'linked' );
+		}
+
 		this.$links.on( 'click', event => {
 			let $target = $( event.target ).closest( 'a' );
 			event.preventDefault();
 			$target.toggleClass( 'linked' );
-			this.linked = $target.hasClass( 'linked' );
-			this.$control.trigger( 'linked', { isLinked: this.linked } );
+			this.slidersLinked = $target.hasClass( 'linked' );
+			this.$control.trigger( 'linked', { isLinked: this.slidersLinked } );
 		} );
 	}
 
@@ -234,7 +241,7 @@ export class Direction {
 		this._updateInput( $slider );
 		this.$control.trigger( 'slide-change', this.getValues() );
 
-		if ( this.linked && ! this.linkedDisabled ) {
+		if ( this.slidersLinked && ! this.linkedDisabled ) {
 			this.linkedDisabled = true;
 			this.$sliders.not( $slider ).slider( 'value', $slider.slider( 'value' ) );
 		}
