@@ -3,8 +3,8 @@ import './direction.scss';
 import template from './template.html';
 import config from './config.js';
 import deepmerge from 'deepmerge';
-import linkSvg from 'svg-inline-loader!./img/link.svg';
-import refreshSvg from 'svg-inline-loader!./img/refresh.svg';
+import linkSvg from './img/link.svg';
+import refreshSvg from './img/refresh.svg';
 
 export class Direction {
 	constructor( options ) {
