@@ -183,15 +183,20 @@ export class Direction {
 		this.$inputs.on( 'input', event => {
 			let $this = $( event.target ),
 				$slider = $this.prev(),
-				val = $this.val();
+				val = $this.val(),
+				config = this.getSliderConfig( $slider.data( 'name' ) );
 
-			val = Math.min( $this.val(), this.controlOptions.slider[this.selectedUnit].max );
-			val = Math.max( val, this.controlOptions.slider[this.selectedUnit].min );
+			val = Math.min( $this.val(), config.max );
+			val = Math.max( val, config.min );
 
 			$this.val( val );
 
 			$slider.slider( 'value', val );
 		} );
+	}
+
+	getSliderConfig() {
+		return this.controlOptions.slider[ this.selectedUnit ];
 	}
 
 	/**
@@ -200,13 +205,18 @@ export class Direction {
 	 * @since 1.0
 	 */
 	_bindSlider() {
-		this.$sliders.slider(
-			_.defaults( this.controlOptions.slider[this.selectedUnit], {
-				animate: 'fast',
-				slide: event => this._onSliderChange( event ),
-				change: event => this._onSliderChange( event )
-			} )
-		);
+		this.$sliders.each( ( index, slider ) => {
+			let $slider = $( slider );
+
+			$slider.slider(
+				_.defaults( this.getSliderConfig( $slider.data( 'name' ) ), {
+					animate: 'fast',
+					slide: event => this._onSliderChange( event ),
+					change: event => this._onSliderChange( event )
+				} )
+			);
+		} );
+
 
 		this.$sliders.each( ( index, slider ) => {
 			this._updateInput( $( slider ) );
@@ -260,7 +270,7 @@ export class Direction {
 				property = {};
 
 			_.each( this.controlOptions.control.sliders, ( slider ) => {
-				property[ slider.cssProperty ] = data[ name + '-' + slider.name ];
+				property[ slider.cssProperty ] = data[ name + '-' + slider.name ] + this.selectedUnit;
 			} );
 
 			this.$target.css( property );

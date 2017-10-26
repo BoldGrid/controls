@@ -52,7 +52,7 @@
 		}
 	}
 
-	.direction:first-of-type .link {
+	&:not([data-linkable="false"]) .direction:first-of-type .link {
 		visibility: visible;
 	}
 
@@ -67,7 +67,7 @@
 	.slider {
 		width: 80%;
 		margin: 10px 15px;
-		height: 6px;
+		height: 8px;
 		border-radius: 0;
 		background: #f1f1f1;
 		cursor: pointer;

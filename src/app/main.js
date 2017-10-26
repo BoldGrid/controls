@@ -8,6 +8,7 @@ import {
 	Padding,
 	Margin,
 	Border,
+	BoxShadow,
 	BorderRadius
 } from '../controls';
 
@@ -50,12 +51,16 @@ export class Application {
 			$marginControl = $tab.find( '.margin-control' ),
 			$borderControl = $tab.find( '.border-control' ),
 			$borderRadiusControl = $tab.find( '.border-radius' ),
+			$boxShadowControl = $tab.find( '.box-shadow' ),
 			$combined = $tab.find( '.combined p' ),
 			padding = new Padding( {
 				target: $paddingControl.find( '.test-case p' ).add( $combined )
 			} ),
 			border = new Border( {
 				target: $borderControl.find( '.test-case p' ).add( $combined )
+			} ),
+			boxShadow = new BoxShadow( {
+				target: $boxShadowControl.find( '.test-case p' ).add( $combined )
 			} ),
 			borderRadius = new BorderRadius( {
 				target: $borderRadiusControl.find( '.test-case' ).add( $combined )
@@ -68,6 +73,7 @@ export class Application {
 		$marginControl.find( '.control' ).html( margin.render() );
 		$borderControl.find( '.control' ).html( border.render() );
 		$borderRadiusControl.find( '.control' ).html( borderRadius.render() );
+		$boxShadowControl.find( '.control' ).html( boxShadow.render() );
 	}
 
 	paletteSelection() {

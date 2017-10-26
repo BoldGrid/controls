@@ -2,6 +2,7 @@ export default {
 	defaults: {
 		control: {
 			title: 'Universal',
+			linkable: true,
 			units: {
 				default: 'percentage',
 				enabled: [ 'px', 'percentage', 'em' ]
