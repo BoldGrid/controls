@@ -1,0 +1,5 @@
+filter:
+    excluded_paths:
+        - "tests/"               # Everything in a root level "tests" directory
+        - "src/controls/color/js/control.js"
+        - "src/controls/color/js/transitions.js"
