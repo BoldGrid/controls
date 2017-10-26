@@ -11,7 +11,7 @@ const distDir = path.resolve( __dirname, '..', 'dist' );
 module.exports = {
 	context: srcDir,
 
-	devtool: 'source-map',
+	devtool: false,
 
 	entry: {
 		application: './index.js',
@@ -67,6 +67,14 @@ module.exports = {
 						},
 						{
 							loader: 'sass-loader'
+						},
+						{
+							loader: 'postcss-loader',
+							options: {
+								plugins: ( loader ) => [
+									require( 'autoprefixer' )()
+								]
+							}
 						}
 					]
 				} )
