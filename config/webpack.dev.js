@@ -68,12 +68,15 @@ module.exports = {
 						loader: 'css-loader'
 					},
 					{
-						loader: 'sass-loader'
+						loader: 'sass-loader',
+						options: {
+							includePaths: [ 'node_modules' ]
+						}
 					}
 				]
 			},
 			{
-				test: /\.(jpg|jpeg|png|gif|ico|svg)$/,
+				test: /\.(jpg|jpeg|png|gif|ico)$/,
 				loader: 'url-loader',
 				query: {
 					limit: 10000, // Use data url for assets <= 10KB

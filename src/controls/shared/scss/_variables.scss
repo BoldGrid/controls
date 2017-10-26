@@ -1,2 +1,6 @@
-$primaryColor: #121212;
-$accentColor: #f95b26;
+$primaryColor: #121212 !default;
+$accentColor: #f95b26 !default;
+
+$mdc-theme-primary: $accentColor !default;
+$mdc-theme-secondary: #121212 !default;
+$mdc-theme-background: #fff !default;

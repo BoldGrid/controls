@@ -1,5 +1,17 @@
 import { Application as ComponentApplication } from '@boldgrid/components/src/app/js/main.js';
-import { ColorPalette, StyleUpdater, ColorPaletteSelection, PaletteConfiguration } from '../controls';
+
+import {
+	ColorPalette,
+	StyleUpdater,
+	ColorPaletteSelection,
+	PaletteConfiguration,
+	Padding,
+	Margin,
+	Border,
+	BoxShadow,
+	BorderRadius
+} from '../controls';
+
 import '@boldgrid/components/src/app/scss/main.scss';
 import './main.scss';
 
@@ -30,6 +42,38 @@ export class Application {
 	renderControls() {
 		this.paletteCustomize();
 		this.paletteSelection();
+		this.directionControl();
+	}
+
+	directionControl() {
+		let $tab = $( '.directional-controls' ),
+			$paddingControl = $tab.find( '.padding-control' ),
+			$marginControl = $tab.find( '.margin-control' ),
+			$borderControl = $tab.find( '.border-control' ),
+			$borderRadiusControl = $tab.find( '.border-radius' ),
+			$boxShadowControl = $tab.find( '.box-shadow' ),
+			$combined = $tab.find( '.combined p' ),
+			padding = new Padding( {
+				target: $paddingControl.find( '.test-case p' ).add( $combined )
+			} ),
+			border = new Border( {
+				target: $borderControl.find( '.test-case p' ).add( $combined )
+			} ),
+			boxShadow = new BoxShadow( {
+				target: $boxShadowControl.find( '.test-case p' ).add( $combined )
+			} ),
+			borderRadius = new BorderRadius( {
+				target: $borderRadiusControl.find( '.test-case' ).add( $combined )
+			} ),
+			margin = new Margin( {
+				target: $marginControl.find( '.test-case p' ).add( $combined )
+			} );
+
+		$paddingControl.find( '.control' ).html( padding.render() );
+		$marginControl.find( '.control' ).html( margin.render() );
+		$borderControl.find( '.control' ).html( border.render() );
+		$borderRadiusControl.find( '.control' ).html( borderRadius.render() );
+		$boxShadowControl.find( '.control' ).html( boxShadow.render() );
 	}
 
 	paletteSelection() {

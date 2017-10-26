@@ -1,0 +1,24 @@
+<div class="directional-control <%=control.name %>-control" data-linkable="<%= control.linkable %>" style="width: 400px;">
+	<h3 class="control-name"><%=control.title %><a href="#" class="refresh"><%= svg.refresh %></a></h3>
+	<p class="units">
+		<% if ( -1 !== control.units.enabled.indexOf( 'px' ) ) { %>
+		<label><input type="radio" name="<%=control.name %>-unit" class="unit" value="px"><span>PX</span></label>
+		<% } %>
+		<% if ( -1 !== control.units.enabled.indexOf( 'percentage' ) ) { %>
+		<label><input type="radio" name="<%=control.name %>-unit" class="unit" value="percentage"><span>%</span></label>
+		<% } %>
+		<% if ( -1 !== control.units.enabled.indexOf( 'em' ) ) { %>
+		<label><input type="radio" name="<%=control.name %>-unit" class="unit" value="em"><span>EM</span></label>
+		<% } %>
+	</p>
+	<% _.each ( control.sliders, ( slider ) => { %>
+	<div class="direction">
+		<label><%= slider.label %></label>
+		<div class="bg-control">
+			<div class="slider" data-name="<%=control.name %>-<%= slider.name %>"></div>
+			<input class="number" type="number" name="<%=control.name %>-<%= slider.name %>">
+			<a class="link" href="#"><%= svg.link %></a>
+		</div>
+	</div>
+	<% } ); %>
+</div>
