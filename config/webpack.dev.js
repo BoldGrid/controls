@@ -76,10 +76,6 @@ module.exports = {
 				]
 			},
 			{
-				test: /\.svg$/,
-				loader: 'svg-inline-loader'
-			},
-			{
 				test: /\.(jpg|jpeg|png|gif|ico)$/,
 				loader: 'url-loader',
 				query: {
