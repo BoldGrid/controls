@@ -1,57 +1,40 @@
 import { Direction } from '../direction';
 
 export class Padding extends Direction {
-
 	constructor( options ) {
 		super( options );
 
 		this.controlOptions = {
-			'control': {
-				'title': 'Padding',
-				'name': 'padding',
-				'units': {
-					'default': 'px',
-					'enabled': [
-						'px'
-					]
-				}
+			control: {
+				title: 'Padding',
+				name: 'padding',
+				units: {
+					default: 'px',
+					enabled: [ 'px' ]
+				},
+				sliders: [
+					{ name: 'top', label: 'Top', cssProperty: 'padding-top' },
+					{ name: 'right', label: 'Right', cssProperty: 'padding-right' },
+					{ name: 'bottom', label: 'Bottom', cssProperty: 'padding-bottom' },
+					{ name: 'left', label: 'Left', cssProperty: 'padding-left' }
+				]
 			},
-			'slider': {
-				'px': {
-					'min': 0,
-					'max': 100
+			slider: {
+				px: {
+					min: 0,
+					max: 100
 				},
 				'%': {
-					'min': 0,
-					'max': 100
+					min: 0,
+					max: 100
 				},
-				'em': {
-					'min': .1,
-					'max': 5
+				em: {
+					min: 0.1,
+					max: 5
 				}
 			}
 		};
 	}
-
-	render() {
-		super.render();
-
-		this.bindEvents();
-
-		return this.$control;
-	}
-
-	bindEvents() {
-		this.$control.on( 'slide-change', ( e, data ) => {
-			this.$target.css( {
-				'padding-left': data.left,
-				'padding-right': data.right,
-				'padding-top': data.top,
-				'padding-bottom': data.bottom
-			} );
-		} );
-	}
-
 }
 
 export { Padding as default };

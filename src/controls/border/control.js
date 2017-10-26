@@ -54,7 +54,6 @@ export class Border extends Direction {
 	 * @since 1.0.0
 	 */
 	bindEvents() {
-		this._bindWidthChange();
 		this._bindTypeChange();
 		this.setDefaultType( this.$target.css( 'border-style' ) );
 	}
@@ -94,22 +93,6 @@ export class Border extends Direction {
 			} else {
 				this.$control.hide();
 			}
-		} );
-	}
-
-	/**
-	 * Update css as the control fires updates,
-	 *
-	 * @since 1.0.0
-	 */
-	_bindWidthChange() {
-		this.$control.on( 'slide-change', ( e, data ) => {
-			this.$target.css( {
-				'border-left-width': data.left,
-				'border-right-width': data.right,
-				'border-top-width': data.top,
-				'border-bottom-width': data.bottom
-			} );
 		} );
 	}
 

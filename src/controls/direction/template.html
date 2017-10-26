@@ -11,36 +11,14 @@
 		<label><input type="radio" name="<%=control.name %>-unit" class="unit" value="em"><span>EM</span></label>
 		<% } %>
 	</p>
+	<% _.each ( control.sliders, ( slider ) => { %>
 	<div class="direction">
-		<label>Top</label>
+		<label><%= slider.label %></label>
 		<div class="bg-control">
-			<div class="slider" data-name="top"></div>
-			<input class="number" type="number" name="top">
+			<div class="slider" data-name="<%=control.name %>-<%= slider.name %>"></div>
+			<input class="number" type="number" name="<%=control.name %>-<%= slider.name %>">
 			<a class="link" href="#"><%= svg.link %></a>
 		</div>
-  </div>
-  <div class="direction">
-	  <label>Right</label>
-	  <div class="bg-control">
-			<div class="slider" data-name="right"></div>
-			<input class="number" type="number" name="right">
-			<a class="link" href="#"><%= svg.link %></a>
-  	</div>
-  </div>
-  <div class="direction">
-	  <label>Bottom</label>
-	  <div class="bg-control">
-			<div class="slider" data-name="bottom"></div>
-			<input class="number" type="number" name="bottom">
-			<a class="link" href="#"><%= svg.link %></a>
-  	</div>
-  </div>
-  <div class="direction">
-	  <label>Left</label>
-	  <div class="bg-control">
-			<div class="slider" data-name="left"></div>
-			<input class="number" type="number" name="left">
-			<a class="link" href="#"><%= svg.link %></a>
-		</div>
-  </div>
+	</div>
+	<% } ); %>
 </div>

@@ -1,13 +1,14 @@
 var $ = window.jQuery;
 import './direction.scss';
 import template from './template.html';
+import config from './config.js';
+import deepmerge from 'deepmerge';
 import linkSvg from 'svg-inline-loader!./img/link.svg';
 import refreshSvg from 'svg-inline-loader!./img/refresh.svg';
 
 export class Direction {
 	constructor( options ) {
 		options = options || {};
-
 
 		this.slidersLinked = true;
 		this.$target = options.target;
@@ -19,29 +20,11 @@ export class Direction {
 	}
 
 	mergeDefaultConfigs() {
-		this.controlOptions = _.defaults( this.controlOptions, {
-			control: {
-				title: 'Universal',
-				units: {
-					default: 'percentage',
-					enabled: [ 'px', 'percentage', 'em' ]
-				}
-			},
-			slider: {
-				px: {
-					min: 0,
-					max: 100
-				},
-				'%': {
-					min: 0,
-					max: 100
-				},
-				em: {
-					min: 0.1,
-					max: 5
-				}
-			}
-		} );
+		this.controlOptions = deepmerge(
+			config.defaults,
+			this.controlOptions,
+			{ arrayMerge: ( destination, source ) => source }
+		);
 	}
 
 	/**
@@ -71,6 +54,7 @@ export class Direction {
 		this._bindInput();
 		this._bindLinked();
 		this._bindRevert();
+		this._bindSliderChange();
 
 		return this.$control;
 	}
@@ -140,7 +124,7 @@ export class Direction {
 
 		this.$sliders.each( ( index, element ) => {
 			let $this = $( element );
-			values[$this.attr( 'data-name' )] = $this.slider( 'value' );
+			values[ $this.attr( 'data-name' ) ] = $this.slider( 'value' );
 		} );
 
 		return values;
@@ -263,6 +247,24 @@ export class Direction {
 			value = $slider.slider( 'value' );
 
 		$input.val( value );
+	}
+
+	/**
+	 * Update css as the control fires updates.
+	 *
+	 * @since 1.0.0
+	 */
+	_bindSliderChange() {
+		this.$control.on( 'slide-change', ( e, data ) => {
+			let name = this.controlOptions.control.name,
+				property = {};
+
+			_.each( this.controlOptions.control.sliders, ( slider ) => {
+				property[ slider.cssProperty ] = data[ name + '-' + slider.name ];
+			} );
+
+			this.$target.css( property );
+		} );
 	}
 }
 

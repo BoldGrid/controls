@@ -1,53 +1,36 @@
 import { Direction } from '../direction';
 
 export class Margin extends Direction {
-
 	constructor( options ) {
 		super( options );
 
 		this.controlOptions = {
-			'control': {
-				'title': 'Margin',
-				'name': 'margin',
-				'units': {
-					'default': 'px',
-					'enabled': [
-						'px'
-					]
-				}
+			control: {
+				title: 'Margin',
+				name: 'margin',
+				units: {
+					default: 'px',
+					enabled: [ 'px' ]
+				},
+				sliders: [
+					{ name: 'top', label: 'Top', cssProperty: 'margin-top' },
+					{ name: 'right', label: 'Right', cssProperty: 'margin-right' },
+					{ name: 'bottom', label: 'Bottom', cssProperty: 'margin-bottom' },
+					{ name: 'left', label: 'Left', cssProperty: 'margin-left' }
+				]
 			},
-			'slider': {
-				'px': {
-					'min': -100,
-					'max': 100
+			slider: {
+				px: {
+					min: -100,
+					max: 100
 				},
 				'%': {
-					'min': -100,
-					'max': 100
+					min: -100,
+					max: 100
 				}
 			}
 		};
 	}
-
-	render() {
-		super.render();
-
-		this.bindEvents();
-
-		return this.$control;
-	}
-
-	bindEvents() {
-		this.$control.on( 'slide-change', ( e, data ) => {
-			this.$target.css( {
-				'margin-left': data.left,
-				'margin-right': data.right,
-				'margin-top': data.top,
-				'margin-bottom': data.bottom
-			} );
-		} );
-	}
-
 }
 
 export { Margin as default };

@@ -10,6 +10,7 @@
     "bulma": "^0.4.3",
     "color": "git+https://github.com/Automattic/Color.js.git",
     "color-js": "^1.0.4",
+    "deepmerge": "^2.0.0",
     "eslint-config-wordpress": "^2.0.0",
     "google-material-color-palette-json": "^2.0.1",
     "html-loader": "^0.5.1",

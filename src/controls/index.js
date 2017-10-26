@@ -5,6 +5,7 @@ export { SassCompiler } from './color';
 export { Padding } from './padding';
 export { Border } from './border';
 export { Margin } from './margin';
+export { BorderRadius } from './border-radius';
 
 export { Updater as StyleUpdater } from './style';
 
