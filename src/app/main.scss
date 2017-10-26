@@ -65,9 +65,22 @@
 
 .bg-tabs-content.directional-controls.current {
 	display: flex;
-	flex-wrap: wrap;
 
-	> * {
-		padding: 0 20px;
+	.mass-controls {
+		display: flex;
+		flex-wrap: wrap;
+		width: 75%;
+		justify-content: space-evenly;
+
+		.control-wrap {
+			width: 25%;
+			padding: 20px 20px;
+		}
 	}
+
+	.combined {
+		width: 25%;
+		height: 400px;
+	}
+
 }
