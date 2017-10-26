@@ -3,6 +3,12 @@
 }
 
 .border-type-control {
+	margin-bottom: 30px;
+
+	.title {
+		font-size: 15px;
+	}
+
 	ul {
 		list-style: none;
 		padding-left: 5px;
@@ -21,7 +27,7 @@
 				    max-width: 100px;
 				    border-top: 4px dashed black;
 				    position: absolute;
-				    left: 33%;
+					right: 40px;
 				    width: 33%;
 				    top: 6px;
 					border-bottom: transparent;
