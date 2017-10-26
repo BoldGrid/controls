@@ -47,33 +47,18 @@ export class Application {
 
 	directionControl() {
 		let $tab = $( '.directional-controls' ),
-			$paddingControl = $tab.find( '.padding-control' ),
-			$marginControl = $tab.find( '.margin-control' ),
-			$borderControl = $tab.find( '.border-control' ),
-			$borderRadiusControl = $tab.find( '.border-radius' ),
-			$boxShadowControl = $tab.find( '.box-shadow' ),
-			$combined = $tab.find( '.combined p' ),
-			padding = new Padding( {
-				target: $paddingControl.find( '.test-case p' ).add( $combined )
-			} ),
-			border = new Border( {
-				target: $borderControl.find( '.test-case p' ).add( $combined )
-			} ),
-			boxShadow = new BoxShadow( {
-				target: $boxShadowControl.find( '.test-case p' ).add( $combined )
-			} ),
-			borderRadius = new BorderRadius( {
-				target: $borderRadiusControl.find( '.test-case' ).add( $combined )
-			} ),
-			margin = new Margin( {
-				target: $marginControl.find( '.test-case p' ).add( $combined )
-			} );
+			$combined = $tab.find( '.combined' ),
+			padding = new Padding( { target: $combined } ),
+			border = new Border( { target: $combined } ),
+			boxShadow = new BoxShadow( { target: $combined } ),
+			borderRadius = new BorderRadius( { target: $combined } ),
+			margin = new Margin( { target: $combined } );
 
-		$paddingControl.find( '.control' ).html( padding.render() );
-		$marginControl.find( '.control' ).html( margin.render() );
-		$borderControl.find( '.control' ).html( border.render() );
-		$borderRadiusControl.find( '.control' ).html( borderRadius.render() );
-		$boxShadowControl.find( '.control' ).html( boxShadow.render() );
+		$tab.find( '.padding-control .control' ).html( padding.render() );
+		$tab.find( '.margin-control .control' ).html( margin.render() );
+		$tab.find( '.border-control .control' ).html( border.render() );
+		$tab.find( '.border-radius .control' ).html( borderRadius.render() );
+		$tab.find( '.box-shadow .control' ).html( boxShadow.render() );
 	}
 
 	paletteSelection() {
@@ -103,7 +88,7 @@ export class Application {
 
 		colorPalette.init();
 
-		$control = colorPalette.render( $tab.find( '.control' ) );
+		$control = colorPalette.render( $tab );
 
 		$control.on( 'sass_compiled', ( e, data ) => {
 			this.styleUpdater.update( {
