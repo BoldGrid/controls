@@ -1,10 +1,11 @@
 var $ = window.jQuery;
 
 import BrehautColorJs from 'color-js/color';
+import '../style.scss';
 
 export class Picker {
 	init( $target, options ) {
-		this.options = _.defaults( options, {
+		this.options = _.defaults( options || {}, {
 			clear: false,
 			width: 255,
 			mode: 'hsv',
@@ -16,48 +17,78 @@ export class Picker {
 			secondaryPalette: []
 		} );
 
-		this.$colorPickerWrapper = $target;
+		this.$element = $target || $( '<div>' );
 		this.$input = this.createColorInput();
 		this.setupIris();
-		this.setupAutoCollapse();
+
+		if ( options.hide ) {
+			this.setupAutoCollapse();
+		}
+
+		return this;
 	}
 
+	/**
+	 * Auto collpase the picker when clicking outside of it's context.
+	 *
+	 * @since 1.0.0
+	 */
 	setupAutoCollapse() {
 		$( 'body' ).on( 'click', () => {
 			this.hide();
-			this.$colorPickerWrapper.addClass();
+			this.$element.addClass();
 		} );
 
-		this.$colorPickerWrapper.on( 'click', e => {
-			e.stopPropagation();
-		} );
+		this.$element.on( 'click', e => e.stopPropagation() );
 	}
 
+	/**
+	 * Hide the picker.
+	 *
+	 * @since 1.0.0
+	 */
 	hide() {
 		if ( $.contains( document, this.$input[0] ) ) {
-			this.$colorPickerWrapper.hide();
-			this.$colorPickerWrapper.attr( 'data-state', 'hidden' );
+			this.$element.hide();
+			this.$element.attr( 'data-state', 'hidden' );
 			this.$input.iris( 'hide' );
 		}
 	}
 
+	/**
+	 * Show the picker.
+	 *
+	 * @since 1.0.0
+	 */
 	show() {
-		this.$colorPickerWrapper.show();
-		this.$colorPickerWrapper.attr( 'data-state', 'visible' );
+		this.$element.show();
+		this.$element.attr( 'data-state', 'visible' );
 		this.$input.iris( 'show' );
 	}
 
+	/**
+	 * Bind events for the picker.
+	 *
+	 * @since 1.0.0
+	 */
 	setupIris() {
 		this.$input.iris( this.options );
 		this.createPickerPalettes();
 		this.bindCustomPalettes();
 	}
 
+	/**
+	 * Create an input to use for the color control.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {input} Input.
+	 */
 	createColorInput() {
 		let $input = $( '<input type="text" data-alpha="true" class="pluto-color-control color-control-input"/>' );
-		$input.val( this.$colorPickerWrapper.attr( 'data-value' ) ).change();
-		this.$colorPickerWrapper.html( $input );
-		$input.wrapAll( '<div class="custom-input"></div>' );
+		$input.val( this.$element.attr( 'data-value' ) ).change();
+		this.$element.html( $input );
+		$input.wrapAll( '<div class="custom-input bg-color-picker-control"></div>' );
 
 		return $input;
 	}
@@ -74,7 +105,7 @@ export class Picker {
 			$paletteWrapper.append( '<a class="iris-palette" tabindex="0"></a>' );
 		}
 
-		$paletteWrapper.prependTo( this.$colorPickerWrapper.find( '.iris-picker-inner' ) );
+		$paletteWrapper.prependTo( this.$element.find( '.iris-picker-inner' ) );
 
 		// Repaint Picker.
 		this.$input.iris( 'option', 'width', this.options.width );
@@ -86,11 +117,18 @@ export class Picker {
 	 * @since 1.1.1
 	 */
 	bindCustomPalettes() {
-		this.$colorPickerWrapper.find( '.secondary-colors .iris-palette' ).on( 'click', e => {
+		this.$element.find( '.secondary-colors .iris-palette' ).on( 'click', e => {
 			this.setColor( $( e.target ).css( 'background-color' ) );
 		} );
 	}
 
+	/**
+	 * Set the current color.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param {string} cssColor Color requested.
+	 */
 	setColor( cssColor ) {
 		let colorObject = BrehautColorJs( cssColor );
 		this.$input.iris( 'color', colorObject.toString() );

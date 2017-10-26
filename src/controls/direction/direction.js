@@ -19,12 +19,15 @@ export class Direction {
 		}
 	}
 
+	/**
+	 * Merge the default configurations with any requested by a child class.
+	 *
+	 * @since 1.0.0
+	 */
 	mergeDefaultConfigs() {
-		this.controlOptions = deepmerge(
-			config.defaults,
-			this.controlOptions,
-			{ arrayMerge: ( destination, source ) => source }
-		);
+		this.controlOptions = deepmerge( config.defaults, this.controlOptions, {
+			arrayMerge: ( destination, source ) => source
+		} );
 	}
 
 	/**
@@ -70,7 +73,7 @@ export class Direction {
 		this.setUnits( settings.unit );
 
 		for ( let key in settings.values ) {
-			let value = settings.values[ key ];
+			let value = settings.values[key];
 			this.$sliders.filter( '[data-name="' + key + '"]' ).slider( 'option', 'value', value );
 		}
 	}
@@ -107,8 +110,8 @@ export class Direction {
 	 */
 	_storeDefaultValues() {
 		this.defaultValues = {
-			'unit': this.controlOptions.control.units.default,
-			'values': this.getValues()
+			unit: this.controlOptions.control.units.default,
+			values: this.getValues()
 		};
 	}
 
@@ -124,7 +127,7 @@ export class Direction {
 
 		this.$sliders.each( ( index, element ) => {
 			let $this = $( element );
-			values[ $this.attr( 'data-name' ) ] = $this.slider( 'value' );
+			values[$this.attr( 'data-name' )] = $this.slider( 'value' );
 		} );
 
 		return values;
@@ -136,7 +139,7 @@ export class Direction {
 	 * @since 1.0
 	 */
 	_bindRevert() {
-		this.$revert.on( 'click', ( event ) => {
+		this.$revert.on( 'click', event => {
 			event.preventDefault();
 			this.applySettings( this.defaultValues );
 		} );
@@ -195,8 +198,14 @@ export class Direction {
 		} );
 	}
 
+	/**
+	 * Get a slider configuration.
+	 *
+	 * @since 1.0.0
+	 * @return {object} jquery ui slider config.
+	 */
 	getSliderConfig() {
-		return this.controlOptions.slider[ this.selectedUnit ];
+		return this.controlOptions.slider[this.selectedUnit];
 	}
 
 	/**
@@ -216,7 +225,6 @@ export class Direction {
 				} )
 			);
 		} );
-
 
 		this.$sliders.each( ( index, slider ) => {
 			this._updateInput( $( slider ) );
@@ -269,8 +277,8 @@ export class Direction {
 			let name = this.controlOptions.control.name,
 				property = {};
 
-			_.each( this.controlOptions.control.sliders, ( slider ) => {
-				property[ slider.cssProperty ] = data[ name + '-' + slider.name ] + this.selectedUnit;
+			_.each( this.controlOptions.control.sliders, slider => {
+				property[slider.cssProperty] = data[name + '-' + slider.name] + this.selectedUnit;
 			} );
 
 			this.$target.css( property );
