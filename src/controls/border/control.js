@@ -1,3 +1,5 @@
+var $ = window.jQuery;
+
 import { Direction } from '../direction';
 import template from './template.html';
 import './style.scss';
