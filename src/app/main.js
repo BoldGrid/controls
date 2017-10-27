@@ -88,7 +88,7 @@ export class Application {
 
 		colorPalette.init();
 
-		$control = colorPalette.render( $tab );
+		$control = colorPalette.render( $tab.find( '.control' ) );
 
 		$control.on( 'sass_compiled', ( e, data ) => {
 			this.styleUpdater.update( {
