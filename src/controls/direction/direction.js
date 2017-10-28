@@ -8,10 +8,10 @@ import refreshSvg from 'svg-inline-loader?classPrefix!./img/refresh.svg';
 
 export class Direction {
 	constructor( options ) {
-		options = options || {};
+		this.options = options || {};
 
 		this.slidersLinked = true;
-		this.$target = options.target;
+		this.$target = this.options.target;
 		this.template = _.template( template );
 
 		if ( ! this.$target ) {

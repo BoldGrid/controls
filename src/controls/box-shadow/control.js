@@ -8,12 +8,12 @@ export class BoxShadow extends Direction {
 
 	constructor( options ) {
 		super( options );
-		this.slidersLinked = false;
 
+		this.slidersLinked = false;
 		this.controlOptions = configs.controlOptions;
 		this.sliderConfig = configs.sliderConfig;
 		this.shadowType = '';
-		this.shadowColor = 'black';
+		this.shadowColor = '#cecece';
 
 		this.switchControl = new Switch( {
 			'name': 'box-shadow-outline',
@@ -84,13 +84,14 @@ export class BoxShadow extends Direction {
 	 * @since 1.0.0
 	 */
 	_setupColorPicker() {
-		let options = {
+		let options = _.defaults( this.options.colorPicker || {}, {
+			defaultColor: this.shadowColor,
 			hide: false,
 			change: ( e, ui ) => {
 				this.shadowColor = ui.color.toString();
 				this.update();
 			}
-		};
+		} );
 
 		this.colorPicker.init( false, options );
 	}

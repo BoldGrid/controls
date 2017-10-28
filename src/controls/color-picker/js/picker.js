@@ -17,7 +17,7 @@ export class Picker {
 			secondaryPalette: []
 		} );
 
-		this.$element = $target || $( '<div>' );
+		this.$element = $target || $( '<div data-value="' + this.options.defaultColor + '"></div>' );
 		this.$input = this.createColorInput();
 		this.setupIris();
 
@@ -85,10 +85,12 @@ export class Picker {
 	 * @return {input} Input.
 	 */
 	createColorInput() {
-		let $input = $( '<input type="text" data-alpha="true" class="pluto-color-control color-control-input"/>' );
-		$input.val( this.$element.attr( 'data-value' ) ).change();
+		let defaultVal = this.$element.attr( 'data-value' ),
+			$input = $( '<input type="text" data-alpha="true" class="pluto-color-control color-control-input"/>' );
+
+		$input.val( defaultVal ).change();
 		this.$element.html( $input );
-		$input.wrapAll( '<div class="custom-input bg-color-picker-control"></div>' );
+		$input.wrapAll( '<div class="custom-input bg-color-picker-control boldgrid-control"></div>' );
 
 		return $input;
 	}
