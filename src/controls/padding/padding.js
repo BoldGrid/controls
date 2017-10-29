@@ -9,8 +9,8 @@ export class Padding extends MultiSlider {
 				title: 'Padding',
 				name: 'padding',
 				units: {
-					default: 'px',
-					enabled: [ 'px' ]
+					default: 'em',
+					enabled: [ 'px', 'em', '%' ]
 				},
 				sliders: [
 					{ name: 'top', label: 'Top', cssProperty: 'padding-top' },
@@ -22,15 +22,18 @@ export class Padding extends MultiSlider {
 			slider: {
 				px: {
 					min: 0,
-					max: 100
+					max: 100,
+					step: 1
 				},
 				'%': {
 					min: 0,
-					max: 100
+					max: 20,
+					step: 0.1
 				},
 				em: {
-					min: 0.1,
-					max: 5
+					min: 0,
+					max: 5,
+					step: 0.1
 				}
 			}
 		};

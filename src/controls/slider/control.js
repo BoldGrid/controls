@@ -42,11 +42,10 @@ export class Slider {
 	 */
 	_bindInput() {
 		this.$input.on( 'input', event => {
-			let val = this.$input.val(),
-				config = this.getSliderConfig( this.$slider.data( 'name' ) );
+			let val = this.$input.val();
 
-			val = Math.min( this.$input.val(), config.max );
-			val = Math.max( val, config.min );
+			val = Math.min( this.$input.val(), this.$slider.slider( 'option', 'max' ) );
+			val = Math.max( val, this.$slider.slider( 'option', 'min' ) );
 
 			this.$input.val( val );
 

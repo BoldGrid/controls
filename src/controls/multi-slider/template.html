@@ -2,13 +2,13 @@
 	<h3 class="control-name"><%=control.title %><a href="#" class="refresh"><%= svg.refresh %></a></h3>
 	<p class="units">
 		<% if ( -1 !== control.units.enabled.indexOf( 'px' ) ) { %>
-		<label><input type="radio" name="<%=control.name %>-unit" class="unit" value="px"><span>PX</span></label>
-		<% } %>
-		<% if ( -1 !== control.units.enabled.indexOf( 'percentage' ) ) { %>
-		<label><input type="radio" name="<%=control.name %>-unit" class="unit" value="percentage"><span>%</span></label>
+		<label title="Pixel Unit"><input type="radio" name="<%=control.name %>-unit" class="unit" value="px"><span>PX</span></label>
 		<% } %>
 		<% if ( -1 !== control.units.enabled.indexOf( 'em' ) ) { %>
-		<label><input type="radio" name="<%=control.name %>-unit" class="unit" value="em"><span>EM</span></label>
+			<label title="Em Unit"><input type="radio" name="<%=control.name %>-unit" class="unit" value="em"><span>EM</span></label>
+		<% } %>
+		<% if ( -1 !== control.units.enabled.indexOf( '%' ) ) { %>
+			<label title="Percentage Unit"><input type="radio" name="<%=control.name %>-unit" class="unit" value="%" ><span>%</span></label>
 		<% } %>
 	</p>
 	<div class="slider-group">

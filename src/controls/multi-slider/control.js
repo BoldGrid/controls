@@ -1,6 +1,7 @@
 var $ = window.jQuery;
 import './style.scss';
 import { Slider } from '../slider';
+import { Conversion } from './conversion';
 import template from './template.html';
 import config from './config.js';
 import deepmerge from 'deepmerge';
@@ -11,7 +12,7 @@ export class MultiSlider {
 	constructor( options ) {
 		this.options = options || {};
 
-		this.slidersLinked = true;
+		this.slidersLinked = false;
 		this.$target = this.options.target;
 		this.template = _.template( template );
 
@@ -58,6 +59,7 @@ export class MultiSlider {
 		this.$links = this.$control.find( '.link' );
 
 		this._storeDefaultValues();
+		this._setDefaultLinkedState();
 		this._bindLinked();
 		this._bindRevert();
 
@@ -77,7 +79,7 @@ export class MultiSlider {
 		for ( let key in settings.values ) {
 			let value = settings.values[key];
 
-			this.sliders[ key ].$slider.slider( 'option', 'value', value );
+			this.sliders[key].$slider.slider( 'option', 'value', value );
 		}
 	}
 
@@ -117,7 +119,7 @@ export class MultiSlider {
 		let values = {};
 
 		for ( let name in this.sliders ) {
-			values[ name ] = this.sliders[ name ].$slider.slider( 'value' );
+			values[name] = this.sliders[name].$slider.slider( 'value' );
 		}
 
 		return values;
@@ -131,9 +133,32 @@ export class MultiSlider {
 	 * @return {Object} Slider config.
 	 */
 	getSliderConfig( slider ) {
-		let settings = this.controlOptions.slider[ this.selectedUnit ];
-		settings.value = parseInt( this.$target.css( slider.cssProperty ) );
+		let settings = this.controlOptions.slider[this.selectedUnit],
+			value = this.convertToSelectedUnit( this.$target.css( slider.cssProperty ) );
+
+		settings.value = value;
 		return settings;
+	}
+
+	/**
+	 * Convert the JS pixel value to perctenage or ems.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  {string} rawValue JS computed value.
+	 * @return {integer}          New Value.
+	 */
+	convertToSelectedUnit( computedValue ) {
+		let pixelValue = parseInt( computedValue ),
+			converted = pixelValue;
+
+		if ( '%' === this.selectedUnit ) {
+			converted = new Conversion().pxToPercentage( pixelValue, this.$target.parent() );
+		} else if ( 'em' === this.selectedUnit ) {
+			converted = new Conversion().pxToEm( pixelValue, this.$target.css( 'font-size' ) );
+		}
+
+		return converted;
 	}
 
 	/**
@@ -155,7 +180,7 @@ export class MultiSlider {
 			this.$sliderGroup.append( sliderControl.$control );
 			sliderControl.$input.after( '<a class="link" href="#">' + linkSvg + '</a>' );
 
-			this.sliders[ slider.name ] = sliderControl;
+			this.sliders[slider.name] = sliderControl;
 
 			this._bindSliderChange( sliderControl );
 		}
@@ -193,10 +218,42 @@ export class MultiSlider {
 	_bindUnits() {
 		this.$control.find( '.unit' ).on( 'change', e => {
 			let $target = $( e.target );
-			this.selectedUnit = $target.val();
 
-			// Init Slider here.
+			this.selectedUnit = $target.val();
+			if ( this.sliders ) {
+				this.updateSliderConfigs();
+			}
 		} );
+	}
+
+	/**
+	 * Update the slider configurations based on new units.
+	 *
+	 * @since 1.0.0
+	 */
+	updateSliderConfigs() {
+		this.linkedDisabled = true;
+		for ( let slider of this.controlOptions.control.sliders ) {
+			let options = this.getSliderConfig( slider );
+
+			this.sliders[slider.name].$slider.slider( 'option', options );
+		}
+
+		setTimeout( () => {
+			this.linkedDisabled = false;
+		} );
+	}
+
+	/**
+	 * Set the default slider state.
+	 *
+	 * @since 1.0.0
+	 */
+	_setDefaultLinkedState() {
+		if ( this.controlOptions.control.linkable ) {
+			let values = _.unique( _.values( this.getValues() ) );
+			this.slidersLinked = ( 1 === values.length );
+		}
 	}
 
 	/**
@@ -229,7 +286,7 @@ export class MultiSlider {
 		if ( this.slidersLinked && ! this.linkedDisabled ) {
 			this.linkedDisabled = true;
 
-			_.each( this.sliders, ( slider ) => {
+			_.each( this.sliders, slider => {
 				if ( updatedSlider !== slider ) {
 					slider.$slider.slider( 'value', updatedSlider.$slider.slider( 'value' ) );
 				}
@@ -250,8 +307,7 @@ export class MultiSlider {
 	 */
 	_updateCss( slider ) {
 		let property = {};
-
-		property[ slider.options.cssProperty ] = slider.$slider.slider( 'value' ) + this.selectedUnit;
+		property[slider.options.cssProperty] = slider.$slider.slider( 'value' ) + this.selectedUnit;
 		this.applyCssRules( property );
 	}
 
