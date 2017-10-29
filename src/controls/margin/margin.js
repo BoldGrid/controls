@@ -1,6 +1,6 @@
-import { Direction } from '../direction';
+import { MultiSlider } from '../multi-slider';
 
-export class Margin extends Direction {
+export class Margin extends MultiSlider {
 	constructor( options ) {
 		super( options );
 

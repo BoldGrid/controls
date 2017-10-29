@@ -1,5 +1,5 @@
 var $ = window.jQuery;
-import './direction.scss';
+import './style.scss';
 import { Slider } from '../slider';
 import template from './template.html';
 import config from './config.js';
@@ -7,7 +7,7 @@ import deepmerge from 'deepmerge';
 import refreshSvg from 'svg-inline-loader?classPrefix!./img/refresh.svg';
 import linkSvg from 'svg-inline-loader?classPrefix!./img/link.svg';
 
-export class Direction {
+export class MultiSlider {
 	constructor( options ) {
 		this.options = options || {};
 
@@ -270,4 +270,4 @@ export class Direction {
 	}
 }
 
-export { Direction as default };
+export { MultiSlider as default };

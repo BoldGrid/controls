@@ -1,6 +1,6 @@
-import { Direction } from '../direction';
+import { MultiSlider } from '../multi-slider';
 
-export class BorderRadius extends Direction {
+export class BorderRadius extends MultiSlider {
 
 	constructor( options ) {
 		super( options );

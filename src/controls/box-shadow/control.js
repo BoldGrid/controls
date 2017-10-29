@@ -1,10 +1,10 @@
-import { Direction } from '../direction';
+import { MultiSlider } from '../multi-slider';
 import { Switch } from '../switch';
 import { Picker as ColorPicker } from '../color-picker';
 import configs from './config.js';
 import './style.scss';
 
-export class BoxShadow extends Direction {
+export class BoxShadow extends MultiSlider {
 
 	constructor( options ) {
 		super( options );
