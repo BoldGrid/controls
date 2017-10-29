@@ -1,29 +1,32 @@
 var $ = window.jQuery;
 
-import { Direction } from '../direction';
+import { MultiSlider } from '../multi-slider';
 import template from './template.html';
 import './style.scss';
 
-export class Border extends Direction {
-
+export class Border extends MultiSlider {
 	constructor( options ) {
 		super( options );
 
 		this.controlOptions = {
-			'control': {
-				'title': 'Border Width',
-				'name': 'border-width',
-				'units': {
-					'default': 'px',
-					'enabled': [
-						'px'
-					]
+			control: {
+				title: 'Border Width',
+				name: 'border-width',
+				units: {
+					default: 'px',
+					enabled: [ 'px', 'em' ]
 				}
 			},
-			'slider': {
-				'px': {
-					'min': 0,
-					'max': 15
+			slider: {
+				px: {
+					step: 0.1,
+					min: 0,
+					max: 15
+				},
+				em: {
+					min: 0,
+					max: 5,
+					step: 0.1
 				}
 			}
 		};
@@ -68,7 +71,8 @@ export class Border extends Direction {
 	 * @param {string} style Border style.
 	 */
 	setDefaultType( style ) {
-		this.$typeControl.find( 'input' )
+		this.$typeControl
+			.find( 'input' )
 			.filter( '[value="' + style + '"]' )
 			.prop( 'checked', true )
 			.change();
@@ -80,7 +84,7 @@ export class Border extends Direction {
 	 * @since 1.0.0
 	 */
 	_bindTypeChange() {
-		this.$typeControl.find( 'input' ).on( 'change', ( e ) => {
+		this.$typeControl.find( 'input' ).on( 'change', e => {
 			let $this = $( e.target ),
 				val = $this.val();
 
@@ -97,7 +101,6 @@ export class Border extends Direction {
 			}
 		} );
 	}
-
 }
 
 export { Border as default };

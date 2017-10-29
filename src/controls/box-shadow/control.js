@@ -1,23 +1,26 @@
-import { Direction } from '../direction';
+import { MultiSlider } from '../multi-slider';
 import { Switch } from '../switch';
 import { Picker as ColorPicker } from '../color-picker';
+import { Parser } from './parser';
 import configs from './config.js';
 import './style.scss';
 
-export class BoxShadow extends Direction {
-
+export class BoxShadow extends MultiSlider {
 	constructor( options ) {
 		super( options );
+
+		this.parser = new Parser();
 
 		this.slidersLinked = false;
 		this.controlOptions = configs.controlOptions;
 		this.sliderConfig = configs.sliderConfig;
-		this.shadowType = '';
-		this.shadowColor = '#cecece';
+		this.currentValues = this.getCurrentValues();
+		this.shadowType = this.currentValues.inset ? 'inset' : '';
+		this.shadowColor = this.currentValues.color || '#cecece';
 
 		this.switchControl = new Switch( {
-			'name': 'box-shadow-outline',
-			'label': 'Outline / Inset'
+			name: 'box-shadow-outline',
+			label: 'Outline / Inset'
 		} );
 
 		this.colorPicker = new ColorPicker();
@@ -32,7 +35,20 @@ export class BoxShadow extends Direction {
 	 * @return {object}        Slider configuration.
 	 */
 	getSliderConfig( slider ) {
-		return this.sliderConfig[ slider ];
+		let values = this.getCurrentValues();
+		this.sliderConfig[slider.name].value = values[ slider.name ];
+		return this.sliderConfig[ slider.name ];
+	}
+
+	/**
+	 * Get the current css values for the an element.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {Object} Properties.
+	 */
+	getCurrentValues() {
+		return this.parser.parse( this.$target.css( 'box-shadow' ) );
 	}
 
 	/**
@@ -61,21 +77,23 @@ export class BoxShadow extends Direction {
 	 *
 	 * @since 1.0.0
 	 */
-	update() {
+	_updateCss() {
 		let data = this.getValues(),
 			name = this.controlOptions.control.name,
 			cssString = [];
 
 		cssString.push( this.shadowType );
-		cssString.push( data[ name + '-horizontal-position' ] + this.selectedUnit );
-		cssString.push( data[ name + '-vertical-position' ] + this.selectedUnit );
-		cssString.push( data[ name + '-blur-radius' ] + this.selectedUnit );
-		cssString.push( data[ name + '-spread-radius' ] + this.selectedUnit );
+		cssString.push( data['horizontal-position'] + this.selectedUnit );
+		cssString.push( data['vertical-position'] + this.selectedUnit );
+		cssString.push( data['blur-radius'] + this.selectedUnit );
+		cssString.push( data['spread-radius'] + this.selectedUnit );
 		cssString.push( this.shadowColor );
 
 		cssString = cssString.join( ' ' );
 
-		this.$target.css( 'box-shadow', cssString );
+		this.applyCssRules( {
+			'box-shadow': cssString
+		} );
 	}
 
 	/**
@@ -89,7 +107,7 @@ export class BoxShadow extends Direction {
 			hide: false,
 			change: ( e, ui ) => {
 				this.shadowColor = ui.color.toString();
-				this.update();
+				this._updateCss();
 			}
 		} );
 
@@ -103,22 +121,13 @@ export class BoxShadow extends Direction {
 	 */
 	_setupOutlineSwitch() {
 		this.switchControl.render();
+		this.switchControl.$input.prop( 'checked', this.currentValues.inset );
 
 		this.switchControl.$input.on( 'change', () => {
 			this.shadowType = this.switchControl.isEnabled() ? 'inset' : '';
-			this.update();
+			this._updateCss();
 		} );
 	}
-
-	/**
-	 * Update css as the control fires updates.
-	 *
-	 * @since 1.0.0
-	 */
-	_bindSliderChange() {
-		this.$control.on( 'slide-change', () => this.update() );
-	}
-
 }
 
 export { BoxShadow as default };

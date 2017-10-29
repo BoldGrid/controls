@@ -3,10 +3,6 @@
 .directional-control {
 	position: relative;
 
-	.bg-control {
-		display: flex;
-	}
-
 	.refresh svg {
 		width: 19px;
 		margin: 0 20px 0;
@@ -52,48 +48,11 @@
 		}
 	}
 
-	&:not([data-linkable="false"]) .direction:first-of-type .link {
+	&:not([data-linkable="false"]) .slider-control:first-of-type .link {
 		visibility: visible;
-	}
-
-	label {
-		font-size: 13px;
-		font-variant: small-caps;
 	}
 	.control-name {
 		font-size: 15px;
 		margin-bottom: 5px;
-	}
-	.slider {
-		width: 80%;
-		margin: 10px 15px;
-		height: 8px;
-		border-radius: 0;
-		background: #f1f1f1;
-		cursor: pointer;
-		border: 0;
-	}
-	.number {
-		width: 60px;
-		border: 0;
-		background: #f1f1f1;
-		padding: 0 10px 0 15px;
-		border-radius: 5px;
-		text-align: center;
-	}
-}
-
-.bg-control .ui-slider-handle {
-	border-radius: 50%;
-    border: 5px solid #f7f7f7;
-    background: #f95b26;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.28);
-	width: 10px;
-    height: 10px;
-	cursor: pointer;
-	transition: background .25s;
-
-	&.ui-state-focus {
-		background-color: $primaryColor;
 	}
 }

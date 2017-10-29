@@ -1,6 +1,6 @@
-import { Direction } from '../direction';
+import { MultiSlider } from '../multi-slider';
 
-export class Margin extends Direction {
+export class Margin extends MultiSlider {
 	constructor( options ) {
 		super( options );
 
@@ -10,7 +10,7 @@ export class Margin extends Direction {
 				name: 'margin',
 				units: {
 					default: 'px',
-					enabled: [ 'px' ]
+					enabled: [ 'px', 'em', '%' ]
 				},
 				sliders: [
 					{ name: 'top', label: 'Top', cssProperty: 'margin-top' },
@@ -22,11 +22,18 @@ export class Margin extends Direction {
 			slider: {
 				px: {
 					min: -100,
-					max: 100
+					max: 100,
+					step: 1
 				},
 				'%': {
-					min: -100,
-					max: 100
+					min: -20,
+					max: 20,
+					step: 0.1
+				},
+				em: {
+					min: -5,
+					max: 5,
+					step: 0.1
 				}
 			}
 		};
