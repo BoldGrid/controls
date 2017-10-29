@@ -7,6 +7,7 @@ export { Border } from './border';
 export { Margin } from './margin';
 export { BorderRadius } from './border-radius';
 export { BoxShadow } from './box-shadow';
+export { Slider } from './slider';
 
 export { Updater as StyleUpdater } from './style';
 

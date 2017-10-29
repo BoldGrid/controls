@@ -11,14 +11,6 @@
 		<label><input type="radio" name="<%=control.name %>-unit" class="unit" value="em"><span>EM</span></label>
 		<% } %>
 	</p>
-	<% _.each ( control.sliders, ( slider ) => { %>
-	<div class="direction">
-		<label><%= slider.label %></label>
-		<div class="bg-control">
-			<div class="slider" data-name="<%=control.name %>-<%= slider.name %>"></div>
-			<input class="number" type="number" name="<%=control.name %>-<%= slider.name %>">
-			<a class="link" href="#"><%= svg.link %></a>
-		</div>
+	<div class="slider-group">
 	</div>
-	<% } ); %>
 </div>

@@ -27,19 +27,19 @@ export default {
 		}
 	},
 	sliderConfig: {
-		'box-shadow-horizontal-position': {
+		'horizontal-position': {
 			min: -50,
 			max: 50
 		},
-		'box-shadow-vertical-position': {
+		'vertical-position': {
 			min: -50,
 			max: 50
 		},
-		'box-shadow-blur-radius': {
+		'blur-radius': {
 			min: 0,
 			max: 100
 		},
-		'box-shadow-spread-radius': {
+		'spread-radius': {
 			min: -25,
 			max: 25
 		}

@@ -9,6 +9,7 @@ import {
 	Margin,
 	Border,
 	BoxShadow,
+	Slider,
 	BorderRadius
 } from '../controls';
 
@@ -42,10 +43,17 @@ export class Application {
 	renderControls() {
 		this.paletteCustomize();
 		this.paletteSelection();
-		this.directionControl();
+		this.setupSlider();
+		this.multislider();
 	}
 
-	directionControl() {
+	setupSlider() {
+		let $tab = $( '.slider-tab' );
+
+		$tab.find( '.control' ).html( new Slider().render() );
+	}
+
+	multislider() {
 		let $tab = $( '.directional-controls' ),
 			$combined = $tab.find( '.combined' ),
 			padding = new Padding( { target: $combined } ),

@@ -31,8 +31,8 @@ export class BoxShadow extends Direction {
 	 * @param  {string} slider Slider name.
 	 * @return {object}        Slider configuration.
 	 */
-	getSliderConfig( slider ) {
-		return this.sliderConfig[ slider ];
+	getSliderConfig( sliderName ) {
+		return this.sliderConfig[ sliderName ];
 	}
 
 	/**
@@ -61,21 +61,23 @@ export class BoxShadow extends Direction {
 	 *
 	 * @since 1.0.0
 	 */
-	update() {
+	_updateCss() {
 		let data = this.getValues(),
 			name = this.controlOptions.control.name,
 			cssString = [];
 
 		cssString.push( this.shadowType );
-		cssString.push( data[ name + '-horizontal-position' ] + this.selectedUnit );
-		cssString.push( data[ name + '-vertical-position' ] + this.selectedUnit );
-		cssString.push( data[ name + '-blur-radius' ] + this.selectedUnit );
-		cssString.push( data[ name + '-spread-radius' ] + this.selectedUnit );
+		cssString.push( data[ 'horizontal-position' ] + this.selectedUnit );
+		cssString.push( data[ 'vertical-position' ] + this.selectedUnit );
+		cssString.push( data[ 'blur-radius' ] + this.selectedUnit );
+		cssString.push( data[ 'spread-radius' ] + this.selectedUnit );
 		cssString.push( this.shadowColor );
 
 		cssString = cssString.join( ' ' );
 
-		this.$target.css( 'box-shadow', cssString );
+		this.applyCssRules( {
+			'box-shadow': cssString
+		} );
 	}
 
 	/**
@@ -89,7 +91,7 @@ export class BoxShadow extends Direction {
 			hide: false,
 			change: ( e, ui ) => {
 				this.shadowColor = ui.color.toString();
-				this.update();
+				this._updateCss();
 			}
 		} );
 
@@ -106,17 +108,8 @@ export class BoxShadow extends Direction {
 
 		this.switchControl.$input.on( 'change', () => {
 			this.shadowType = this.switchControl.isEnabled() ? 'inset' : '';
-			this.update();
+			this._updateCss();
 		} );
-	}
-
-	/**
-	 * Update css as the control fires updates.
-	 *
-	 * @since 1.0.0
-	 */
-	_bindSliderChange() {
-		this.$control.on( 'slide-change', () => this.update() );
 	}
 
 }

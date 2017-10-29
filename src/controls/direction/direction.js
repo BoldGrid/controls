@@ -1,10 +1,11 @@
 var $ = window.jQuery;
 import './direction.scss';
+import { Slider } from '../slider';
 import template from './template.html';
 import config from './config.js';
 import deepmerge from 'deepmerge';
-import linkSvg from 'svg-inline-loader?classPrefix!./img/link.svg';
 import refreshSvg from 'svg-inline-loader?classPrefix!./img/refresh.svg';
+import linkSvg from 'svg-inline-loader?classPrefix!./img/link.svg';
 
 export class Direction {
 	constructor( options ) {
@@ -45,19 +46,20 @@ export class Direction {
 		this.controlOptions.svg.refresh = refreshSvg;
 
 		this.$control = $( this.template( this.controlOptions ) );
-		this.$sliders = this.$control.find( '.slider' );
-		this.$inputs = this.$control.find( 'input.number' );
-		this.$links = this.$control.find( '.link' );
+		this.$sliderGroup = this.$control.find( '.slider-group' );
 		this.$units = this.$control.find( '.unit' );
 		this.$revert = this.$control.find( '.refresh' );
 
 		this._bindUnits();
 		this.setUnits( this.controlOptions.control.units.default );
+
+		// Create sliders and attach them to the template.
+		this._createSliders();
+		this.$links = this.$control.find( '.link' );
+
 		this._storeDefaultValues();
-		this._bindInput();
 		this._bindLinked();
 		this._bindRevert();
-		this._bindSliderChange();
 
 		return this.$control;
 	}
@@ -74,7 +76,8 @@ export class Direction {
 
 		for ( let key in settings.values ) {
 			let value = settings.values[key];
-			this.$sliders.filter( '[data-name="' + key + '"]' ).slider( 'option', 'value', value );
+
+			this.sliders[ key ].$slider.slider( 'option', 'value', value );
 		}
 	}
 
@@ -104,18 +107,6 @@ export class Direction {
 	}
 
 	/**
-	 * Save the default values for reverts.
-	 *
-	 * @since 1.0
-	 */
-	_storeDefaultValues() {
-		this.defaultValues = {
-			unit: this.controlOptions.control.units.default,
-			values: this.getValues()
-		};
-	}
-
-	/**
 	 * Get the values.
 	 *
 	 * @since 1.0
@@ -125,12 +116,59 @@ export class Direction {
 	getValues() {
 		let values = {};
 
-		this.$sliders.each( ( index, element ) => {
-			let $this = $( element );
-			values[$this.attr( 'data-name' )] = $this.slider( 'value' );
-		} );
+		for ( let name in this.sliders ) {
+			values[ name ] = this.sliders[ name ].$slider.slider( 'value' );
+		}
 
 		return values;
+	}
+
+	/**
+	 * Get a sliders configuration.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {Object} Slider config.
+	 */
+	getSliderConfig() {
+		return this.controlOptions.slider[ this.selectedUnit ];
+	}
+
+	/**
+	 * Create sliders and attach them to the template.
+	 *
+	 * @since 1.0.0
+	 */
+	_createSliders() {
+		this.sliders = {};
+
+		for ( let slider of this.controlOptions.control.sliders ) {
+			let sliderControl;
+
+			slider.uiSettings = this.getSliderConfig( slider.name );
+			sliderControl = new Slider( $.extend( true, {}, slider ) );
+
+			sliderControl.render();
+
+			this.$sliderGroup.append( sliderControl.$control );
+			sliderControl.$input.after( '<a class="link" href="#">' + linkSvg + '</a>' );
+
+			this.sliders[ slider.name ] = sliderControl;
+
+			this._bindSliderChange( sliderControl );
+		}
+	}
+
+	/**
+	 * Save the default values for reverts.
+	 *
+	 * @since 1.0
+	 */
+	_storeDefaultValues() {
+		this.defaultValues = {
+			unit: this.controlOptions.control.units.default,
+			values: this.getValues()
+		};
 	}
 
 	/**
@@ -153,15 +191,16 @@ export class Direction {
 	_bindUnits() {
 		this.$control.find( '.unit' ).on( 'change', e => {
 			let $target = $( e.target );
-
 			this.selectedUnit = $target.val();
-			this._bindSlider();
+
+			// Init Slider here.
 		} );
 	}
 
 	/**
 	 * Bind the user linking the controls.
-	 * @return {[type]} [description]
+	 *
+	 * @since 1.0.0
 	 */
 	_bindLinked() {
 		if ( this.slidersLinked ) {
@@ -178,74 +217,21 @@ export class Direction {
 	}
 
 	/**
-	 * Bind the inputs change events.
-	 *
-	 * @since 1.0
-	 */
-	_bindInput() {
-		this.$inputs.on( 'input', event => {
-			let $this = $( event.target ),
-				$slider = $this.prev(),
-				val = $this.val(),
-				config = this.getSliderConfig( $slider.data( 'name' ) );
-
-			val = Math.min( $this.val(), config.max );
-			val = Math.max( val, config.min );
-
-			$this.val( val );
-
-			$slider.slider( 'value', val );
-		} );
-	}
-
-	/**
-	 * Get a slider configuration.
+	 * Updated linked sliders.
 	 *
 	 * @since 1.0.0
-	 * @return {object} jquery ui slider config.
-	 */
-	getSliderConfig() {
-		return this.controlOptions.slider[this.selectedUnit];
-	}
-
-	/**
-	 * Bind the slider events.
 	 *
-	 * @since 1.0
+	 * @param  {Slider} updatedSlider Slider that was updated by user.
 	 */
-	_bindSlider() {
-		this.$sliders.each( ( index, slider ) => {
-			let $slider = $( slider );
-
-			$slider.slider(
-				_.defaults( this.getSliderConfig( $slider.data( 'name' ) ), {
-					animate: 'fast',
-					slide: event => this._onSliderChange( event ),
-					change: event => this._onSliderChange( event )
-				} )
-			);
-		} );
-
-		this.$sliders.each( ( index, slider ) => {
-			this._updateInput( $( slider ) );
-		} );
-	}
-
-	/**
-	 * When the slider changes.
-	 *
-	 * @since 1.0
-	 *
-	 * @param  {DOM Event} event When the slider changes.
-	 */
-	_onSliderChange( event ) {
-		let $slider = $( event.target );
-		this._updateInput( $slider );
-		this.$control.trigger( 'slide-change', this.getValues() );
-
+	_updateLinked( updatedSlider ) {
 		if ( this.slidersLinked && ! this.linkedDisabled ) {
 			this.linkedDisabled = true;
-			this.$sliders.not( $slider ).slider( 'value', $slider.slider( 'value' ) );
+
+			_.each( this.sliders, ( slider ) => {
+				if ( updatedSlider !== slider ) {
+					slider.$slider.slider( 'value', updatedSlider.$slider.slider( 'value' ) );
+				}
+			} );
 		}
 
 		setTimeout( () => {
@@ -254,17 +240,21 @@ export class Direction {
 	}
 
 	/**
-	 * Update the input.
+	 * Update the css that a single slider controls
 	 *
-	 * @since 1.0
+	 * @since 1.0.0
 	 *
-	 * @param  {$} $slider Slider element jquery.
+	 * @param  {Slider} slider Slider class.
 	 */
-	_updateInput( $slider ) {
-		let $input = $slider.next(),
-			value = $slider.slider( 'value' );
+	_updateCss( slider ) {
+		let property = {};
 
-		$input.val( value );
+		property[ slider.options.cssProperty ] = slider.$slider.slider( 'value' ) + this.selectedUnit;
+		this.applyCssRules( property );
+	}
+
+	applyCssRules( property ) {
+		this.$target.css( property );
 	}
 
 	/**
@@ -272,16 +262,10 @@ export class Direction {
 	 *
 	 * @since 1.0.0
 	 */
-	_bindSliderChange() {
-		this.$control.on( 'slide-change', ( e, data ) => {
-			let name = this.controlOptions.control.name,
-				property = {};
-
-			_.each( this.controlOptions.control.sliders, slider => {
-				property[slider.cssProperty] = data[name + '-' + slider.name] + this.selectedUnit;
-			} );
-
-			this.$target.css( property );
+	_bindSliderChange( slider ) {
+		slider.$control.on( 'slide-change', ( e, data ) => {
+			this._updateLinked( slider );
+			this._updateCss( slider );
 		} );
 	}
 }
