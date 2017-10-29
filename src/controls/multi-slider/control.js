@@ -130,8 +130,10 @@ export class MultiSlider {
 	 *
 	 * @return {Object} Slider config.
 	 */
-	getSliderConfig() {
-		return this.controlOptions.slider[ this.selectedUnit ];
+	getSliderConfig( slider ) {
+		let settings = this.controlOptions.slider[ this.selectedUnit ];
+		settings.value = parseInt( this.$target.css( slider.cssProperty ) );
+		return settings;
 	}
 
 	/**
@@ -145,7 +147,7 @@ export class MultiSlider {
 		for ( let slider of this.controlOptions.control.sliders ) {
 			let sliderControl;
 
-			slider.uiSettings = this.getSliderConfig( slider.name );
+			slider.uiSettings = this.getSliderConfig( slider );
 			sliderControl = new Slider( $.extend( true, {}, slider ) );
 
 			sliderControl.render();
