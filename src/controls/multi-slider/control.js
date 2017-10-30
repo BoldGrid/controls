@@ -221,27 +221,51 @@ export class MultiSlider {
 
 			this.selectedUnit = $target.val();
 			if ( this.sliders ) {
-				this.updateSliderConfigs();
+				this._unitsChanged();
 			}
 		} );
 	}
 
 	/**
-	 * Update the slider configurations based on new units.
+	* Update slider values WITH triggering css updates.
 	 *
 	 * @since 1.0.0
 	 */
-	updateSliderConfigs() {
+	_unitsChanged() {
 		this.linkedDisabled = true;
-		for ( let slider of this.controlOptions.control.sliders ) {
-			let options = this.getSliderConfig( slider );
 
-			this.sliders[slider.name].$slider.slider( 'option', options );
-		}
+		this._resetOptions();
 
 		setTimeout( () => {
 			this.linkedDisabled = false;
 		} );
+	}
+
+	/**
+	 * Update slider values WITHOUT triggering css updates.
+	 *
+	 * @since 1.0.0
+	 */
+	refreshValues() {
+		this.slideChangeDisabled = true;
+
+		this._resetOptions();
+
+		setTimeout( () => {
+			this.slideChangeDisabled = false;
+		} );
+	}
+
+	/**
+	 * Pass in all option values.
+	 *
+	 * @since 1.6
+	 */
+	_resetOptions() {
+		for ( let slider of this.controlOptions.control.sliders ) {
+			let options = this.getSliderConfig( slider );
+			this.sliders[slider.name].$slider.slider( 'option', options );
+		}
 	}
 
 	/**
@@ -322,8 +346,10 @@ export class MultiSlider {
 	 */
 	_bindSliderChange( slider ) {
 		slider.$control.on( 'slide-change', ( e, data ) => {
-			this._updateLinked( slider );
-			this._updateCss( slider );
+			if ( ! this.slideChangeDisabled ) {
+				this._updateLinked( slider );
+				this._updateCss( slider );
+			}
 		} );
 	}
 }

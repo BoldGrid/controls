@@ -28,7 +28,7 @@ export class BorderRadius extends MultiSlider {
 				},
 				em: {
 					step: 0.1,
-					min: 0.1,
+					min: 0,
 					max: 5
 				},
 				'%': {
