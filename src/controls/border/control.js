@@ -48,7 +48,7 @@ export class Border extends MultiSlider {
 
 		this.bindEvents();
 
-		$control = this.$typeControl.add( this.$control );
+		$control = this.$typeControl.append( this.$control );
 
 		return $control;
 	}
