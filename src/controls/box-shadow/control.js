@@ -16,7 +16,7 @@ export class BoxShadow extends MultiSlider {
 		this.sliderConfig = configs.sliderConfig;
 		this.currentValues = this.getCurrentValues();
 		this.shadowType = this.currentValues.inset ? 'inset' : '';
-		this.shadowColor = this.currentValues.color || '#cecece';
+		this.shadowColor = this.getShadowColor();
 
 		this.switchControl = new Switch( {
 			name: 'box-shadow-outline',
@@ -24,6 +24,10 @@ export class BoxShadow extends MultiSlider {
 		} );
 
 		this.colorPicker = new ColorPicker();
+	}
+
+	getShadowColor() {
+		return this.currentValues.color || '#cecece';
 	}
 
 	/**
@@ -35,8 +39,11 @@ export class BoxShadow extends MultiSlider {
 	 * @return {object}        Slider configuration.
 	 */
 	getSliderConfig( slider ) {
-		let values = this.getCurrentValues();
-		this.sliderConfig[slider.name].value = values[ slider.name ];
+		this.currentValues = this.getCurrentValues();
+		if ( this.currentValues ) {
+			this.sliderConfig[slider.name].value = this.currentValues[ slider.name ];
+		}
+
 		return this.sliderConfig[ slider.name ];
 	}
 
@@ -73,6 +80,25 @@ export class BoxShadow extends MultiSlider {
 	}
 
 	/**
+	 * Refresh the values of the input to the values of the target.
+	 *
+	 * @since 1.0.0
+	 */
+	refreshValues() {
+		let colorChange;
+
+		super.refreshValues();
+		this.updateCheckedSetting();
+		this.updateShadowType();
+
+		// Temp disable of color callback.
+		colorChange = this.colorPicker.$input.iris( 'option', 'change' );
+		this.colorPicker.$input.iris( 'option', 'change', () => {} );
+		this.colorPicker.$input.iris( 'color', this.getShadowColor() );
+		this.colorPicker.$input.iris( 'option', 'change', colorChange );
+	}
+
+	/**
 	 * Update the css used on a component.
 	 *
 	 * @since 1.0.0
@@ -105,13 +131,34 @@ export class BoxShadow extends MultiSlider {
 		let options = _.defaults( this.options.colorPicker || {}, {
 			defaultColor: this.shadowColor,
 			hide: false,
-			change: ( e, ui ) => {
-				this.shadowColor = ui.color.toString();
-				this._updateCss();
-			}
+			change: () => {}
 		} );
 
 		this.colorPicker.init( false, options );
+
+		// Add change event after initialize to prevent, programtic change events frm changing colors.
+		this.colorPicker.$input.iris( 'option', 'change', ( e, ui ) => {
+			this.shadowColor = ui.color.toString();
+			this._updateCss();
+		} );
+	}
+
+	/**
+	 * Update the input for shadow type.
+	 *
+	 * @since 1.0.0
+	 */
+	updateCheckedSetting() {
+		this.switchControl.$input.prop( 'checked', this.currentValues.inset );
+	}
+
+	/**
+	 * Update the property for shadow type.
+	 *
+	 * @since 1.0.0
+	 */
+	updateShadowType() {
+		this.shadowType = this.switchControl.isEnabled() ? 'inset' : '';
 	}
 
 	/**
@@ -121,10 +168,10 @@ export class BoxShadow extends MultiSlider {
 	 */
 	_setupOutlineSwitch() {
 		this.switchControl.render();
-		this.switchControl.$input.prop( 'checked', this.currentValues.inset );
+		this.updateCheckedSetting();
 
 		this.switchControl.$input.on( 'change', () => {
-			this.shadowType = this.switchControl.isEnabled() ? 'inset' : '';
+			this.updateShadowType();
 			this._updateCss();
 		} );
 	}

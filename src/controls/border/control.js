@@ -60,22 +60,29 @@ export class Border extends MultiSlider {
 	 */
 	bindEvents() {
 		this._bindTypeChange();
-		this.setDefaultType( this.$target.css( 'border-style' ) );
+		this._setType().change();
 	}
 
 	/**
-	 * Set the default type.
+	 * Set the input type to the type of the target.
 	 *
 	 * @since 1.0.0
-	 *
-	 * @param {string} style Border style.
 	 */
-	setDefaultType( style ) {
-		this.$typeControl
+	_setType() {
+		return this.$typeControl
 			.find( 'input' )
-			.filter( '[value="' + style + '"]' )
-			.prop( 'checked', true )
-			.change();
+			.filter( '[value="' + this.$target.css( 'border-style' ) + '"]' )
+			.prop( 'checked', true );
+	}
+
+	/**
+	 * Refresh the values of the input to the values of the target.
+	 *
+	 * @since 1.0.0
+	 */
+	refreshValues() {
+		super.refreshValues();
+		this._setType();
 	}
 
 	/**
@@ -88,7 +95,7 @@ export class Border extends MultiSlider {
 			let $this = $( e.target ),
 				val = $this.val();
 
-			this.$target.css( {
+			this.applyCssRules( {
 				'border-style': val
 			} );
 
