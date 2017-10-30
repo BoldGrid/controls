@@ -178,7 +178,7 @@ export class MultiSlider {
 			sliderControl.render();
 
 			this.$sliderGroup.append( sliderControl.$control );
-			sliderControl.$input.after( '<a class="link" href="#">' + linkSvg + '</a>' );
+			sliderControl.$input.after( '<a class="link" href="#" title="Link all sliders">' + linkSvg + '</a>' );
 
 			this.sliders[slider.name] = sliderControl;
 

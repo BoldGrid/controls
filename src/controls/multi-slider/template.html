@@ -1,5 +1,5 @@
 <div class="directional-control <%=control.name %>-control boldgrid-control" data-linkable="<%= control.linkable %>">
-	<h3 class="control-name"><%=control.title %><a href="#" class="refresh"><%= svg.refresh %></a></h3>
+	<h3 class="control-name"><%=control.title %><a href="#" class="refresh" title="Reset to Default"><%= svg.refresh %></a></h3>
 	<p class="units">
 		<% if ( -1 !== control.units.enabled.indexOf( 'px' ) ) { %>
 		<label title="Pixel Unit"><input type="radio" name="<%=control.name %>-unit" class="unit" value="px"><span>PX</span></label>

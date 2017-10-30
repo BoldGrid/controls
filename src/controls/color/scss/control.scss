@@ -69,6 +69,10 @@
 	}
 }
 
+.palette-action-buttons  .bg-color-picker-control input {
+	display: inline-block;
+}
+
 .bg-lock-controls > .color-lock,
 .boldgrid-active-palette .boldgrid-palette-colors,
 .boldgrid-palette-colors > span {
