@@ -7,6 +7,7 @@ const MinifyPlugin = require( 'babel-minify-webpack-plugin' );
 
 const srcDir = path.resolve( __dirname, '..', 'src' );
 const distDir = path.resolve( __dirname, '..', 'dist' );
+const nodeModulesDir = path.resolve( require.resolve( '@material/switch/mdc-switch.scss' ), '..', '..', '..' );
 
 module.exports = {
 	context: srcDir,
@@ -68,7 +69,7 @@ module.exports = {
 						{
 							loader: 'sass-loader',
 							options: {
-								includePaths: [ 'node_modules' ]
+								includePaths: [ nodeModulesDir ]
 							}
 						},
 						{
