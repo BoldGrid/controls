@@ -69,9 +69,12 @@ export class Border extends MultiSlider {
 	 * @since 1.0.0
 	 */
 	_setType() {
+		let setting = this.$target.css( 'border-style' );
+		setting = 'none' !== setting ? setting : '';
+
 		return this.$typeControl
-			.find( 'input' )
-			.filter( '[value="' + this.$target.css( 'border-style' ) + '"]' )
+			.find( '.border-type-control input' )
+			.filter( '[value="' + setting + '"]' )
 			.prop( 'checked', true );
 	}
 
@@ -81,8 +84,25 @@ export class Border extends MultiSlider {
 	 * @since 1.0.0
 	 */
 	refreshValues() {
+		let $radio;
 		super.refreshValues();
-		this._setType();
+		$radio = this._setType();
+		this._toggleWidthControl( $radio.val() );
+	}
+
+	/**
+	 * Toggle the visibility of the width controls.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  {string} val Current value of the control.
+	 */
+	_toggleWidthControl( val ) {
+		if ( val ) {
+			this.$control.show();
+		} else {
+			this.$control.hide();
+		}
 	}
 
 	/**
@@ -99,13 +119,8 @@ export class Border extends MultiSlider {
 				'border-style': val
 			} );
 
+			this._toggleWidthControl( val );
 			this.$control.trigger( 'type-change', val );
-
-			if ( val ) {
-				this.$control.show();
-			} else {
-				this.$control.hide();
-			}
 		} );
 	}
 }

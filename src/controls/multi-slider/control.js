@@ -119,7 +119,7 @@ export class MultiSlider {
 		let values = {};
 
 		for ( let name in this.sliders ) {
-			values[name] = this.sliders[name].$slider.slider( 'value' );
+			values[name] = this.sliders[name].$slider.slider( 'value' ) || 0;
 		}
 
 		return values;
