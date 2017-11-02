@@ -11,6 +11,7 @@
     "bulma": "^0.4.3",
     "color": "git+https://github.com/Automattic/Color.js.git",
     "color-js": "^1.0.4",
+    "coveralls": "^3.0.0",
     "deepmerge": "^2.0.0",
     "eslint-config-wordpress": "^2.0.0",
     "google-material-color-palette-json": "^2.0.1",
@@ -18,6 +19,7 @@
     "http-server": "^0.10.0",
     "jquery": "1.*",
     "jshint-loader": "^0.8.4",
+    "karma-coverage": "^1.1.1",
     "material-components-web": "^0.23.0",
     "normalize.css": "^7.0.0",
     "npm-run-all": "^4.1.1",
@@ -82,10 +84,10 @@
     "build": "npm run rimraf ./dist && NODE_ENV=production webpack --colors",
     "devserver": "webpack-dev-server --colors --open",
     "karmadev": "karma start karma.config.js",
-    "karma": "karma start karma.config.js --single-run",
+    "test": "karma start karma.config.js --single-run",
     "dev": "npm-run-all -p devserver karmadev",
-    "rimraf": "rimraf",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "coverage": "cat coverage/report-lcovonly.txt | coveralls",
+    "rimraf": "rimraf"
   },
   "bugs": {
     "url": "https://github.com/BoldGrid/controls/issues"

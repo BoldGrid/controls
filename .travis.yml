@@ -1,7 +1,6 @@
 language: node_js
 node_js:
-  - "7.1.0"
-before_script:
-  - npm install
+  - "8"
 script:
-    npm run karma
+    npm test
+    npm run coverage

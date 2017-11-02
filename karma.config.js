@@ -5,7 +5,7 @@ const src = path.resolve( __dirname, '..', 'src' );
 module.exports = function( config ) {
 	config.set( {
 		frameworks: [ 'jasmine', 'es6-shim' ],
-		reporters: [ 'spec' ],
+		reporters: [ 'spec', 'coverage' ],
 		browsers: [ 'PhantomJS' ],
 		colors: true,
 
@@ -28,8 +28,21 @@ module.exports = function( config ) {
 		preprocessors: {
 
 			// Add webpack as preprocessor
-			'test/*_test.js': [ 'webpack' ],
-			'test/**/*_test.js': [ 'webpack' ]
+			'test/*_test.js': [ 'webpack', 'coverage' ],
+			'test/**/*_test.js': [ 'webpack', 'coverage' ]
+		},
+
+		// optionally, configure the reporter
+		coverageReporter: {
+			type: 'html',
+			dir: 'coverage/',
+			reporters: [
+
+				// reporters not supporting the `file` property
+				{ type: 'html', subdir: 'report-html' },
+				{ type: 'lcovonly', subdir: '.', file: 'report-lcovonly.txt' },
+				{ type: 'lcov', subdir: 'report-lcov' }
+			]
 		},
 
 		webpack: require( './config/webpack.test.js' ),
