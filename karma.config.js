@@ -2,6 +2,8 @@
 const path = require( 'path' );
 const src = path.resolve( __dirname, '..', 'src' );
 
+// Currently using https://github.com/istanbuljs/babel-plugin-istanbul,
+// Switch to: https://github.com/webpack-contrib/istanbul-instrumenter-loader
 module.exports = function( config ) {
 	config.set( {
 		frameworks: [ 'jasmine', 'es6-shim' ],
