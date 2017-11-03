@@ -28,17 +28,17 @@ module.exports = function( config ) {
 		preprocessors: {
 
 			// Add webpack as preprocessor
-			'test/*_test.js': [ 'webpack', 'coverage' ],
-			'test/**/*_test.js': [ 'webpack', 'coverage' ]
+			'test/*_test.js': [ 'webpack', 'sourcemap' ],
+			'test/**/*_test.js': [ 'webpack', 'sourcemap' ]
 		},
 
-		// optionally, configure the reporter
+		// Optionally, configure the reporter
 		coverageReporter: {
 			type: 'html',
 			dir: 'coverage/',
 			reporters: [
 
-				// reporters not supporting the `file` property
+				// Reporters not supporting the `file` property
 				{ type: 'html', subdir: 'report-html' },
 				{ type: 'lcovonly', subdir: '.', file: 'report-lcovonly.txt' },
 				{ type: 'lcov', subdir: 'report-lcov' }
