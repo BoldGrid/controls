@@ -5,6 +5,8 @@
 
 # Controls
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/BoldGrid/controls.svg)](https://greenkeeper.io/)
+
 ## Application
 https://boldgrid-controls.herokuapp.com/ @master
 
