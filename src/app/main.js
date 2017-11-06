@@ -92,8 +92,6 @@ export class Application {
 			$tab = $( '.colors-tab' ),
 			colorPalette = new ColorPalette();
 
-		//TestData = require( '../../test/data/palette-source-1.json' );
-
 		colorPalette.init();
 
 		$control = colorPalette.render( $tab.find( '.control' ) );
@@ -105,14 +103,13 @@ export class Application {
 				scss: data.scss
 			} );
 
+			$tab.find( '.css' ).show();
+
 			if ( BOLDGRID.COLOR_PALETTE.Modify.state  ) {
 				let savableState = this.paletteConfig.createSavableState( BOLDGRID.COLOR_PALETTE.Modify.state );
 				console.log( 'State', savableState );
 				console.log( 'State', JSON.stringify( savableState ) );
 			}
-
-			$tab.find( '.css .content' ).html( data.result.text );
-			$tab.find( '.scss .content' ).html( data.scss );
 		} );
 	}
 }

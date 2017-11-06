@@ -32,10 +32,8 @@
 		padding: 12px;
 	}
 
-	.control,
-	.css,
-	.scss {
-		width: 33.333%;
+	> * {
+		width: 50%;
 		margin: 0 auto;
 	}
 
@@ -45,6 +43,19 @@
 	}
 	.button-previews button {
 		margin-top: 10px;
+	}
+
+	.palette-action-buttons {
+		button,
+		input[type="button"] {
+			padding: 10px;
+			border: none;
+			cursor: pointer;
+		}
+	}
+
+	.css {
+		display: none;
 	}
 }
 
