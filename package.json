@@ -1,5 +1,5 @@
 {
-  "version": "0.8.3",
+  "version": "0.8.4",
   "author": "Rafael Ramos <rramo012@gmail.com>",
   "bundleDependencies": false,
   "dependencies": {
@@ -99,7 +99,9 @@
   "directories": {
     "test": "test"
   },
-	"greenkeeper": {
-		"ignore": ["jquery"]
-	}
+  "greenkeeper": {
+    "ignore": [
+      "jquery"
+    ]
+  }
 }
