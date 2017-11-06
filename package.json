@@ -98,5 +98,8 @@
   "homepage": "https://github.com/BoldGrid/controls#readme",
   "directories": {
     "test": "test"
-  }
+  },
+	"greenkeeper": {
+		"ignore": ["jquery"]
+	}
 }
