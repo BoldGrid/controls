@@ -38,7 +38,8 @@ export class SassCompiler {
 		this.compiler.options( {
 			comments: false,
 			indent: '',
-			linefeed: ''
+			linefeed: '',
+			style: Sassjs.style.compressed
 		} );
 
 		BOLDGRID.Sass = this;
