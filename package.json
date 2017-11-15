@@ -90,8 +90,7 @@
 		"prod": "http-server dist/ -p 8000 -o",
 		"precommit": "npm test && lint-staged",
 		"format": "npm run format-sass && npm run format-js",
-		"format-js":
-			"prettier-eslint \"src/**/*.js\" --use-tabs --print-width 100 --bracket-spacing true --single-quote --write",
+		"format-js": "prettier-eslint \"src/**/*.js\" --write",
 		"format-sass": "stylelint \"src/**/*.scss\" --fix",
 		"postinstall": "npm run build",
 		"build": "npm run rimraf ./dist && NODE_ENV=production webpack --colors",
