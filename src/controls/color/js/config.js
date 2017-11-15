@@ -44,7 +44,7 @@ export class Config {
 			config.palettes = config.palettes.concat( presetPalettes );
 		}
 
-		config.palettes[0]['is_active'] = true;
+		config.palettes[0].isActive = true;
 		config['color-palette-size'] = config.palettes[0].colors.length;
 		config['palette_formats'] = [ 'palette-primary' ];
 
@@ -79,8 +79,8 @@ export class Config {
 	createPalette( colors ) {
 		let paletteConfig = _.defaults( colors, {
 			default: true,
-			copy_on_mod: true,
-			is_active: false,
+			copyOnMod: true,
+			isActive: false,
 			format: 'palette-primary',
 			colors: this.material.getPalette( this.defaultColor )
 		} );
@@ -119,7 +119,7 @@ export class Config {
 
 		// Set the active palette.
 		// @todo: correctly identify if the active palette is one of the default palettes.
-		palette['is_active'] = true;
+		palette.isActive = true;
 		palette.default = false;
 		config.palettes[0] = this.createPalette( palette );
 
@@ -140,7 +140,7 @@ export class Config {
 			*/
 
 			formattedPalette.default = false;
-			formattedPalette['copy_on_mod'] = false;
+			formattedPalette.copyOnMod = false;
 			config['saved_palettes'].push( formattedPalette );
 		}
 
@@ -160,7 +160,7 @@ export class Config {
 	 */
 	_createDefault( color ) {
 		return this.createPalette( {
-			is_active: false,
+			isActive: false,
 			colors: this.material.getPalette( color ),
 			'neutral-color': 'white'
 		} );

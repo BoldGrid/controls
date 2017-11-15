@@ -1,7 +1,6 @@
 var $ = window.jQuery;
 
 import '../scss/control.scss';
-import SampleConfig from './sampleConfig.js';
 import './control.js';
 import { Config } from './config.js';
 import { Button as ButtonColors } from './button.js';
