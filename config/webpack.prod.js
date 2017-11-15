@@ -46,9 +46,7 @@ module.exports = {
 			{
 				test: /\.js$/,
 				use: [ 'babel-loader' ],
-				include: [
-					srcDir
-				]
+				include: [ srcDir ]
 			},
 			{
 				test: /\.js$/,
@@ -79,9 +77,7 @@ module.exports = {
 						{
 							loader: 'postcss-loader',
 							options: {
-								plugins: ( loader ) => [
-									require( 'autoprefixer' )()
-								]
+								plugins: loader => [ require( 'autoprefixer' )() ]
 							}
 						}
 					]
