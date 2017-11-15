@@ -3,12 +3,13 @@
 .bg-pagination {
 	display: flex;
 
-	&[data-page="0"] {
+	&[data-page='0'] {
 		.prev {
 			visibility: hidden;
 		}
 	}
-	&[data-page="last"] {
+
+	&[data-page='last'] {
 		.next {
 			visibility: hidden;
 		}
@@ -28,7 +29,7 @@
 		user-select: none;
 
 		&:hover {
-			color: darken( $accentColor, 20% );
+			color: darken($accentColor, 20%);
 		}
 	}
 }

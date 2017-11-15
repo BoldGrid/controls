@@ -5,9 +5,9 @@
 
 	.refresh svg {
 		width: 19px;
-		margin: 0 20px 0;
+		margin: 0 20px;
 		position: absolute;
-		transition: fill .25s;
+		transition: fill 0.25s;
 
 		&:hover {
 			fill: $accentColor;
@@ -18,7 +18,7 @@
 		font-size: 12px;
 		position: absolute;
 		right: 28px;
-	    top: -10px;
+		top: -10px;
 		color: currentColor;
 
 		label {
@@ -40,7 +40,7 @@
 		width: 20px;
 		margin: 0 8px;
 		transform: translateY(3px);
-		transition: fill .5s;
+		transition: fill 0.5s;
 		fill: $primaryColor;
 
 		&.linked {
@@ -48,9 +48,10 @@
 		}
 	}
 
-	&:not([data-linkable="false"]) .slider-control:first-of-type .link {
+	&:not([data-linkable='false']) .slider-control:first-of-type .link {
 		visibility: visible;
 	}
+
 	.control-name {
 		font-size: 15px;
 		margin-bottom: 5px;

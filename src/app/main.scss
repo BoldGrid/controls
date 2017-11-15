@@ -20,7 +20,7 @@
 	}
 }
 
-// Colors tab
+// colors tab.
 .bg-tabs-content.current.colors-tab {
 	display: flex;
 
@@ -41,13 +41,14 @@
 		margin: 0 auto;
 		max-width: 350px;
 	}
+
 	.button-previews button {
 		margin-top: 10px;
 	}
 
 	.palette-action-buttons {
 		button,
-		input[type="button"] {
+		input[type='button'] {
 			padding: 10px;
 			border: none;
 			cursor: pointer;
@@ -68,10 +69,10 @@
 		margin: 0 auto;
 	}
 
-	.control, .log {
+	.control,
+	.log {
 		flex: 1;
 	}
-
 }
 
 .bg-tabs-content.directional-controls.current {
@@ -85,7 +86,7 @@
 
 		.control-wrap {
 			width: 25%;
-			padding: 20px 20px;
+			padding: 20px;
 		}
 	}
 
@@ -93,5 +94,4 @@
 		width: 25%;
 		height: 400px;
 	}
-
 }

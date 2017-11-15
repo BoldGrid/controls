@@ -72,6 +72,12 @@ module.exports = {
 						loader: 'css-loader'
 					},
 					{
+						loader: 'postcss-loader',
+						options: {
+							plugins: loader => [ require( 'stylelint' )() ]
+						}
+					},
+					{
 						loader: 'sass-loader',
 						options: {
 							includePaths: [ 'node_modules' ]

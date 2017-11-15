@@ -12,10 +12,12 @@
 
 .palette-action-buttons {
 	margin-top: 12px;
+
 	.boldgrid-neutral-color {
 		display: none;
 	}
 }
+
 .palette-action-buttons .button.palette-creator-button {
 	width: 100%;
 	margin: 24px auto;
@@ -42,6 +44,7 @@
 	margin: 2px;
 	margin-bottom: 5px;
 	text-align: center;
+
 	&:hover {
 		cursor: pointer;
 		border-color: orange;
@@ -63,13 +66,14 @@
 .color-lock {
 	display: inline-block;
 	text-align: center;
+
 	> span {
 		left: 2px;
 		position: relative !important;
 	}
 }
 
-.palette-action-buttons  .bg-color-picker-control input {
+.palette-action-buttons .bg-color-picker-control input {
 	display: inline-block;
 }
 
@@ -94,6 +98,7 @@
 				margin-left: 3px;
 			}
 		}
+
 		&-clear {
 			display: none;
 		}
@@ -113,6 +118,7 @@
 		width: 260px;
 	}
 }
+
 /*****************************************************
 ************Inactive Color Palette Rules****************
 ******************************************************/
@@ -134,6 +140,7 @@
 	border: 2px solid;
 	border-color: #e1e1e1;
 	height: 33px;
+
 	&:hover {
 		border: 2px solid;
 		border-color: #fb5f14;
@@ -149,21 +156,25 @@
 	border-color: #e1e1e1;
 	height: 84px;
 	margin: 15px auto;
+
 	li {
-		margin-top: 0px;
-		margin-bottom: 0px;
+		margin-top: 0;
+		margin-bottom: 0;
 		cursor: move;
 		border: 1px solid white;
 		box-sizing: border-box;
+
 		&:first-of-type {
-			margin-top: 0px;
+			margin-top: 0;
 		}
 	}
+
 	.boldgrid-palette-colors {
 		display: inline-block;
 		height: 100%;
 		position: relative;
 	}
+
 	.ui-sortable-helper,
 	.active-palette-section:not(.ui-sortable-placeholder) {
 		border: 2px solid #fb5f14;
@@ -176,11 +187,14 @@
 ******************************************************/
 .boldgrid-advanced-options {
 	margin-top: 10px;
+
 	&-label {
 		border-bottom: 1px solid lightgray;
+
 		&:hover {
 			border-color: darkgray;
 		}
+
 		.dashicons-arrow-down {
 			float: right;
 		}
@@ -190,8 +204,8 @@
 /*****************************************************
 ************Palette Dashicons Generate Mode****************
 ******************************************************/
-.boldgrid-neutral-color.active-palette-section:before,
-.boldgrid-active-palette .boldgrid-palette-colors:before {
+.boldgrid-neutral-color.active-palette-section::before,
+.boldgrid-active-palette .boldgrid-palette-colors::before {
 	content: '\f140';
 	position: absolute;
 	display: none;
@@ -210,12 +224,13 @@
 	top: -25px;
 	transform: translateX(-50%);
 }
-.boldgrid-active-palette .boldgrid-palette-colors.ui-sortable-helper:before,
-.boldgrid-active-palette .active-palette-section:not(.ui-sortable-placeholder).boldgrid-palette-colors:before {
+
+.boldgrid-active-palette .boldgrid-palette-colors.ui-sortable-helper::before,
+.boldgrid-active-palette .active-palette-section:not(.ui-sortable-placeholder).boldgrid-palette-colors::before {
 	display: inline-block;
 }
 
-.boldgrid-neutral-color.active-palette-section:before {
+.boldgrid-neutral-color.active-palette-section::before {
 	content: '\f141';
 	display: inline-block;
 	left: auto;
@@ -223,8 +238,8 @@
 	top: 2px;
 }
 
-.boldgrid-active-palette .boldgrid-palette-colors.ui-sortable-helper:before,
-.boldgrid-active-palette .boldgrid-palette-colors:hover:before {
+.boldgrid-active-palette .boldgrid-palette-colors.ui-sortable-helper::before,
+.boldgrid-active-palette .boldgrid-palette-colors:hover::before {
 	content: '↔';
 	display: inline-block;
 	font-size: 24px;
@@ -234,6 +249,7 @@
 .boldgrid-copy-palette:hover {
 	color: #f95b26;
 }
+
 .boldgrid-remove-palette:hover {
 	color: red;
 }
@@ -304,9 +320,11 @@
 .palette-generate-mode .bg-lock-controls {
 	display: flex;
 }
+
 .palette-generate-mode .generate-palettes-selection-section {
 	display: block;
 }
+
 .palette-generate-mode .generate-palettes-selection-section {
 	border: 1px solid lightgrey;
 	padding: 5px;
@@ -332,10 +350,11 @@
 	opacity: 1;
 }
 
-.palette-generate-mode .bg-lock-controls .selected-for-generation .dashicons:before {
+.palette-generate-mode .bg-lock-controls .selected-for-generation .dashicons::before {
 	content: '\f160';
 	color: #f95b26;
 }
+
 /*****************************************************
 ************Secondary Color Picker Colors****************
 ******************************************************/
@@ -352,17 +371,21 @@
 		margin-bottom: 5px;
 	}
 }
+
 .boldgrid-color-palette-wrapper {
 	.iris-slider.iris-strip {
 		width: 17px !important;
 	}
+
 	.iris-picker .iris-square {
 		margin-right: 9px;
 	}
+
 	.iris-border .iris-palette-container {
 		left: 32px;
 	}
 }
+
 /*****************************************************
 ************Color Palette Transparency Code****************
 ******************************************************/
@@ -429,21 +452,24 @@
 	padding-left: 5px;
 	width: 14px;
 	cursor: pointer;
+
 	div {
-		margin: 0px auto;
+		margin: 0 auto;
 		position: relative;
 	}
+
 	.top {
 		width: 4px;
 		height: 8px;
 		border-radius: 10px;
 		border: 3px solid #555;
 		border-bottom: 4px solid transparent;
-		-webkit-transform: translate(7px, 0px); /* Safari */
-		-moz-transform: translate(7px, 0px); /* Firefox */
-		-ms-transform: translate(7px, 0px); /* IE 9 */
-		transform: translate(7px, 0px);
+		-webkit-transform: translate(7px, 0); /* Safari */
+		-moz-transform: translate(7px, 0); /* Firefox */
+		-ms-transform: translate(7px, 0); /* IE 9 */
+		transform: translate(7px, 0);
 	}
+
 	.mid {
 		background: #eee;
 		border-left: 3px solid #555;
@@ -452,11 +478,12 @@
 		height: 3px;
 		top: -9px;
 		z-index: 99;
-		-webkit-transform: translate(7px, 0px); /* Safari */
-		-moz-transform: translate(7px, 0px); /* Firefox */
-		-ms-transform: translate(7px, 0px); /* IE 9 */
-		transform: translate(7px, 0px);
+		-webkit-transform: translate(7px, 0); /* Safari */
+		-moz-transform: translate(7px, 0); /* Firefox */
+		-ms-transform: translate(7px, 0); /* IE 9 */
+		transform: translate(7px, 0);
 	}
+
 	.bottom {
 		height: 13px;
 		margin: -10px auto;
@@ -469,6 +496,7 @@
 		-moz-user-select: none;
 		-ms-user-select: none;
 		user-select: none;
+
 		.keyhole-top {
 			width: 4px;
 			height: 4px;
@@ -476,6 +504,7 @@
 			background: #eee;
 			margin: 3px auto 0;
 		}
+
 		.keyhole-bottom {
 			width: 2px;
 			height: 6px;
@@ -492,21 +521,24 @@
 		.top {
 			border: 3px solid #f95b26;
 		}
+
 		.mid {
 			border-left: 3px solid #f95b26;
 			border-right: 3px solid #f95b26;
 		}
+
 		.bottom {
 			background: #f95b26;
 		}
 	}
+
 	.unlock {
 		> div.top,
 		div.mid {
-			-webkit-transform: translate(0px, 0px); /* Safari */
-			-moz-transform: translate(0px, 0px); /* Firefox */
-			-ms-transform: translate(0px, 0px); /* IE 9 */
-			transform: translate(0px, 0px);
+			-webkit-transform: translate(0, 0); /* Safari */
+			-moz-transform: translate(0, 0); /* Firefox */
+			-ms-transform: translate(0, 0); /* IE 9 */
+			transform: translate(0, 0);
 		}
 	}
 }

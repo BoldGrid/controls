@@ -22,29 +22,32 @@
 				position: relative;
 				display: block;
 
-				input:after {
+				input::after {
 					content: '';
-				    max-width: 100px;
-				    border-top: 4px dashed black;
-				    position: absolute;
+					max-width: 100px;
+					border-top: 4px dashed black;
+					position: absolute;
 					right: 40px;
-				    width: 33%;
-				    top: 6px;
+					width: 33%;
+					top: 6px;
 					border-bottom: transparent;
-				    border-left: transparent;
-				    border-right: transparent;
+					border-left: transparent;
+					border-right: transparent;
 				}
 
-				input[value="solid"]:after {
+				input[value='solid']::after {
 					border-style: solid;
 				}
-				input[value="dotted"]:after {
+
+				input[value='dotted']::after {
 					border-style: dotted;
 				}
-				input[value="double"]:after {
+
+				input[value='double']::after {
 					border-style: double;
 				}
-				input[value=""]:after {
+
+				input[value='']::after {
 					border-color: transparent;
 				}
 			}

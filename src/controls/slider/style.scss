@@ -1,7 +1,6 @@
 @import '../shared/scss/variables.scss';
 
 .boldgrid-control.slider-control {
-
 	label {
 		font-size: 13px;
 		font-variant: small-caps;
@@ -33,13 +32,13 @@
 
 .boldgrid-control .ui-slider-handle {
 	border-radius: 50%;
-    border: 5px solid #f7f7f7;
-    background: #f95b26;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.28);
+	border: 5px solid #f7f7f7;
+	background: #f95b26;
+	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.28);
 	width: 10px;
-    height: 10px;
+	height: 10px;
 	cursor: pointer;
-	transition: background .25s;
+	transition: background 0.25s;
 
 	&.ui-state-focus {
 		background-color: $primaryColor;
