@@ -105,7 +105,7 @@ export class Application {
 
 			$tab.find( '.css' ).show();
 
-			if ( BOLDGRID.COLOR_PALETTE.Modify.state  ) {
+			if ( BOLDGRID.COLOR_PALETTE.Modify.state ) {
 				let savableState = this.paletteConfig.createSavableState( BOLDGRID.COLOR_PALETTE.Modify.state );
 				console.log( 'State', savableState );
 				console.log( 'State', JSON.stringify( savableState ) );
