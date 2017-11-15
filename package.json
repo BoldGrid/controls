@@ -89,11 +89,13 @@
 	"scripts": {
 		"start": "http-server dist/ -p $PORT",
 		"prod": "http-server dist/ -p 8000 -o",
-		"format":
+		"precommit": "npm test && lint-staged",
+		"format": "npm run format-sass && npm run format-js",
+		"format-js":
 			"prettier-eslint \"src/**/*.js\" --use-tabs --print-width 100 --bracket-spacing true --single-quote --write",
+		"format-sass": "stylelint \"src/**/*.scss\" --fix",
 		"postinstall": "npm run build",
 		"build": "npm run rimraf ./dist && NODE_ENV=production webpack --colors",
-		"lint-sass": "stylelint \"src/**/*.scss\" --syntax scss --fix",
 		"devserver": "webpack-dev-server --colors --open",
 		"eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check",
 		"karmadev": "karma start karma.config.js",
@@ -101,6 +103,9 @@
 		"dev": "npm-run-all -p devserver karmadev",
 		"coverage": "cat coverage/report-lcovonly.txt | coveralls",
 		"rimraf": "rimraf"
+	},
+	"lint-staged": {
+		"*.{js,json,scss}": ["npm run format", "git add"]
 	},
 	"bugs": {
 		"url": "https://github.com/BoldGrid/controls/issues"
