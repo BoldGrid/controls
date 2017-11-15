@@ -211,7 +211,7 @@ export class Selection {
 		let neutral = colors.pop();
 
 		return {
-			'colors': colors,
+			colors: colors,
 			'neutral-color': neutral
 		};
 	}

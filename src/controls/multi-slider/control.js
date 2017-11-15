@@ -178,7 +178,9 @@ export class MultiSlider {
 			sliderControl.render();
 
 			this.$sliderGroup.append( sliderControl.$control );
-			sliderControl.$input.after( '<a class="link" href="#" title="Link all sliders">' + linkSvg + '</a>' );
+			sliderControl.$input.after(
+				'<a class="link" href="#" title="Link all sliders">' + linkSvg + '</a>'
+			);
 
 			this.sliders[slider.name] = sliderControl;
 
@@ -227,7 +229,7 @@ export class MultiSlider {
 	}
 
 	/**
-	* Update slider values WITH triggering css updates.
+	 * Update slider values WITH triggering css updates.
 	 *
 	 * @since 1.0.0
 	 */
@@ -276,7 +278,7 @@ export class MultiSlider {
 	_setDefaultLinkedState() {
 		if ( this.controlOptions.control.linkable ) {
 			let values = _.unique( _.values( this.getValues() ) );
-			this.slidersLinked = ( 1 === values.length );
+			this.slidersLinked = 1 === values.length;
 		}
 	}
 

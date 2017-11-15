@@ -12,7 +12,7 @@ export { Slider } from './slider';
 export { Updater as StyleUpdater } from './style';
 
 export default {
-	'Color': require( './color' ),
-	'Style': require( './style' ),
-	'Padding': require( './padding' )
+	Color: require( './color' ),
+	Style: require( './style' ),
+	Padding: require( './padding' )
 };

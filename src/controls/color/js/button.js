@@ -2,7 +2,6 @@ import { SassCompiler } from '../../style/js/sass-compiler';
 import { Generate } from './generate.js';
 
 export class Button {
-
 	constructor( options ) {
 		options = options || {};
 
@@ -32,8 +31,8 @@ export class Button {
 		 * @type {Array}
 		 */
 		this._defaultColors = [
-			{ 'name': 'color-dark', val: '#252525' },
-			{ 'name': 'color-light', val: '#eff0f1' }
+			{ name: 'color-dark', val: '#252525' },
+			{ name: 'color-light', val: '#eff0f1' }
 		];
 
 		if ( ! options.sassCompiler ) {
@@ -122,7 +121,8 @@ export class Button {
 	getCompileString( colorsState ) {
 		let variablesString = this.formatColorSass( this.convertColorState( colorsState ) ),
 			namespaceString = '$ubtn-namespace: \'' + this.namespace + '\';',
-			compileString = namespaceString + variablesString + '@import "color-palette-scss/buttons/buttons.scss";';
+			compileString =
+				namespaceString + variablesString + '@import "color-palette-scss/buttons/buttons.scss";';
 
 		return compileString;
 	}
@@ -136,11 +136,10 @@ export class Button {
 	 * @param  {Function} cb      Callback for the complete process.
 	 */
 	compile( options, cb ) {
-		this.sassCompiler.compiler.compile( compileString, ( result ) => {
+		this.sassCompiler.compiler.compile( compileString, result => {
 			cb( result );
 		} );
 	}
-
 }
 
 export { Button as default };

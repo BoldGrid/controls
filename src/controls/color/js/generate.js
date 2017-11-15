@@ -7,7 +7,6 @@ import ColorPalettes from '../config/color-lover.js';
 import BrehautColorJs from 'color-js/color';
 
 export class Generate {
-
 	constructor() {
 
 		/**
@@ -51,20 +50,12 @@ export class Generate {
 			'tetradicScheme'
 		];
 
-		this.fillPaletteActions = [
-			'compliment',
-			'blend',
-			'copy'
-		];
+		this.fillPaletteActions = [ 'compliment', 'blend', 'copy' ];
 
 		/**
 		 * Methods used to randomize a palette
 		 */
-		this.methods = [
-			'saturateByAmount',
-			'lightenByAmount',
-			'shiftHue'
-		];
+		this.methods = [ 'saturateByAmount', 'lightenByAmount', 'shiftHue' ];
 
 		/**
 		 * List of predefined neutral colors.
@@ -137,7 +128,6 @@ export class Generate {
 	 * @return string css value of a color.
 	 */
 	generateNeutralColor( palette ) {
-
 		let random = Math.random(),
 			neutralColor = null,
 			randomLimit = 0.5,
@@ -146,11 +136,9 @@ export class Generate {
 			brehautColor;
 
 		if ( random > randomLimit ) {
-
 			paletteColor = _.sample( palette );
 			brehautColor = BrehautColorJs( paletteColor );
 			neutralColor = brehautColor.setLightness( neutralLightness ).toCSS();
-
 		} else {
 			neutralColor = _.sample( this.neutralColors );
 		}
@@ -168,9 +156,8 @@ export class Generate {
 	 * @return array
 	 */
 	colorDiff( colorA, colorB ) {
-
 		colorA = BrehautColorJs( colorA ).toHSL();
-		colorB =  BrehautColorJs( colorB ).toHSL();
+		colorB = BrehautColorJs( colorB ).toHSL();
 
 		let hueDiff = colorA.hue - colorB.hue,
 			saturationDiff = colorA.saturation - colorB.saturation,
@@ -181,10 +168,10 @@ export class Generate {
 			totalPercentageDiff = huePercentageDiff + saturationPercentageDiff + lightnessPercentageDiff;
 
 		return {
-			'hue': hueDiff,
-			'saturationDiff': saturationDiff,
-			'lightnessDiff': lightnessDiff,
-			'totalPercentageDiff': totalPercentageDiff
+			hue: hueDiff,
+			saturationDiff: saturationDiff,
+			lightnessDiff: lightnessDiff,
+			totalPercentageDiff: totalPercentageDiff
 		};
 	}
 
@@ -202,7 +189,6 @@ export class Generate {
 		$.each( palette, function( testIndex, testColor ) {
 			$.each( palette, function( index, color ) {
 				if ( color === testColor && index !== testIndex ) {
-
 					if ( ! matches[color] ) {
 						matches[color] = [];
 					}
@@ -234,7 +220,7 @@ export class Generate {
 	arrayMove( array, newIndex, oldIndex ) {
 		if ( newIndex >= array.length ) {
 			let k = newIndex - array.length;
-			while ( ( k-- ) + 1 ) {
+			while ( k-- + 1 ) {
 				array.push( undefined );
 			}
 		}
@@ -258,8 +244,8 @@ export class Generate {
 		if ( false === $.isEmptyObject( matches ) ) {
 			$.each( matches, function() {
 				relations.push( {
-					'type': 'match',
-					'values': this
+					type: 'match',
+					values: this
 				} );
 			} );
 		}
@@ -293,7 +279,7 @@ export class Generate {
 			let validRelationship = true;
 
 			$.each( this.values, function() {
-				if ( paletteData.partialPalette[ this ] ) {
+				if ( paletteData.partialPalette[this] ) {
 					validRelationship = false;
 					return false;
 				}
@@ -310,20 +296,20 @@ export class Generate {
 		 * for all relationship suggestions.
 		 */
 		if ( ! relationsData.length ) {
-			_.each( paletteData.additionalSamplePalattes, ( value ) => {
+			_.each( paletteData.additionalSamplePalattes, value => {
 				relationsData = this.findRelations( value );
 				if ( relationsData.length ) {
 					paletteRelationships = {
-						'type': 'additionalSamplePalattes',
-						'relationsData': relationsData
+						type: 'additionalSamplePalattes',
+						relationsData: relationsData
 					};
 					return false;
 				}
 			} );
 		} else {
 			paletteRelationships = {
-				'type': 'samplePalette',
-				'relationsData': relationsData
+				type: 'samplePalette',
+				relationsData: relationsData
 			};
 		}
 
@@ -343,7 +329,6 @@ export class Generate {
 				copyColorIndex = false;
 
 			if ( 'match' === relationship.type ) {
-
 				$.each( relationship.values, function() {
 					let lockedColorIndex = lockedIndexes.indexOf( this );
 					if ( -1 !== lockedColorIndex ) {
@@ -356,7 +341,8 @@ export class Generate {
 				 * copy it across to the rest of the slots.
 				 */
 				if ( false === copyColorIndex ) {
-					copyColorIndex = relationship.values[ Math.floor( Math.random() * relationship.values.length ) ];
+					copyColorIndex =
+						relationship.values[Math.floor( Math.random() * relationship.values.length )];
 				}
 
 				$.each( relationship.values, function() {
@@ -397,9 +383,9 @@ export class Generate {
 		let relationalPercentage;
 
 		// Percentage of palettes that will be relational if possible.
-		relationalPercentage = ( 2 / 3 );
+		relationalPercentage = 2 / 3;
 		if ( 'additionalSamplePalattes' === type ) {
-			relationalPercentage = ( 1 / 3 );
+			relationalPercentage = 1 / 3;
 		}
 
 		return Math.floor( size * relationalPercentage );
@@ -419,7 +405,7 @@ export class Generate {
 			getPalette;
 
 		getPalette = function() {
-			return ColorPalettes[ this.paletteIndex ].slice( 0 );
+			return ColorPalettes[this.paletteIndex].slice( 0 );
 		};
 
 		_.each( ColorPalettes, ( palette, paletteIndex ) => {
@@ -432,10 +418,10 @@ export class Generate {
 				}
 
 				let relationship = {
-					'paletteIndex': paletteIndex,
-					'colorIndex': colorIndex,
-					'distance': colorDiff,
-					'getPalette': getPalette
+					paletteIndex: paletteIndex,
+					colorIndex: colorIndex,
+					distance: colorDiff,
+					getPalette: getPalette
 				};
 
 				palettes.push( relationship );
@@ -477,10 +463,11 @@ export class Generate {
 		let palettes = [];
 		for ( let i = 0; i < count; i++ ) {
 			let newPalette = this.generatePalette( paletteData );
-			if ( ( 'object' === typeof newPalette ) && newPalette.length ) {
+			if ( 'object' === typeof newPalette && newPalette.length ) {
 				let shouldApplyRelationships =
-					'samplePalette' === paletteRelationships.type && i < relationalCount ||
-					'additionalSamplePalattes' === paletteRelationships.type && ( i >= ( count - relationalCount ) );
+					( 'samplePalette' === paletteRelationships.type && i < relationalCount ) ||
+					( 'additionalSamplePalattes' === paletteRelationships.type &&
+						i >= count - relationalCount );
 
 				if ( shouldApplyRelationships ) {
 					newPalette = this.applyRelationships( newPalette, paletteRelationships, lockedIndexes );
@@ -502,10 +489,9 @@ export class Generate {
 	 * @since 1.2.7
 	 */
 	fixLockedIndex( newPalette, partialPalette ) {
-
 		$.each( partialPalette, function( index ) {
 			if ( this ) {
-				newPalette[ index ] = this;
+				newPalette[index] = this;
 			}
 		} );
 
@@ -532,9 +518,9 @@ export class Generate {
 				let filledPalette = this.generatePaletteFromPartial( colorsPartialPalette.palette );
 				newPalette = this.randomizePalette( filledPalette, colorsPartialPalette.unchangedKeys );
 
-			// If only 1 color is locked.
+				// If only 1 color is locked.
 			} else {
-				let color = colorsPartialPalette.palette[ colorsPartialPalette.generateKeys[0] ];
+				let color = colorsPartialPalette.palette[colorsPartialPalette.generateKeys[0]];
 
 				// Generate list of similar palettes if we don't have 1 saved already.
 				if ( color.toCSS() !== apiColorCount.color ) {
@@ -543,29 +529,32 @@ export class Generate {
 					apiColorCount.paletteCounter = 0;
 				}
 
-				if ( apiColorCount.palettes[ apiColorCount.paletteCounter ] ) {
-					newPalette = apiColorCount.palettes[ apiColorCount.paletteCounter ].getPalette();
-					newPalette = this.arrayMove( newPalette, colorsPartialPalette.generateKeys[0], this.colorIndex );
+				if ( apiColorCount.palettes[apiColorCount.paletteCounter] ) {
+					newPalette = apiColorCount.palettes[apiColorCount.paletteCounter].getPalette();
+					newPalette = this.arrayMove(
+						newPalette,
+						colorsPartialPalette.generateKeys[0],
+						this.colorIndex
+					);
 					newPalette = this.truncateGeneratedPalette( newPalette, colorsPartialPalette.palette );
 					apiColorCount.paletteCounter++;
-
 				} else {
 
 					/*
 					 * Try to generate a palette based on the color api color scheme methods.
 					 * This is almost never used because it requires users to exhaust ~2500 color combinations.
 					 */
-					let random = ( Math.floor( Math.random() * 3 ) + 1 );
+					let random = Math.floor( Math.random() * 3 ) + 1;
 					if ( 1 === random ) {
-						let internalMethod = internalPalettes[ Math.floor( Math.random() * internalPalettes.length ) ];
+						let internalMethod =
+							internalPalettes[Math.floor( Math.random() * internalPalettes.length )];
 
 						let colorPalettes = new Palettes();
-						newPalette = colorPalettes[ internalMethod ]( color );
-
+						newPalette = colorPalettes[internalMethod]( color );
 					} else if ( 2 === random ) {
-						let colorsMethod = colorSchemeMethods[ Math.floor( Math.random() * colorSchemeMethods.length ) ];
+						let colorsMethod =
+							colorSchemeMethods[Math.floor( Math.random() * colorSchemeMethods.length )];
 						newPalette = color[colorsMethod]();
-
 					} else {
 						let degrees = this.randomArray( 4, 5 );
 						degrees.unshift( 0 );
@@ -573,7 +562,10 @@ export class Generate {
 					}
 
 					newPalette = this.randomizePalette( newPalette, [ 0 ] );
-					newPalette = this.formatPaletteToUnchanged( newPalette, colorsPartialPalette.generateKeys[0] );
+					newPalette = this.formatPaletteToUnchanged(
+						newPalette,
+						colorsPartialPalette.generateKeys[0]
+					);
 					newPalette = this.truncateGeneratedPalette( newPalette, colorsPartialPalette.palette );
 				}
 			}
@@ -617,7 +609,7 @@ export class Generate {
 			}
 
 			if ( key !== neededKey ) {
-				formatedPalette[key] = ( this );
+				formatedPalette[key] = this;
 			}
 		} );
 
@@ -641,7 +633,11 @@ export class Generate {
 				let color = BrehautColorJs( this );
 
 				// Colors that are to dark, light, or not saturated enough, should not be used for color calculations.
-				if ( ( 0.90 ) > color.getLightness() && ( 0.10 ) < color.getLightness() && ( 0.15 ) < color.getSaturation() ) {
+				if (
+					0.9 > color.getLightness() &&
+					0.1 < color.getLightness() &&
+					0.15 < color.getSaturation()
+				) {
 					colorPalette.push( color );
 					generateKeys.push( key );
 				} else {
@@ -655,9 +651,9 @@ export class Generate {
 		} );
 
 		return {
-			'palette': colorPalette,
-			'unchangedKeys': unchangedKeys,
-			'generateKeys': generateKeys
+			palette: colorPalette,
+			unchangedKeys: unchangedKeys,
+			generateKeys: generateKeys
 		};
 	}
 
@@ -669,7 +665,7 @@ export class Generate {
 
 		// Try up to 2 times to find a palette.
 		for ( let j = 0; 2 > j; j++ ) {
-			let foundPalette = ColorPalettes[ Math.floor( Math.random() * ColorPalettes.length ) ];
+			let foundPalette = ColorPalettes[Math.floor( Math.random() * ColorPalettes.length )];
 			if ( foundPalette.length >= partialPalette.length ) {
 				if ( foundPalette.length > partialPalette.length ) {
 					for ( let i = 0; i < partialPalette.length; i++ ) {
@@ -710,7 +706,11 @@ export class Generate {
 	 */
 	getGrey() {
 		let Color = BrehautColorJs( '#FFFFFF' );
-		return Color.setBlue( 0 ).setRed( 0 ).setGreen( 0 ).setLightness( Math.random() ).toCSS();
+		return Color.setBlue( 0 )
+			.setRed( 0 )
+			.setGreen( 0 )
+			.setLightness( Math.random() )
+			.toCSS();
 	}
 
 	/**
@@ -771,7 +771,6 @@ export class Generate {
 	randomizePalette( palette, unchangedKeys ) {
 		let paletteColors = [];
 		$.each( palette, ( key, color ) => {
-
 			if ( 5 <= key ) {
 				return false;
 			}
@@ -786,7 +785,7 @@ export class Generate {
 					method = _.sample( this.methods );
 
 				if ( 'shiftHue' === method ) {
-					value = ( Math.floor( Math.random() * 45 ) + 1 ) - 23;
+					value = Math.floor( Math.random() * 45 ) + 1 - 23;
 				} else {
 					value = ( Math.floor( Math.random() * 20 ) + 1 ) / 100;
 				}
@@ -809,11 +808,10 @@ export class Generate {
 
 		let range = 45 * varianceScale;
 		for ( let i = 0; i < size; i++ ) {
-			degrees.push( ( Math.floor( Math.random() * range ) + 1 ) - ( range / 2 ) );
+			degrees.push( Math.floor( Math.random() * range ) + 1 - range / 2 );
 		}
 		return degrees;
-	};
-
+	}
 }
 
 export { Generate as default };

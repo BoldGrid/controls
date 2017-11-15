@@ -18,9 +18,7 @@ export class Config {
 		 *
 		 * @type {Array}
 		 */
-		this.samplePalettesColors = [
-			'blue', 'teal', 'red', 'pink', 'grey', 'brown'
-		];
+		this.samplePalettesColors = [ 'blue', 'teal', 'red', 'pink', 'grey', 'brown' ];
 	}
 
 	/**
@@ -80,11 +78,11 @@ export class Config {
 	 */
 	createPalette( colors ) {
 		let paletteConfig = _.defaults( colors, {
-			'default': true,
-			'copy_on_mod': true,
-			'is_active': false,
-			'format': 'palette-primary',
-			'colors': this.material.getPalette( this.defaultColor )
+			default: true,
+			copy_on_mod: true,
+			is_active: false,
+			format: 'palette-primary',
+			colors: this.material.getPalette( this.defaultColor )
 		} );
 
 		paletteConfig['palette_id'] = btoa( paletteConfig.colors );
@@ -162,8 +160,8 @@ export class Config {
 	 */
 	_createDefault( color ) {
 		return this.createPalette( {
-			'is_active': false,
-			'colors': this.material.getPalette( color ),
+			is_active: false,
+			colors: this.material.getPalette( color ),
 			'neutral-color': 'white'
 		} );
 	}

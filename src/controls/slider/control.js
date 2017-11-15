@@ -4,7 +4,6 @@ import './style.scss';
 
 export class Slider {
 	constructor( options ) {
-
 		this.options = _.defaults( options || {}, {
 			name: 'slider-name',
 			label: 'Slider Title',
@@ -81,7 +80,6 @@ export class Slider {
 	 * @since 1.0
 	 */
 	_bindSlider() {
-
 		this.$slider.slider(
 			_.defaults( this.getSliderConfig( this.$slider.data( 'name' ) ), {
 				animate: 'fast',

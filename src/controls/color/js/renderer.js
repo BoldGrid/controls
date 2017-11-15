@@ -8,7 +8,6 @@ import { Button as ButtonColors } from './button.js';
 import { SassCompiler } from '../../style/js/sass-compiler.js';
 
 export class Renderer {
-
 	constructor( configs ) {
 		this.preloadedFiles = false;
 		this.initialCompilesDone = false;
@@ -28,7 +27,6 @@ export class Renderer {
 		this.buttonColors = new ButtonColors( {
 			sassCompiler: this.sassCompiler
 		} );
-
 	}
 
 	init() {
@@ -75,7 +73,8 @@ export class Renderer {
 		this.palettes.palettes = this.palettes['saved_palettes'].concat( this.palettes.palettes );
 
 		this.palettes.hasNeutralColor = this.palettes.palettes[0]['neutral-color'] ? 1 : 0;
-		this.palettes.colorPaletteColumns = this.palettes['color-palette-size'] + this.palettes.hasNeutralColor;
+		this.palettes.colorPaletteColumns =
+			this.palettes['color-palette-size'] + this.palettes.hasNeutralColor;
 		this.assignNeutral();
 	}
 

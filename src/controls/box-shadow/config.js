@@ -9,8 +9,16 @@ export default {
 				enabled: [ 'px' ]
 			},
 			sliders: [
-				{ name: 'horizontal-position', label: 'Horizontal Position', cssProperty: 'border-top-left-radius' },
-				{ name: 'vertical-position', label: 'Vertical Position', cssProperty: 'border-top-right-radius' },
+				{
+					name: 'horizontal-position',
+					label: 'Horizontal Position',
+					cssProperty: 'border-top-left-radius'
+				},
+				{
+					name: 'vertical-position',
+					label: 'Vertical Position',
+					cssProperty: 'border-top-right-radius'
+				},
 				{ name: 'blur-radius', label: 'Blur Radius', cssProperty: 'border-bottom-right-radius' },
 				{ name: 'spread-radius', label: 'Spread Radius', cssProperty: 'border-bottom-right-radius' }
 			]

@@ -16,7 +16,11 @@ export class BorderRadius extends MultiSlider {
 				sliders: [
 					{ name: 'top-left', label: 'Top Left', cssProperty: 'border-top-left-radius' },
 					{ name: 'top-right', label: 'Top Right', cssProperty: 'border-top-right-radius' },
-					{ name: 'bottom-right', label: 'Bottom Right', cssProperty: 'border-bottom-right-radius' },
+					{
+						name: 'bottom-right',
+						label: 'Bottom Right',
+						cssProperty: 'border-bottom-right-radius'
+					},
 					{ name: 'bottom-left', label: 'Bottom Left', cssProperty: 'border-bottom-left-radius' }
 				]
 			},

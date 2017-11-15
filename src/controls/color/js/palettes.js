@@ -4,7 +4,6 @@
  * These definitions come from the color.js file and include expansion of colors to 5
  */
 export class Palettes {
-
 	monochromatic( color ) {
 		let paletteColors = [];
 		paletteColors.push( color );
@@ -20,7 +19,7 @@ export class Palettes {
 		let paletteColors = [];
 		paletteColors.push( color );
 		paletteColors.push( color.shiftHue( 20 ).lightenByAmount( 0.15 ) );
-		paletteColors.push( color.shiftHue( -20 ).darkenByAmount( 0.20 ) );
+		paletteColors.push( color.shiftHue( -20 ).darkenByAmount( 0.2 ) );
 		paletteColors.push( color.shiftHue( -33 ).darkenByAmount( 0.25 ) );
 		paletteColors.push( color.shiftHue( 10 ).lightenByAmount( 0.05 ) );
 

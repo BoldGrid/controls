@@ -6,7 +6,6 @@ BOLDGRID.Sass = BOLDGRID.Sass || {};
 import Sassjs from 'sass.js/dist/sass.js';
 
 export class SassCompiler {
-
 	constructor( options ) {
 
 		// Singleton.
@@ -63,7 +62,7 @@ export class SassCompiler {
 			this.log.startTime = new Date().getTime();
 		}
 
-		this.compiler.compile( scss, ( result ) => {
+		this.compiler.compile( scss, result => {
 			let data = {
 				result: result,
 				scss: scss,
@@ -129,14 +128,9 @@ export class SassCompiler {
 		let $deferred = $.Deferred();
 
 		// Preload a set of files.
-		this.compiler.preloadFiles(
-			this.options.basePath,
-			'',
-			files,
-			( data ) => {
-				$deferred.resolve( data );
-			}
-		);
+		this.compiler.preloadFiles( this.options.basePath, '', files, data => {
+			$deferred.resolve( data );
+		} );
 
 		return $deferred;
 	}

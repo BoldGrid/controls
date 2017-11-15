@@ -21,7 +21,7 @@ export class Conversion {
 
 	pxToPercentage( px, $element ) {
 		let contextWidth = $element.width();
-		return ( px / contextWidth ) * 100;
+		return px / contextWidth * 100;
 	}
 
 	percentageToPixel( percentage, $element ) {

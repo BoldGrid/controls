@@ -41,10 +41,10 @@ export class BoxShadow extends MultiSlider {
 	getSliderConfig( slider ) {
 		this.currentValues = this.getCurrentValues();
 		if ( this.currentValues ) {
-			this.sliderConfig[slider.name].value = this.currentValues[ slider.name ];
+			this.sliderConfig[slider.name].value = this.currentValues[slider.name];
 		}
 
-		return this.sliderConfig[ slider.name ];
+		return this.sliderConfig[slider.name];
 	}
 
 	/**

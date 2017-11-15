@@ -86,7 +86,9 @@ export class Picker {
 	 */
 	createColorInput() {
 		let defaultVal = this.$element.attr( 'data-value' ),
-			$input = $( '<input type="text" data-alpha="true" class="pluto-color-control color-control-input"/>' );
+			$input = $(
+				'<input type="text" data-alpha="true" class="pluto-color-control color-control-input"/>'
+			);
 
 		$input.val( defaultVal ).change();
 		this.$element.html( $input );

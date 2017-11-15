@@ -1,7 +1,12 @@
 export class Parser {
 	constructor() {
 		this.regex = /(-?\d+px)|(rgb\(.+\))/g;
-		this.propertyOrder = [ 'horizontal-position', 'vertical-position', 'blur-radius', 'spread-radius' ];
+		this.propertyOrder = [
+			'horizontal-position',
+			'vertical-position',
+			'blur-radius',
+			'spread-radius'
+		];
 
 		this.default = {
 			inset: false,

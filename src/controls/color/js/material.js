@@ -1,7 +1,6 @@
 import MaterialColors from 'google-material-color-palette-json';
 
 export class Material {
-
 	constructor() {
 		this.paletteLayoutShades = [ '500', '900', '100', '#eeeeee', '#131313' ];
 		this.availableColors = _.without( _.keys( MaterialColors ), 'black', 'white' );

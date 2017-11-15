@@ -1,4 +1,5 @@
-var self, colorPalette,
+var self,
+	colorPalette,
 	$ = window.jQuery,
 	$window = $( window );
 
@@ -19,14 +20,16 @@ self = colorPalette;
  * @return jQuery Body of iframe.
  */
 colorPalette.getPreviewerBody = function() {
-
 	if ( ! self.configs.enableCustomizerTransitions ) {
 		return $();
 	}
 
 	// Get the previewer frame.
 	return $( wp.customize.previewer.container )
-		.find( 'iframe' ).last().contents().find( 'body' );
+		.find( 'iframe' )
+		.last()
+		.contents()
+		.find( 'body' );
 };
 
 /**
@@ -57,12 +60,11 @@ colorPalette.addColorTransition = function() {
 };
 
 /**
-* Upon clicking a color in the active palette, fade in and out the color on the iframe.
-*
-* @since 1.1.7
-*/
+ * Upon clicking a color in the active palette, fade in and out the color on the iframe.
+ *
+ * @since 1.1.7
+ */
 colorPalette.bindTransitions = function() {
-
 	if ( ! self.configs.enableCustomizerTransitions ) {
 		return;
 	}
