@@ -30,6 +30,8 @@ export class Border extends MultiSlider {
 				}
 			}
 		};
+
+		this.borderDirections = [ 'left', 'top', 'right', 'bottom' ];
 	}
 
 	/**
@@ -60,7 +62,8 @@ export class Border extends MultiSlider {
 	 */
 	bindEvents() {
 		this._bindTypeChange();
-		this._setType().change();
+		this.refreshValues();
+		this._setType();
 	}
 
 	/**
@@ -69,13 +72,35 @@ export class Border extends MultiSlider {
 	 * @since 1.0.0
 	 */
 	_setType() {
-		let setting = this.$target.css( 'border-style' );
-		setting = 'none' !== setting ? setting : '';
+		let setting = this._getBorderStyle();
 
+		setting = 'none' !== setting ? setting : '';
 		return this.$typeControl
 			.find( '.border-type-control input' )
 			.filter( '[value="' + setting + '"]' )
 			.prop( 'checked', true );
+	}
+
+	/**
+	 * Get the currently set border style.
+	 *
+	 * This was added for cross browser support. FF does not return anything for border-style.
+	 *
+	 * @since 0.8.7
+	 *
+	 * @return {string} Currently applied style.
+	 */
+	_getBorderStyle() {
+		let style = '';
+		for ( let direction of this.borderDirections ) {
+			let directionalStyle = this.$target.css( 'border-' + direction + '-style' );
+			if ( 'none' !== directionalStyle ) {
+				style = directionalStyle;
+				break;
+			}
+		}
+
+		return style;
 	}
 
 	/**
