@@ -2,6 +2,7 @@ const path = require( 'path' );
 const webpack = require( 'webpack' );
 const HtmlWebpackPlugin = require( 'html-webpack-plugin' );
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
+const StyleLintPlugin = require( 'stylelint-webpack-plugin' );
 
 const srcDir = path.resolve( __dirname, '..', 'src' );
 
@@ -72,12 +73,6 @@ module.exports = {
 						loader: 'css-loader'
 					},
 					{
-						loader: 'postcss-loader',
-						options: {
-							plugins: loader => [ require( 'stylelint' )() ]
-						}
-					},
-					{
 						loader: 'sass-loader',
 						options: {
 							includePaths: [ 'node_modules' ]
@@ -123,6 +118,10 @@ module.exports = {
 		new webpack.HotModuleReplacementPlugin(),
 
 		new webpack.NamedModulesPlugin(),
+
+		new StyleLintPlugin( {
+			files: [ '**/*.s?(c)ss' ]
+		} ),
 
 		new HtmlWebpackPlugin( {
 			template: path.join( srcDir, 'index.ejs' ),
