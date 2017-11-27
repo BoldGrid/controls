@@ -11,15 +11,22 @@ describe( 'Border Control', function() {
 
 	it( 'refreshes values', function() {
 		$target.css( 'border', '' );
-		expect(  border.getValues() ).toEqual( { top: 0, right: 0, bottom: 0, left: 0 } );
+		expect( border.getValues() ).toEqual( { top: 0, right: 0, bottom: 0, left: 0 } );
 		$target.css( 'border', '1px solid green' );
 		border.refreshValues();
-		expect(  border.getValues() ).toEqual( { top: 1, right: 1, bottom: 1, left: 1 } );
+		expect( border.getValues() ).toEqual( { top: 1, right: 1, bottom: 1, left: 1 } );
 	} );
 
 	it( 'shows border width', function() {
 		$target.css( 'border', '2px dashed green' );
 		border.refreshValues();
+		expect( border.$typeControl.find( '.border-width-control' ).css( 'display' ) ).toEqual( 'block' );
+	} );
+
+	it( 'returns border-style', function() {
+		$target.css( 'border-bottom', '2px dashed green' );
+		border.refreshValues();
+		expect( border._getBorderStyle() ).toEqual( 'dashed' );
 		expect( border.$typeControl.find( '.border-width-control' ).css( 'display' ) ).toEqual( 'block' );
 	} );
 
