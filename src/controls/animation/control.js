@@ -21,7 +21,7 @@ export class Control {
 			uiSettings: {
 				min: 0,
 				max: 4,
-				value: this.getDefaultDelay(),
+				value: this.getDefault( 'data-wow-delay' ),
 				step: .1
 			}
 		} );
@@ -32,7 +32,7 @@ export class Control {
 			uiSettings: {
 				min: .5,
 				max: 4,
-				value: this.$target.attr( 'data-wow-duration' ).replace( 's', '' ) || 1,
+				value: this.getDefault( 'data-wow-duration' ),
 				step: .1
 			}
 		} );
@@ -45,8 +45,8 @@ export class Control {
 	 *
 	 * @return {string} Delay time.
 	 */
-	getDefaultDelay() {
-		let delay = this.$target.attr( 'data-wow-delay' );
+	getDefault( name ) {
+		let delay = this.$target.attr( name );
 
 		if ( 'undefined' === typeof delay ) {
 			delay = '1';
