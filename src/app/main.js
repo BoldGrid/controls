@@ -9,6 +9,7 @@ import {
 	Margin,
 	Border,
 	BoxShadow,
+	Animation,
 	Slider,
 	BorderRadius
 } from '../controls';
@@ -44,7 +45,8 @@ export class Application {
 		this.paletteCustomize();
 		this.paletteSelection();
 		this.setupSlider();
-		this.multislider();
+		this.multiSlider();
+		this.animation();
 	}
 
 	setupSlider() {
@@ -53,7 +55,26 @@ export class Application {
 		$tab.find( '.control' ).html( new Slider().render() );
 	}
 
-	multislider() {
+	/**
+	 * Set up animation demo control.
+	 *
+	 * @since 0.10.0
+	 */
+	animation() {
+		let $tab = $( '.animations-tab' ),
+			$demoElement = $tab.find( '.demo-element' );
+
+		$tab.find( '.control' ).html( new Animation( {
+			target: $demoElement
+		} ).render() );
+	}
+
+	/**
+	 * Setup multislider demo control.
+	 *
+	 * @since 0.10.0
+	 */
+	multiSlider() {
 		let $tab = $( '.directional-controls' ),
 			$combined = $tab.find( '.combined' ),
 			padding = new Padding( { target: $combined } ),

@@ -1,0 +1,18 @@
+<div class="boldgrid-control animation-control">
+	<h3 class="control-title">Animation</h3>
+	<div class="animation-type-control">
+		<h4 class="control-title">Type</h4>
+		<select class="animations" name="animation-type">
+			<option value="">None</option>
+			<% _.each( animateConfig, function ( category, categoryName ) {   %>
+				<optgroup label="<%= titleCase( categoryName )%>">
+			<%	_.each( category, function ( animationName ) {  %>
+					<option value="<%=animationName %>"><%=titleCase( animationName ) %></option>
+				<% } ); %>
+				</optgroup>
+			<%  } ); %>
+		</select>
+	</div>
+	<durationSlider/>
+	<delaySlider/>
+</div>

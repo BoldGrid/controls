@@ -95,3 +95,15 @@
 		height: 400px;
 	}
 }
+
+// Palette Selection
+.bg-tabs-content.current.animations-tab {
+	display: flex;
+
+	.demo-element {
+		background: #f95b26;
+		width: 150px;
+		height: 150px;
+		margin-top: 40px;
+	}
+}
