@@ -209,7 +209,7 @@
 	content: '\f140';
 	position: absolute;
 	display: none;
-	font-family: dashicons;
+	font-family: dashicons, sans-serif;
 	font-size: 20px;
 	font-style: normal;
 	font-weight: 400;
@@ -323,9 +323,6 @@
 
 .palette-generate-mode .generate-palettes-selection-section {
 	display: block;
-}
-
-.palette-generate-mode .generate-palettes-selection-section {
 	border: 1px solid lightgrey;
 	padding: 5px;
 	background-color: white;
