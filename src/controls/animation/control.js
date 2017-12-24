@@ -75,10 +75,27 @@ export class Control {
 		this.$control.find( 'delaySlider' ).replaceWith( this.$delaySlider );
 		this.$typeControl = this.$control.find( 'select' );
 
+		this._presetType();
+
 		this.$typeControl.select2();
 		this._bindEvents();
 
 		return this.$control;
+	}
+
+	/**
+	 * Preset the type control.
+	 *
+	 * @since 0.10.2
+	 */
+	_presetType() {
+		if ( this.$target.hasClass( 'wow' ) ) {
+			for ( let className of this.animationClasses ) {
+				if ( this.$target.hasClass( className ) ) {
+					this.$typeControl.val( className );
+				}
+			}
+		}
 	}
 
 	/**
