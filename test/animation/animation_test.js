@@ -19,4 +19,22 @@ describe( 'Animation Control', function() {
 		expect( animationControl.durationControl.$input.val() ).toEqual( '1.5' );
 	} );
 
+	it( 'presets type', () => {
+		let $target = $( '<div class="wow fadeIn">' ),
+		animationControl = new Animation( { target: $target } ),
+		$control = animationControl.render();
+
+		expect( animationControl.$typeControl.val() ).toEqual( 'fadeIn' );
+	} );
+
+	it( 'works without presets', function() {
+		let $target = $( '<div>' ),
+			animationControl = new Animation( { target: $target } ),
+			$control = animationControl.render();
+
+		expect( animationControl.$typeControl.val() ).toEqual( '' );
+		expect( animationControl.delayControl.$input.val() ).toEqual( '1' );
+		expect( animationControl.durationControl.$input.val() ).toEqual( '1' );
+	} );
+
 } );
