@@ -11,6 +11,7 @@ import {
 	BoxShadow,
 	Animation,
 	Slider,
+	DeviceVisibility,
 	BorderRadius
 } from '../controls';
 
@@ -47,6 +48,16 @@ export class Application {
 		this.setupSlider();
 		this.multiSlider();
 		this.animation();
+		this.deviceVisibility();
+	}
+
+	deviceVisibility() {
+		let $tab = $( '.device-visibility' ),
+			$demoElement = $tab.find( '.demo-element' );
+
+		$tab.find( '.control' ).html( new DeviceVisibility( {
+			target: $demoElement
+		} ).render() );
 	}
 
 	setupSlider() {

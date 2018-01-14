@@ -18,6 +18,7 @@
 	  <li class="tab-link" data-tab="slider-tab"><a href="#slider-tab">Slider</a></li>
 	  <li class="tab-link" data-tab="directional-controls"><a href="#directional-controls">Multi Slider</a></li>
 	  <li class="tab-link" data-tab="animations-tab"><a href="#animations-tab">Animations</a></li>
+	  <li class="tab-link" data-tab="device-visibility"><a href="#device-visibility">Device Visibility</a></li>
   </ul>
 
   <div class="bg-tabs-content current colors-tab">
@@ -36,9 +37,11 @@
   <div class="bg-tabs-content animations-tab">
 	  <%= require("./app/template/animation-controls.html") %>
   	</div>
+  <div class="bg-tabs-content device-visibility">
+	  <%= require("./app/template/device-visibility.html") %>
+  	</div>
   </div>
 </div>
-
   <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>

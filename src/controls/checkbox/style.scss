@@ -1,0 +1,16 @@
+@import '../shared/scss/variables.scss';
+@import '@material/checkbox/mdc-checkbox.scss';
+
+.mdc-checkbox label {
+	display: inline-block;
+	margin-left: 30px;
+}
+
+.label-text {
+	position: relative;
+	top: -4px;
+}
+
+label svg {
+	width: 20px;
+}
