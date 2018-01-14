@@ -103,14 +103,15 @@ export class Control {
 		$input.on( 'change', e => {
 			const isChecked = $input.prop( 'checked' );
 
+			if ( this._allChecked() ) {
+				$input.prop( 'checked', false );
+				return;
+			}
+
 			if ( isChecked ) {
 				this.$target.addClass( checkbox.class );
 			} else {
 				this.$target.removeClass( checkbox.class );
-			}
-
-			if ( this._allChecked() ) {
-				$input.prop( 'checked', false );
 			}
 		} );
 	}
