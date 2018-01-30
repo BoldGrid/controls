@@ -1,5 +1,5 @@
 {
-  "version": "0.12.0",
+  "version": "0.12.1",
   "author": "Rafael Ramos <rramo012@gmail.com>",
   "bundleDependencies": false,
   "dependencies": {
