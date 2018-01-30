@@ -49,6 +49,10 @@ module.exports = {
 				include: [ srcDir ]
 			},
 			{
+				test: /\.svg$/,
+				loader: 'svg-inline-loader'
+			},
+			{
 				test: /\.js$/,
 				enforce: 'pre',
 				exclude: /node_modules/,

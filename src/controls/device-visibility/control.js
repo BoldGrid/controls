@@ -13,25 +13,25 @@ export class Control {
 				name: 'phone-visibility',
 				label: 'Phone',
 				class: 'hidden-xs',
-				icon: require( 'svg-inline-loader?classPrefix!./img/phone.svg' )
+				icon: require( './img/phone.svg' )
 			},
 			{
 				name: 'tablet-visibility',
 				label: 'Tablet',
 				class: 'hidden-sm',
-				icon: require( 'svg-inline-loader?classPrefix!./img/tablet.svg' )
+				icon: require( './img/tablet.svg' )
 			},
 			{
 				name: 'desktop-visibility',
 				label: 'Desktop',
 				class: 'hidden-md',
-				icon: require( 'svg-inline-loader?classPrefix!./img/desktop.svg' )
+				icon: require( './img/desktop.svg' )
 			},
 			{
 				name: 'large-visibility',
 				label: 'Large Displays',
 				class: 'hidden-lg',
-				icon: require( 'svg-inline-loader?classPrefix!./img/large.svg' )
+				icon: require( './img/large.svg' )
 			}
 		];
 	}
