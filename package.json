@@ -8,7 +8,7 @@
     "Buttons": "https://github.com/alexwolfe/Buttons",
     "Iris": "git+https://github.com/Automattic/Iris.git#master",
     "animate.css": "^3.5.2",
-    "babel-minify-webpack-plugin": "^0.2.0",
+    "babel-minify-webpack-plugin": "^0.3.0",
     "babel-plugin-istanbul": "^4.1.5",
     "bulma": "^0.6.0",
     "color": "git+https://github.com/Automattic/Color.js.git",
