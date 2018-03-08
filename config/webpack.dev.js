@@ -60,6 +60,10 @@ module.exports = {
 				}
 			},
 			{
+				test: /\.svg$/,
+				loader: 'svg-inline-loader'
+			},
+			{
 				test: /\.(scss|css)$/,
 				exclude: [
 					srcDir + '/controls/color/scss/utilities/color-classes.scss',

@@ -5,8 +5,8 @@ import { Conversion } from './conversion';
 import template from './template.html';
 import config from './config.js';
 import deepmerge from 'deepmerge';
-import refreshSvg from 'svg-inline-loader?classPrefix!./img/refresh.svg';
-import linkSvg from 'svg-inline-loader?classPrefix!./img/link.svg';
+import refreshSvg from './img/refresh.svg';
+import linkSvg from './img/link.svg';
 
 export class MultiSlider {
 	constructor( options ) {

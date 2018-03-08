@@ -16,6 +16,10 @@ module.exports = {
 				use: [ 'babel-loader' ]
 			},
 			{
+				test: /\.svg$/,
+				loader: 'svg-inline-loader'
+			},
+			{
 				test: /\.(scss|css|html|ejs)$/,
 				use: [
 					{
