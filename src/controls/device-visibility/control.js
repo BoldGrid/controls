@@ -1,6 +1,7 @@
+var $ = window.jQuery;
+
 import template from './template.html';
 import { Checkbox } from '../checkbox';
-
 
 export class Control {
 	constructor( options ) {
