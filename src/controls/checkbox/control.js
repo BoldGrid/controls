@@ -1,3 +1,5 @@
+var $ = window.jQuery;
+
 import template from './template.html';
 import './style.scss';
 
