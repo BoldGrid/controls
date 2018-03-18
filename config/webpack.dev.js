@@ -125,9 +125,9 @@ module.exports = {
 
 		new webpack.NamedModulesPlugin(),
 
-		new StyleLintPlugin( {
-			files: [ '**/*.s?(c)ss' ]
-		} ),
+	//	new StyleLintPlugin( {
+	//		files: [ '**/*.s?(c)ss' ]
+	//	} ),
 
 		new HtmlWebpackPlugin( {
 			template: path.join( srcDir, 'index.ejs' ),
