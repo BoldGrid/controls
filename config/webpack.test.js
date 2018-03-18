@@ -3,7 +3,7 @@ const path = require( 'path' );
 const src = path.resolve( __dirname, '..', 'src' );
 
 module.exports = {
-	mode: 'development',
+	// mode: 'development',
 
 	// Karma watches the test entry points
 	// (you don't need to specify the entry option)
