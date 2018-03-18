@@ -10,6 +10,8 @@ const distDir = path.resolve( __dirname, '..', 'dist' );
 const nodeModulesDir = path.resolve( require.resolve( '@material/switch/mdc-switch.scss' ), '..', '..', '..' );
 
 module.exports = {
+	mode: 'production',
+
 	context: srcDir,
 
 	devtool: false,

@@ -7,6 +7,8 @@ const StyleLintPlugin = require( 'stylelint-webpack-plugin' );
 const srcDir = path.resolve( __dirname, '..', 'src' );
 
 module.exports = {
+	mode: 'development',
+
 	context: srcDir,
 
 	entry: [ './index.js' ],
