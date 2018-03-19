@@ -24,6 +24,7 @@ describe( 'Border Control', function() {
 	} );
 
 	it( 'returns border-style', function() {
+		$target.css( 'border', '' );
 		$target.css( 'border-bottom', '2px dashed green' );
 		border.refreshValues();
 		expect( border._getBorderStyle() ).toEqual( 'dashed' );

@@ -7,6 +7,8 @@ const StyleLintPlugin = require( 'stylelint-webpack-plugin' );
 const srcDir = path.resolve( __dirname, '..', 'src' );
 
 module.exports = {
+	mode: 'development',
+
 	context: srcDir,
 
 	entry: [ './index.js' ],
@@ -123,9 +125,9 @@ module.exports = {
 
 		new webpack.NamedModulesPlugin(),
 
-		new StyleLintPlugin( {
-			files: [ '**/*.s?(c)ss' ]
-		} ),
+	//	new StyleLintPlugin( {
+	//		files: [ '**/*.s?(c)ss' ]
+	//	} ),
 
 		new HtmlWebpackPlugin( {
 			template: path.join( srcDir, 'index.ejs' ),

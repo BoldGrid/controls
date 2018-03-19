@@ -94,7 +94,7 @@ export class Border extends MultiSlider {
 		let style = '';
 		for ( let direction of this.borderDirections ) {
 			let directionalStyle = this.$target.css( 'border-' + direction + '-style' );
-			if ( 'none' !== directionalStyle ) {
+			if ( 'none' !== directionalStyle && directionalStyle ) {
 				style = directionalStyle;
 				break;
 			}
