@@ -4,7 +4,7 @@
   "bundleDependencies": false,
   "dependencies": {
     "@boldgrid/components": "^2.9.1",
-    "@material/switch": "^0.32.0",
+    "@material/switch": "^0.33.0",
     "Buttons": "https://github.com/alexwolfe/Buttons",
     "Iris": "git+https://github.com/Automattic/Iris.git#master",
     "animate.css": "^3.5.2",
