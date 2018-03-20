@@ -11,6 +11,7 @@ describe( 'Border Control', function() {
 
 	it( 'refreshes values', function() {
 		$target.css( 'border', '' );
+		border.refreshValues();
 		expect( border.getValues() ).toEqual( { top: 0, right: 0, bottom: 0, left: 0 } );
 		$target.css( 'border', '1px solid green' );
 		border.refreshValues();
