@@ -10,6 +10,7 @@ import {
 	Border,
 	BoxShadow,
 	Animation,
+	Typography,
 	Slider,
 	DeviceVisibility,
 	BorderRadius
@@ -49,6 +50,16 @@ export class Application {
 		this.multiSlider();
 		this.animation();
 		this.deviceVisibility();
+		this.typography();
+	}
+
+	typography() {
+		let $tab = $( '.typography-tab' ),
+			$demoElement = $tab.find( '.demo-text' );
+
+		$tab.find( '.control' ).html( new Typography( {
+			target: $demoElement
+		} ).render() );
 	}
 
 	deviceVisibility() {

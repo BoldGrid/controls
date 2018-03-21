@@ -10,6 +10,7 @@ export { BorderRadius } from './border-radius';
 export { BoxShadow } from './box-shadow';
 export { Slider } from './slider';
 export { Animation } from './animation';
+export { Control as Typography } from './typography';
 
 export { Updater as StyleUpdater } from './style';
 
