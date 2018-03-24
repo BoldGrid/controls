@@ -1,0 +1,21 @@
+<div>
+	<div class="boldgrid-control font-family-control">
+		<label>Font Family</label>
+		<div>
+			<select>
+				<% for ( let name in fonts ) { %>
+					<option value="<%=name %>"><%=name %></option>
+				<% } %>
+			</select>
+		</div>
+	</div>
+	<div class="boldgrid-control font-variant-control">
+		<label>Font Varient</label>
+		<div>
+			<select>
+				<option value="normal">Normal</option>
+			</select>
+		</div>
+	</div>
+	<font-weight/>
+</div>
