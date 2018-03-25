@@ -18,12 +18,16 @@ export class WebFont {
 
 		this.options.$scope.find( '[data-font-family]' ).each( ( index, el ) => {
 			let $this = $( el ),
-				family = $this.attr( 'data-font-family' );
+				family = $this.attr( 'data-font-family' ),
+				weight = $this.attr( 'data-font-weight' );
 
 			if ( family ) {
 				families[family] = families[family] || {};
 
-				// Add more props like sans serif and weight.
+				if ( weight ) {
+					families[family].weights = families[family].weights || [];
+					families[family].weights.push( weight );
+				}
 			}
 		} );
 
@@ -53,7 +57,12 @@ export class WebFont {
 		// Create url encoded array.
 		familyParam = [];
 		for ( let familyName in families ) {
-			familyParam.push( familyName );
+			let param = familyName;
+			if ( families[ familyName ].weights ) {
+				param = param + ':' + families[ familyName ].weights.join( ',' );
+			}
+
+			familyParam.push( param );
 		}
 
 		familyParam = familyParam.join( '|' );

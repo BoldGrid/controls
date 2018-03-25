@@ -27,7 +27,7 @@ export class Control extends MultiSlider {
 				},
 				em: {
 					step: 0.1,
-					min: 0,
+					min: -0.3,
 					max: 3
 				}
 			}

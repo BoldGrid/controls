@@ -13,7 +13,7 @@ export class Control {
 	constructor( options ) {
 		this.options = options;
 
-		this.selectWeightConfig = {
+		this.selectStyleConfig = {
 			minimumResultsForSearch: 10,
 			width: '100%'
 		};
@@ -29,8 +29,8 @@ export class Control {
 
 		this.fonts = googleFonts;
 		this.$familySelect = $control.find( '.font-family-control select' ).select2();
-		this.$varientSelect = $control.find( '.font-variant-control select' ).select2( this.selectWeightConfig );
-		$control.find( 'font-weight' ).replaceWith( this.fontWeightRender() );
+		this.$variantSelect = $control.find( '.font-variant-control select' ).select2( this.selectStyleConfig );
+		this.$weightSelect = $control.find( '.font-weight-control select' ).select2( this.selectStyleConfig );
 
 		this._bindEvents();
 
@@ -39,31 +39,61 @@ export class Control {
 
 	_bindEvents() {
 		this._bindVarientDisplay();
+		this._bindWeightOptions();
 		this._bindWebFont();
+		this._bindWeightChange();
 	}
 
-	_bindWebFont() {
+	getSelections() {
+		return {
+			family: this.$familySelect.val(),
+			weight: this.$weightSelect.val(),
+			variant: this.$variantSelect.val()
+		};
+	}
+
+	_bindWeightOptions() {
 		this.$familySelect.on( 'change', () => {
-			this.options.target.attr( 'data-font-family', this.$familySelect.val() );
-			this.options.target.css( 'font-family', this.$familySelect.val() );
+			const config = this.getSelectedConfig();
+			let weights = config.variants[ this.$variantSelect.val() ];
+			weights = Object.keys( weights );
+			let defaultWeight = ( -1 !== weights.indexOf( '400' ) ) ? '400' : keys[0];
+
+			this.$weightSelect.empty();
+
+			for ( const weight of weights ) {
+				this.$weightSelect.append( `<option value="${weight}">${weight}</option>` );
+			}
+
+			this.$weightSelect
+				.prop( 'disabled', 1 === weights.length )
+				.val( defaultWeight )
+				.select2( this.selectStyleConfig );
+		} );
+	}
+
+	_bindWeightChange() {
+		this.$weightSelect.on( 'change', () => {
+			const selections = this.getSelections();
+			this.options.target.attr( 'data-font-weight', selections.weight );
+			this.options.target.css( 'font-weight', selections.weight );
 			this.webFont.updateFontLink();
 		} );
 	}
 
-	fontWeightRender() {
-		return new Slider( {
-			name: 'font-weight',
-			label: 'Font Weight',
-			uiSettings: {
-				step: 100,
-				min: 100,
-				max: 900
-			}
-		} ).render();
-	}
+	_bindWebFont() {
+		this.$familySelect.on( 'change', () => {
+			const selections = this.getSelections();
 
-	updateFontWeight( variants ) {
-		console.log( variants );
+			this.options.target.attr( 'data-font-family', selections.family );
+			this.options.target.attr( 'data-font-weight', selections.weight );
+			this.options.target.attr( 'data-font-style', selections.variant );
+			this.options.target.css( 'font-family', selections.family );
+			this.options.target.css( 'font-weight', selections.weight );
+			this.options.target.css( 'font-style', selections.variant );
+
+			this.webFont.updateFontLink();
+		} );
 	}
 
 	getSelectedConfig() {
@@ -76,19 +106,16 @@ export class Control {
 				keys = Object.keys( fontConfig.variants );
 
 			// Update select.
-			this.$varientSelect.empty();
+			this.$variantSelect.empty();
 			_.each ( fontConfig.variants, ( value, name ) => {
-				this.$varientSelect.prepend( `<option value="${name}">${titleCase( name )}</option>` );
+				this.$variantSelect.prepend( `<option value="${name}">${titleCase( name )}</option>` );
 			} );
 
 			// Refresh select 2.
-			this.$varientSelect
+			this.$variantSelect
 				.prop( 'disabled', 1 === keys.length )
 				.val( _.last( keys ) )
-				.select2( this.selectWeightConfig );
-
-			// Update the font silder.
-			this.updateFontWeight( fontConfig.variants[ keys[0] ] );
+				.select2( this.selectStyleConfig );
 		} );
 	}
 }
