@@ -12,17 +12,21 @@ import { FontSize } from './font-size';
 export class Control {
 
 	constructor( options ) {
-		this.familyControl = new FontFamily();
-		this.$target = options.target;
+		this.options = options;
+
+		this.fontFamily = new FontFamily( { target: this.options.target } );
+		this.fontSize = new FontSize( { target: this.options.target } );
+		this.lineHeight = new LineHeight( { target: this.options.target } );
+		this.letterSpacing = new LetterSpacing( { target: this.options.target } );
 	}
 
 	render() {
 		const $template = $( template );
 
-		$template.find( 'font-family' ).replaceWith( this.familyControl.render() );
-		$template.find( 'font-size' ).replaceWith( new FontSize( { target: this.$target } ).render() );
-		$template.find( 'line-height' ).replaceWith( new LineHeight( { target: this.$target } ).render() );
-		$template.find( 'letter-spacing' ).replaceWith( new LetterSpacing( { target: this.$target } ).render() );
+		$template.find( 'font-family' ).replaceWith( this.fontFamily.render() );
+		$template.find( 'font-size' ).replaceWith( this.fontSize.render() );
+		$template.find( 'line-height' ).replaceWith( this.lineHeight.render() );
+		$template.find( 'letter-spacing' ).replaceWith( this.letterSpacing.render() );
 
 		return $template;
 	}

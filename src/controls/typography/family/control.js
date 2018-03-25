@@ -6,14 +6,19 @@ import './style.scss';
 import $ from 'jquery';
 import titleCase from 'title-case';
 import { Slider } from '../../slider';
+import { WebFont } from './webfont';
 
 export class Control {
 
-	constructor() {
+	constructor( options ) {
+		this.options = options;
+
 		this.selectWeightConfig = {
 			minimumResultsForSearch: 10,
 			width: '100%'
 		};
+
+		this.webFont = new WebFont( { $scope: $( 'html' ) } );
 	}
 
 	render() {
@@ -34,6 +39,15 @@ export class Control {
 
 	_bindEvents() {
 		this._bindVarientDisplay();
+		this._bindWebFont();
+	}
+
+	_bindWebFont() {
+		this.$familySelect.on( 'change', () => {
+			this.options.target.attr( 'data-font-family', this.$familySelect.val() );
+			this.options.target.css( 'font-family', this.$familySelect.val() );
+			this.webFont.updateFontLink();
+		} );
 	}
 
 	fontWeightRender() {
@@ -52,10 +66,13 @@ export class Control {
 		console.log( variants );
 	}
 
+	getSelectedConfig() {
+		return this.fonts[ this.$familySelect.val() ];
+	}
+
 	_bindVarientDisplay() {
-		this.$familySelect.on( 'change', ( e ) => {
-			const selectedValue = this.$familySelect.val(),
-				fontConfig = this.fonts[ selectedValue ],
+		this.$familySelect.on( 'change', () => {
+			const fontConfig = this.getSelectedConfig(),
 				keys = Object.keys( fontConfig.variants );
 
 			// Update select.
