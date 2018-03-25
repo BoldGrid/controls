@@ -27,7 +27,7 @@ export class MultiSlider {
 	 * @since 1.0.0
 	 */
 	mergeDefaultConfigs() {
-		this.controlOptions = deepmerge( config.defaults, this.controlOptions, {
+		this.controlOptions = deepmerge( config.defaults, this.controlOptions || {}, {
 			arrayMerge: ( destination, source ) => source
 		} );
 	}
@@ -53,6 +53,7 @@ export class MultiSlider {
 
 		this._bindUnits();
 		this.setUnits( this.controlOptions.control.units.default );
+		this._addClasses();
 
 		// Create sliders and attach them to the template.
 		this._createSliders();
@@ -159,6 +160,17 @@ export class MultiSlider {
 		}
 
 		return converted;
+	}
+
+	/**
+	 * Add classes to the controls, based on its configuration.
+	 *
+	 * @since 1.0.0
+	 */
+	_addClasses() {
+		if ( 1 === this.controlOptions.control.sliders.length ) {
+			this.$control.addClass( 'single' );
+		}
 	}
 
 	/**
