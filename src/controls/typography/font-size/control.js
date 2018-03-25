@@ -21,13 +21,13 @@ export class Control extends MultiSlider {
 			},
 			slider: {
 				px: {
-					min: 0,
+					min: 5,
 					max: 100,
 					step: 1
 				},
 				em: {
 					step: 0.1,
-					min: 0,
+					min: 0.5,
 					max: 10
 				}
 			}
