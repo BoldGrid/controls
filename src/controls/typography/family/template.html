@@ -3,9 +3,19 @@
 		<label>Font Family</label>
 		<div>
 			<select>
-				<% for ( let name in fonts ) { %>
-					<option value="<%=name %>"><%=name %></option>
-				<% } %>
+				<optgroup label="">
+					<option value="">Default</option>
+				</optgroup>
+				<optgroup label="System Fonts">
+					<% for ( let systemFont of systemFonts ) { %>
+						<option value="<%=systemFont.name %>"><%=systemFont.name %></option>
+					<% } %>
+				</optgroup>
+				<optgroup label="Google Fonts">
+					<% for ( let name in fonts ) { %>
+						<option value="<%=name %>"><%=name %></option>
+					<% } %>
+				</optgroup>
 			</select>
 		</div>
 	</div>
@@ -22,7 +32,9 @@
 		<label>Font Weight</label>
 		<div>
 			<select>
-				<option value="400">400</option>
+				<% for ( let weight of defaultWeights ) { %>
+					<option value="<%=weight %>"><%=weight %></option>
+				<% } %>
 			</select>
 		</div>
 	</div>

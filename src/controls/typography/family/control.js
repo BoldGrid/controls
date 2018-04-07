@@ -3,6 +3,7 @@ import 'select2/dist/css/select2.min.css';
 import 'select2/dist/js/select2.min.js';
 import googleFonts from 'google-fonts-complete';
 import './style.scss';
+import systemFonts from './system-fonts.js';
 import $ from 'jquery';
 import titleCase from 'title-case';
 import { Slider } from '../../slider';
@@ -19,6 +20,8 @@ export class Control {
 	 */
 	constructor( options ) {
 		this.options = options;
+
+		this.defaultWeights = [ '400', '600' ];
 
 		this.selectStyleConfig = {
 			minimumResultsForSearch: 10,
@@ -37,7 +40,9 @@ export class Control {
 	 */
 	render() {
 		const template = _.template( templateHtml )( {
-			fonts: googleFonts
+			fonts: googleFonts,
+			defaultWeights: this.defaultWeights,
+			systemFonts: systemFonts
 		} );
 		const $control = $( template );
 
@@ -80,7 +85,18 @@ export class Control {
 	 * @return {object} Font configuration.
 	 */
 	getSelectedConfig() {
-		return this.fonts[this.$familySelect.val()];
+		return ! this._getSystemFont() ? this.fonts[this.$familySelect.val()] || {} : {};
+	}
+
+	/**
+	 * Get the configured system font
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {boolean} system font.
+	 */
+	_getSystemFont() {
+		return _.find( systemFonts, ( font ) => font.name === this.$familySelect.val() );
 	}
 
 	/**
@@ -135,11 +151,18 @@ export class Control {
 	_bindFamilyChange() {
 		this.$familySelect.on( 'change', () => {
 			const selections = this.getSelections();
+			const systemFont = this._getSystemFont();
 
 			this.options.target.attr( 'data-font-family', selections.family );
 			this.options.target.attr( 'data-font-weight', selections.weight );
 			this.options.target.attr( 'data-font-style', selections.variant );
-			this.options.target.css( 'font-family', selections.family );
+
+			if ( systemFont ) {
+				this.options.target.css( 'font-family', systemFont.style );
+			} else {
+				this.options.target.css( 'font-family', selections.family );
+			}
+
 			this.options.target.css( 'font-weight', selections.weight );
 			this.options.target.css( 'font-style', selections.variant );
 
@@ -155,9 +178,9 @@ export class Control {
 	_bindWeightOptions() {
 		this.$familySelect.on( 'change', () => {
 			const config = this.getSelectedConfig();
-			let weights = config.variants[this.$variantSelect.val()] || {};
+			let weights = config.variants ? config.variants[this.$variantSelect.val()] || {} : {};
 			weights = Object.keys( weights );
-			weights = weights.concat( [ '400', '600' ] );
+			weights = weights.concat( this.defaultWeights );
 
 			let defaultWeight = '400';
 
@@ -177,5 +200,4 @@ export class Control {
 				.select2( this.selectStyleConfig );
 		} );
 	}
-
 }

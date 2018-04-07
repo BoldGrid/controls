@@ -23,7 +23,7 @@ export class WebFont {
 				variant = $this.attr( 'data-font-style' ),
 				weight = $this.attr( 'data-font-weight' );
 
-			if ( family ) {
+			if ( family && googleFonts[ family ] ) {
 				let weights = googleFonts[ family ].variants[ variant ];
 				families[family] = families[family] || {};
 
