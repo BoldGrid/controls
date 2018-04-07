@@ -10,6 +10,13 @@ import { WebFont } from './webfont';
 
 export class Control {
 
+	/**
+	 * Setup required dependcies and properties.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  {array} options Options.
+	 */
 	constructor( options ) {
 		this.options = options;
 
@@ -21,29 +28,42 @@ export class Control {
 		this.webFont = new WebFont( { $scope: $( 'html' ) } );
 	}
 
+	/**
+	 * Creates a jQuery Control.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {jQuery} Control.
+	 */
 	render() {
 		const template = _.template( templateHtml )( {
-			'fonts': googleFonts
+			fonts: googleFonts
 		} );
 		const $control = $( template );
 
 		this.fonts = googleFonts;
 		this.$familySelect = $control.find( '.font-family-control select' ).select2();
-		this.$variantSelect = $control.find( '.font-variant-control select' ).select2( this.selectStyleConfig );
-		this.$weightSelect = $control.find( '.font-weight-control select' ).select2( this.selectStyleConfig );
+
+		this.$variantSelect = $control
+			.find( '.font-variant-control select' )
+			.select2( this.selectStyleConfig );
+
+		this.$weightSelect = $control
+			.find( '.font-weight-control select' )
+			.select2( this.selectStyleConfig );
 
 		this._bindEvents();
 
 		return $control;
 	}
 
-	_bindEvents() {
-		this._bindVarientDisplay();
-		this._bindWeightOptions();
-		this._bindWebFont();
-		this._bindWeightChange();
-	}
-
+	/**
+	 * Get the current selections.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {object} Selected value of the 3 related options.
+	 */
 	getSelections() {
 		return {
 			family: this.$familySelect.val(),
@@ -52,26 +72,38 @@ export class Control {
 		};
 	}
 
-	_bindWeightOptions() {
-		this.$familySelect.on( 'change', () => {
-			const config = this.getSelectedConfig();
-			let weights = config.variants[ this.$variantSelect.val() ];
-			weights = Object.keys( weights );
-			let defaultWeight = ( -1 !== weights.indexOf( '400' ) ) ? '400' : keys[0];
-
-			this.$weightSelect.empty();
-
-			for ( const weight of weights ) {
-				this.$weightSelect.append( `<option value="${weight}">${weight}</option>` );
-			}
-
-			this.$weightSelect
-				.prop( 'disabled', 1 === weights.length )
-				.val( defaultWeight )
-				.select2( this.selectStyleConfig );
-		} );
+	/**
+	 * Get the selected font configuration.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {object} Font configuration.
+	 */
+	getSelectedConfig() {
+		return this.fonts[this.$familySelect.val()];
 	}
 
+	/**
+	 * Setup all events for this class.
+	 *
+	 * @since 1.0.0
+	 */
+	_bindEvents() {
+
+		// When user changes Family selection also update related options.
+		this._bindWeightOptions();
+
+		// Bind events when user changes selection.
+		this._bindFamilyChange();
+		this._bindStyleChange();
+		this._bindWeightChange();
+	}
+
+	/**
+	 * Update the selected Weight, sets css.
+	 *
+	 * @since 1.0.0
+	 */
 	_bindWeightChange() {
 		this.$weightSelect.on( 'change', () => {
 			const selections = this.getSelections();
@@ -81,7 +113,26 @@ export class Control {
 		} );
 	}
 
-	_bindWebFont() {
+	/**
+	 * Updates the selected style, sets CSS.
+	 *
+	 * @since 1.0.0
+	 */
+	_bindStyleChange() {
+		this.$variantSelect.on( 'change', () => {
+			const selections = this.getSelections();
+			this.options.target.attr( 'data-font-style', selections.variant );
+			this.options.target.css( 'font-style', selections.variant );
+			this.webFont.updateFontLink();
+		} );
+	}
+
+	/**
+	 * When the font selection is changed, set all the default settings for that font.
+	 *
+	 * @since 1.0.0
+	 */
+	_bindFamilyChange() {
 		this.$familySelect.on( 'change', () => {
 			const selections = this.getSelections();
 
@@ -96,26 +147,35 @@ export class Control {
 		} );
 	}
 
-	getSelectedConfig() {
-		return this.fonts[ this.$familySelect.val() ];
-	}
-
-	_bindVarientDisplay() {
+	/**
+	 * When the user changes their family, also change update the available weights.
+	 *
+	 * @since 1.0.0
+	 */
+	_bindWeightOptions() {
 		this.$familySelect.on( 'change', () => {
-			const fontConfig = this.getSelectedConfig(),
-				keys = Object.keys( fontConfig.variants );
+			const config = this.getSelectedConfig();
+			let weights = config.variants[this.$variantSelect.val()] || {};
+			weights = Object.keys( weights );
+			weights = weights.concat( [ '400', '600' ] );
 
-			// Update select.
-			this.$variantSelect.empty();
-			_.each ( fontConfig.variants, ( value, name ) => {
-				this.$variantSelect.prepend( `<option value="${name}">${titleCase( name )}</option>` );
-			} );
+			let defaultWeight = '400';
 
-			// Refresh select 2.
-			this.$variantSelect
-				.prop( 'disabled', 1 === keys.length )
-				.val( _.last( keys ) )
+			// Add bold to weights.
+			weights.sort();
+			weights = _.uniq( weights );
+
+			this.$weightSelect.empty();
+
+			for ( const weight of weights ) {
+				this.$weightSelect.append( `<option value="${weight}">${weight}</option>` );
+			}
+
+			this.$weightSelect
+				.prop( 'disabled', 1 === weights.length )
+				.val( defaultWeight )
 				.select2( this.selectStyleConfig );
 		} );
 	}
+
 }

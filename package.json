@@ -3,8 +3,8 @@
   "author": "Rafael Ramos <rramo012@gmail.com>",
   "bundleDependencies": false,
   "dependencies": {
+    "@material/switch": "^0.34.0",
     "@boldgrid/components": "^2.12.1",
-    "@material/switch": "^0.33.0",
     "Buttons": "https://github.com/alexwolfe/Buttons",
     "Iris": "git+https://github.com/Automattic/Iris.git#master",
     "animate.css": "^3.5.2",
@@ -26,7 +26,7 @@
     "jshint-loader": "^0.8.4",
     "karma-coverage": "^1.1.1",
     "karma-sourcemap-loader": "^0.3.7",
-    "material-components-web": "^0.33.0",
+    "material-components-web": "^0.34.0",
     "normalize.css": "^8.0.0",
     "npm-run-all": "^4.1.1",
     "postcss-loader": "^2.0.8",
