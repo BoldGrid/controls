@@ -1,0 +1,10 @@
+<div class="boldgrid-control <%=controlOptions.name %>-control">
+	<label><%=controlOptions.title %></label>
+	<div>
+		<select>
+			<% for ( let option of controlOptions.options ) { %>
+				<option value="<%=option.value %>"><%=option.label %></option>
+			<% } %>
+		</select>
+	</div>
+</div>
