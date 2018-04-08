@@ -63,8 +63,6 @@ export class WebFont {
 
 		families = this.createLinkList();
 
-console.log( families );
-
 		// Create url encoded array.
 		familyParam = [];
 		for ( let familyName in families ) {
