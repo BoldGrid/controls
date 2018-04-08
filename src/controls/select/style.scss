@@ -30,4 +30,10 @@
 		border: 0;
 		border-bottom: 2px solid lightgrey;
 	}
+
+	.select2-dropdown {
+		border: 1px solid #ebebeb;
+		border-radius: 0;
+		box-shadow: 0 0 4px 2px rgba(187, 187, 187, 0.2);
+	}
 }

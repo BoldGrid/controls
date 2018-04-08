@@ -71,4 +71,14 @@
 			display: none;
 		}
 	}
+
+	&[data-linkable="false"] {
+		.units {
+			right: 0;
+		}
+
+		.link {
+			display: none;
+		}
+	}
 }
