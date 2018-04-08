@@ -1,7 +1,7 @@
-<div>
+<div class='typography-family-controls'>
 	<div class="boldgrid-control font-family-control">
-		<label>Font Family</label>
-		<div>
+		<label>
+			<span class="title">Font Family</span>
 			<select>
 				<optgroup label="">
 					<option value="">Default</option>
@@ -17,11 +17,11 @@
 					<% } %>
 				</optgroup>
 			</select>
-		</div>
+		</label>
 	</div>
-	<div class="boldgrid-control font-weight-control">
-		<label>Font Weight</label>
-		<div>
+	<div class="boldgrid-control font-weight-control bg-select-control">
+		<label>
+			<span class="title">Font Weight</span>
 			<select>
 				<% for ( let weight of defaultWeights ) { %>
 					<option value="<%=weight %>">
@@ -35,15 +35,15 @@
 					</option>
 				<% } %>
 			</select>
-		</div>
+		</label>
 	</div>
-	<div class="boldgrid-control font-variant-control">
-		<label>Font Style</label>
-		<div>
+	<div class="boldgrid-control font-variant-control bg-select-control">
+		<label>
+			<span class="title">Font Style</span>
 			<select>
 				<option value="normal">Normal</option>
 				<option value="italic">Italic</option>
 			</select>
-		</div>
+		</label>
 	</div>
 </div>

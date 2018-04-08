@@ -8,3 +8,16 @@
 .font-family-control {
 	margin-bottom: 10px;
 }
+
+.typography-family-controls {
+	.select2-container {
+		font-size: 12px;
+	}
+
+	.font-family-control .title {
+		font-size: 15px;
+		font-variant: small-caps;
+		margin-bottom: 7px;
+		display: inline-block;
+	}
+}

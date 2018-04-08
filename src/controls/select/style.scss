@@ -1,5 +1,33 @@
-.boldgrid-control .select2 {
-	display: block;
-	width: 100%;
+.bg-select-control {
+	position: relative;
+	min-height: 28px;
 	margin-bottom: 10px;
+
+	label {
+		vertical-align: middle;
+
+		.title {
+			font-size: 13px;
+			font-variant: small-caps;
+		}
+	}
+
+	.select2 {
+		display: inline-block;
+		width: 150px !important;
+		position: absolute;
+		right: 0;
+	}
+
+	.select2-container {
+		font-size: 12px;
+	}
+}
+
+.boldgrid-control {
+	.select2-selection {
+		border-radius: 0;
+		border: 0;
+		border-bottom: 2px solid lightgrey;
+	}
 }

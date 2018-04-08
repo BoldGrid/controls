@@ -7,8 +7,7 @@ export class Control {
 		this.options = options;
 
 		this.selectStyleConfig = {
-			minimumResultsForSearch: 10,
-			width: '100%'
+			minimumResultsForSearch: 10
 		};
 
 		this.controlOptions = {
@@ -43,6 +42,7 @@ export class Control {
 			controlOptions: this.controlOptions
 		} ) );
 
+		this.selectStyleConfig.dropdownParent = $control;
 		this.$select = $control.find( 'select' ).select2( this.selectStyleConfig );
 
 		this._onChange();

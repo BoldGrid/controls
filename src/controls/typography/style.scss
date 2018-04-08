@@ -5,4 +5,14 @@
 	.directional-control {
 		margin-bottom: 20px;
 	}
+
+	.control-name {
+		font-weight: normal;
+		font-variant: small-caps;
+	}
+
+	.directional-control svg {
+		width: 15px;
+		margin: 0 10px;
+	}
 }

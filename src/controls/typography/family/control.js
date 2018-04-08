@@ -44,8 +44,12 @@ export class Control {
 		} );
 		const $control = $( template );
 
+		this.selectStyleConfig.dropdownParent = $control;
+
 		this.fonts = googleFonts;
-		this.$familySelect = $control.find( '.font-family-control select' ).select2();
+		this.$familySelect = $control
+			.find( '.font-family-control select' )
+			.select2( this.selectStyleConfig );
 
 		this.$variantSelect = $control
 			.find( '.font-variant-control select' )
