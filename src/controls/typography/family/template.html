@@ -19,22 +19,30 @@
 			</select>
 		</div>
 	</div>
+	<div class="boldgrid-control font-weight-control">
+		<label>Font Weight</label>
+		<div>
+			<select>
+				<% for ( let weight of defaultWeights ) { %>
+					<option value="<%=weight %>">
+						<%=weight %>
+						<% if ( '400' === weight ) {  %>
+							(Normal)
+						<% } %>
+						<% if ( '600' === weight ) {  %>
+							(Bold)
+						<% } %>
+					</option>
+				<% } %>
+			</select>
+		</div>
+	</div>
 	<div class="boldgrid-control font-variant-control">
 		<label>Font Style</label>
 		<div>
 			<select>
 				<option value="normal">Normal</option>
 				<option value="italic">Italic</option>
-			</select>
-		</div>
-	</div>
-	<div class="boldgrid-control font-weight-control">
-		<label>Font Weight</label>
-		<div>
-			<select>
-				<% for ( let weight of defaultWeights ) { %>
-					<option value="<%=weight %>"><%=weight %></option>
-				<% } %>
 			</select>
 		</div>
 	</div>

@@ -1,6 +1,4 @@
 import templateHtml from './template.html';
-import 'select2/dist/css/select2.min.css';
-import 'select2/dist/js/select2.min.js';
 import googleFonts from 'google-fonts-complete';
 import './style.scss';
 import systemFonts from './system-fonts.js';
@@ -96,7 +94,7 @@ export class Control {
 	 * @return {boolean} system font.
 	 */
 	_getSystemFont() {
-		return _.find( systemFonts, ( font ) => font.name === this.$familySelect.val() );
+		return _.find( systemFonts, font => font.name === this.$familySelect.val() );
 	}
 
 	/**
