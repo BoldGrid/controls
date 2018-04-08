@@ -9,6 +9,7 @@ import { LineHeight } from './line-height';
 import { LetterSpacing } from './letter-spacing';
 import { FontTransform } from './transform';
 import { FontSize } from './font-size';
+import { TextShadow } from './text-shadow';
 import { TextDecoration } from './decoration';
 import 'select2/dist/css/select2.min.css';
 import 'select2/dist/js/select2.min.js';
@@ -24,6 +25,7 @@ export class Control {
 		this.letterSpacing = new LetterSpacing( { target: this.options.target } );
 		this.fontTransform = new FontTransform( { target: this.options.target } );
 		this.textDecoration = new TextDecoration( { target: this.options.target } );
+		this.textShadow = new TextShadow( { target: this.options.target } );
 	}
 
 	render() {
@@ -35,6 +37,7 @@ export class Control {
 		$template.find( 'letter-spacing' ).replaceWith( this.letterSpacing.render() );
 		$template.find( 'transform' ).replaceWith( this.fontTransform.render() );
 		$template.find( 'text-decoration' ).replaceWith( this.textDecoration.render() );
+		$template.find( 'text-shadow' ).replaceWith( this.textShadow.render() );
 
 		return $template;
 	}
