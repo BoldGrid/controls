@@ -10,7 +10,7 @@
     "animate.css": "^3.5.2",
     "babel-minify-webpack-plugin": "^0.3.0",
     "babel-plugin-istanbul": "^4.1.5",
-    "bulma": "^0.6.0",
+    "bulma": "^0.7.0",
     "color": "git+https://github.com/Automattic/Color.js.git",
     "color-js": "^1.0.4",
     "coveralls": "^3.0.0",
