@@ -3,7 +3,7 @@
   "author": "Rafael Ramos <rramo012@gmail.com>",
   "bundleDependencies": false,
   "dependencies": {
-    "@material/switch": "^0.34.0",
+    "@material/switch": "^0.35.0",
     "@boldgrid/components": "^2.12.1",
     "Buttons": "https://github.com/alexwolfe/Buttons",
     "Iris": "git+https://github.com/Automattic/Iris.git#master",
