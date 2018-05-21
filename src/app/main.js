@@ -88,8 +88,8 @@ export class Application {
 	multiSlider() {
 		let $tab = $( '.directional-controls' ),
 			$combined = $tab.find( '.combined' ),
-			padding = new Padding( { target: $combined } ),
-			border = new Border( { target: $combined } ),
+			padding = new Padding(),
+			border = new Border(),
 			boxShadow = new BoxShadow( { target: $combined } ),
 			borderRadius = new BorderRadius( { target: $combined } ),
 			margin = new Margin( { target: $combined } );

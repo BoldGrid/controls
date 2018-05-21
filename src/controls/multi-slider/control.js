@@ -7,18 +7,50 @@ import config from './config.js';
 import deepmerge from 'deepmerge';
 import refreshSvg from './img/refresh.svg';
 import linkSvg from './img/link.svg';
+import { EventEmitter } from 'eventemitter3';
+
 
 export class MultiSlider {
 	constructor( options ) {
 		this.options = options || {};
 
+		this.$control = null;
 		this.slidersLinked = false;
 		this.$target = this.options.target;
 		this.template = _.template( template );
+		this.events = new EventEmitter();
 
 		if ( ! this.$target ) {
-			throw Error( 'Your must define a target element' );
+			this.$target = $( '<div>' ).hide();
+			$( 'body' ).append( this.$target );
 		}
+	}
+
+	/**
+	 * Set the current target.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param {jQuery} $target Target to update.
+	 */
+	setTarget( $target ) {
+		this.$target = $( $target );
+		this.refreshValues();
+	}
+
+	/**
+	 * Get the current settings.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {object} Settings for a control.
+	 */
+	getSettings() {
+		return {
+			units: this.getUnit(),
+			slidersLinked: this.slidersLinked,
+			values: this.getValues()
+		};
 	}
 
 	/**
@@ -106,6 +138,17 @@ export class MultiSlider {
 			.filter( '[value="' + unit + '"]' )
 			.prop( 'checked', true )
 			.change();
+	}
+
+	/**
+	 * Get the currently selected units.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {string} Selected units.
+	 */
+	getUnit() {
+		return this.$units.filter( ':checked' ).val();
 	}
 
 	/**
@@ -351,6 +394,7 @@ export class MultiSlider {
 			if ( ! this.slideChangeDisabled ) {
 				this._updateLinked( slider );
 				this._updateCss( slider );
+				this.events.emit( 'change', this.getSettings() );
 			}
 		} );
 	}

@@ -67,6 +67,19 @@ export class Border extends MultiSlider {
 	}
 
 	/**
+	 * Get the current settings.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {object} Settings for a control.
+	 */
+	getSettings() {
+		let settings = super.getSettings();
+		settings.type = this._getBorderStyle();
+		return settings;
+	}
+
+	/**
 	 * Set the input type to the type of the target.
 	 *
 	 * @since 1.0.0
@@ -146,6 +159,7 @@ export class Border extends MultiSlider {
 
 			this._toggleWidthControl( val );
 			this.$control.trigger( 'type-change', val );
+			this.events.emit( 'change', this.getSettings() );
 		} );
 	}
 }

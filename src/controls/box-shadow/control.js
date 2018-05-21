@@ -31,6 +31,20 @@ export class BoxShadow extends MultiSlider {
 	}
 
 	/**
+	 * Get the current settings.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {object} Settings for a control.
+	 */
+	getSettings() {
+		let settings = super.getSettings();
+		settings.color = this.shadowColor;
+		settings.type = this.shadowType;
+		return settings;
+	}
+
+	/**
 	 * Get the configs for the current slider.
 	 *
 	 * @since 1.0.0
@@ -140,6 +154,7 @@ export class BoxShadow extends MultiSlider {
 		this.colorPicker.$input.iris( 'option', 'change', ( e, ui ) => {
 			this.shadowColor = ui.color.toString();
 			this._updateCss();
+			this.events.emit( 'change', this.getSettings() );
 		} );
 	}
 
@@ -173,6 +188,7 @@ export class BoxShadow extends MultiSlider {
 		this.switchControl.$input.on( 'change', () => {
 			this.updateShadowType();
 			this._updateCss();
+			this.events.emit( 'change', this.getSettings() );
 		} );
 	}
 }
