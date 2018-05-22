@@ -49,8 +49,47 @@ export class MultiSlider {
 		return {
 			units: this.getUnit(),
 			slidersLinked: this.slidersLinked,
-			values: this.getValues()
+			values: this.getValues(),
+			css: this.createCss()
 		};
+	}
+
+	/**
+	 * Create css string if a selecor is passed.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {string} [description]
+	 */
+	createCss() {
+		let css = false;
+		if ( this.controlOptions.control.selectors && this.controlOptions.control.selectors.length ) {
+			css = '';
+			css += this.controlOptions.control.selectors.join( ',' ) + '{';
+			css += this.getCssRule();
+			css += '}';
+		}
+
+		return css;
+	}
+
+	/**
+	 * Get the CSS definitions.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {string} css riles.
+	 */
+	getCssRule() {
+		let cssRule = '';
+
+		for ( let slider of this.controlOptions.control.sliders ) {
+			let sliderValue = this.sliders[ slider.name ].$slider.slider( 'option', 'value' );
+
+			cssRule += slider.cssProperty + ':' + sliderValue + this.getUnit() + ';';
+		}
+
+		return cssRule;
 	}
 
 	/**
@@ -62,6 +101,12 @@ export class MultiSlider {
 		this.controlOptions = deepmerge( config.defaults, this.controlOptions, {
 			arrayMerge: ( destination, source ) => source
 		} );
+
+		this.options.target = null;
+		this.controlOptions = deepmerge( this.controlOptions, this.options, {
+			arrayMerge: ( destination, source ) => source
+		} );
+
 	}
 
 	/**
