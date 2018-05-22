@@ -56,6 +56,26 @@ export class Border extends MultiSlider {
 	}
 
 	/**
+	 * Get CSS rules. Override to append style.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {string} CSS rules.
+	 */
+	getCssRule() {
+		let css = super.getCssRule(),
+			style = this._getBorderStyle();
+
+		if ( style ) {
+			css += 'border-style: ' + this._getBorderStyle() + ';';
+		} else {
+			css = 'border: 0;';
+		}
+
+		return css;
+	}
+
+	/**
 	 * Bind all events.
 	 *
 	 * @since 1.0.0
