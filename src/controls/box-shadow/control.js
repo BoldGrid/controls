@@ -45,6 +45,17 @@ export class BoxShadow extends MultiSlider {
 	}
 
 	/**
+	 * Override the get css rule method to use the box shadow property.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {string} CSS value.
+	 */
+	getCssRule() {
+		return 'box-shadow: ' + this.$target.css( 'box-shadow' );
+	}
+
+	/**
 	 * Get the configs for the current slider.
 	 *
 	 * @since 1.0.0

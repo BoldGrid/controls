@@ -11,16 +11,14 @@ export default {
 			sliders: [
 				{
 					name: 'horizontal-position',
-					label: 'Horizontal Position',
-					cssProperty: 'border-top-left-radius'
+					label: 'Horizontal Position'
 				},
 				{
 					name: 'vertical-position',
-					label: 'Vertical Position',
-					cssProperty: 'border-top-right-radius'
+					label: 'Vertical Position'
 				},
-				{ name: 'blur-radius', label: 'Blur Radius', cssProperty: 'border-bottom-right-radius' },
-				{ name: 'spread-radius', label: 'Spread Radius', cssProperty: 'border-bottom-right-radius' }
+				{ name: 'blur-radius', label: 'Blur Radius' },
+				{ name: 'spread-radius', label: 'Spread Radius' }
 			]
 		},
 		slider: {
