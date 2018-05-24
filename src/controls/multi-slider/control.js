@@ -47,7 +47,7 @@ export class MultiSlider {
 	 */
 	getSettings() {
 		return {
-			units: this.getUnit(),
+			unit: this.getUnit(),
 			slidersLinked: this.slidersLinked,
 			values: this.getValues(),
 			css: this.createCss()
@@ -129,16 +129,21 @@ export class MultiSlider {
 		this.$revert = this.$control.find( '.refresh' );
 
 		this._bindUnits();
-		this.setUnits( this.controlOptions.control.units.default );
+		this.setUnits( this._getDefaultUnits() );
 
 		// Create sliders and attach them to the template.
 		this._createSliders();
 		this.$links = this.$control.find( '.link' );
 
+		if ( this.options.defaults ) {
+			this.applySettings( this.options.defaults );
+		}
+
 		this._storeDefaultValues();
 		this._setDefaultLinkedState();
 		this._bindLinked();
 		this._bindRevert();
+		this.$control.rendered = true;
 
 		return this.$control;
 	}
@@ -250,6 +255,22 @@ export class MultiSlider {
 	}
 
 	/**
+	 * Get the default unit set, takes into consideration defaults object.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {string} Unit.
+	 */
+	_getDefaultUnits() {
+		let defaultUnit = this.controlOptions.control.units.default;
+		if ( this.options.defaults && this.options.defaults.unit ) {
+			defaultUnit = this.options.defaults.unit;
+		}
+
+		return defaultUnit;
+	}
+
+	/**
 	 * Create sliders and attach them to the template.
 	 *
 	 * @since 1.0.0
@@ -261,6 +282,10 @@ export class MultiSlider {
 			let sliderControl;
 
 			slider.uiSettings = this.getSliderConfig( slider );
+			if ( this.options.defaults && this.options.defaults.values[slider.name] ) {
+				slider.uiSettings.value = this.options.defaults.values[slider.name];
+			}
+
 			sliderControl = new Slider( $.extend( true, {}, slider ) );
 
 			sliderControl.render();
@@ -283,7 +308,7 @@ export class MultiSlider {
 	 */
 	_storeDefaultValues() {
 		this.defaultValues = {
-			unit: this.controlOptions.control.units.default,
+			unit: this._getDefaultUnits(),
 			values: this.getValues()
 		};
 	}
@@ -439,9 +464,20 @@ export class MultiSlider {
 			if ( ! this.slideChangeDisabled ) {
 				this._updateLinked( slider );
 				this._updateCss( slider );
-				this.events.emit( 'change', this.getSettings() );
+				this._triggerChangeEvent();
 			}
 		} );
+	}
+
+	/**
+	 * Trigger the change event only after setup is done.
+	 *
+	 * @since 1.0.0
+	 */
+	_triggerChangeEvent() {
+		if ( this.$control.rendered ) {
+			this.events.emit( 'change', this.getSettings() );
+		}
 	}
 }
 
