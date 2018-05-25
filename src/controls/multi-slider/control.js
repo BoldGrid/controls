@@ -284,7 +284,7 @@ export class MultiSlider {
 			let sliderControl;
 
 			slider.uiSettings = this.getSliderConfig( slider );
-			if ( this.options.defaults && this.options.defaults.values[slider.name] ) {
+			if ( this.options.defaults && this.options.defaults.values && this.options.defaults.values[slider.name] ) {
 				slider.uiSettings.value = this.options.defaults.values[slider.name];
 			}
 
@@ -391,9 +391,13 @@ export class MultiSlider {
 	 * @since 1.0.0
 	 */
 	_setDefaultLinkedState() {
-		if ( this.controlOptions.control.linkable ) {
-			let values = _.unique( _.values( this.getValues() ) );
-			this.slidersLinked = 1 === values.length;
+		if ( this.controlOptions.control.linkable.enabled ) {
+			if ( this.options.defaults && 'undefined' !== typeof this.options.defaults.slidersLinked ) {
+				this.slidersLinked = !! this.options.defaults.slidersLinked;
+			} else if ( this.controlOptions.control.linkable.isLinked ) {
+				let values = _.unique( _.values( this.getValues() ) );
+				this.slidersLinked = 1 === values.length;
+			}
 		}
 	}
 

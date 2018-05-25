@@ -3,7 +3,9 @@ export default {
 		control: {
 			title: 'Box Shadow',
 			name: 'box-shadow',
-			linkable: false,
+			linkable: {
+				enabled: false
+			},
 			units: {
 				default: 'px',
 				enabled: [ 'px' ]
