@@ -417,6 +417,7 @@ export class MultiSlider {
 			$target.toggleClass( 'linked' );
 			this.slidersLinked = $target.hasClass( 'linked' );
 			this.$control.trigger( 'linked', { isLinked: this.slidersLinked } );
+			this._triggerChangeEvent();
 		} );
 	}
 
