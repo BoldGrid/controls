@@ -161,7 +161,9 @@ export class MultiSlider {
 		for ( let key in settings.values ) {
 			let value = settings.values[key];
 
-			this.sliders[key].$slider.slider( 'option', 'value', value );
+			if ( this.sliders[key] )  {
+				this.sliders[key].$slider.slider( 'option', 'value', value );
+			}
 		}
 	}
 
