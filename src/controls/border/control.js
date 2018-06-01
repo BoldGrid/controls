@@ -119,7 +119,7 @@ export class Border extends MultiSlider {
 	 */
 	applySettings( settings ) {
 		super.applySettings( settings );
-		this._setType( settings.type );
+		this._setType( settings.type ).change();
 		this._toggleWidthControl( settings.type );
 		this.$target.css( 'border-style', settings.type );
 	}
@@ -132,7 +132,7 @@ export class Border extends MultiSlider {
 	 * @return {string} Default border style.
 	 */
 	_getDefaultBorderStyle() {
-		let defaultBorderStyle = '';
+		let defaultBorderStyle = this._getBorderStyle();
 
 		if ( this.options.defaults && this.options.defaults.type ) {
 			defaultBorderStyle = this.options.defaults.type;
