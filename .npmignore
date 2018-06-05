@@ -1,9 +1,6 @@
 # Environment Configuration
 .env
 
-# Build output folders
-dist/
-
 # Logs
 logs
 *.log

@@ -18,6 +18,13 @@
 		background: #f1f1f1;
 		cursor: pointer;
 		border: 0;
+		position: relative;
+
+		.ui-slider-handle {
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+		}
 	}
 
 	.number {

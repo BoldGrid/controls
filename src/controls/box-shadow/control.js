@@ -14,7 +14,7 @@ export class BoxShadow extends MultiSlider {
 		this.slidersLinked = false;
 		this.controlOptions = configs.controlOptions;
 		this.sliderConfig = configs.sliderConfig;
-		this.currentValues = this.getCurrentValues();
+		this.currentValues = this.getInitialValues();
 		this.shadowType = this.currentValues.inset ? 'inset' : '';
 		this.shadowColor = this.getShadowColor();
 
@@ -26,8 +26,87 @@ export class BoxShadow extends MultiSlider {
 		this.colorPicker = new ColorPicker();
 	}
 
+	/**
+	 * Get the initial values to use for the control.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {object} Values.
+	 */
+	getInitialValues() {
+		let values = this.getCurrentValues();
+
+		if ( this.options.defaults && this.options.defaults.values ) {
+			values = this.options.defaults.values || {};
+			values.inset = this.options.defaults.type;
+			values.color = this.options.defaults.color;
+		}
+
+		return values;
+	}
+
+	/**
+	 * Allow reset of box shadow.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  {object} settings Initial settings.
+	 */
+	applySettings( settings ) {
+		super.applySettings( settings );
+		this.currentValues.inset = settings.type ? 'inset' : '';
+		this.updateCheckedSetting();
+
+		if ( this.colorPicker.$input ) {
+			this.colorPicker.setColor( settings.color );
+		}
+	}
+
+	/**
+	 * Get the current shadow color.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {string} Color value.
+	 */
 	getShadowColor() {
 		return this.currentValues.color || '#cecece';
+	}
+
+	/**
+	 * Save the default values for reverts.
+	 *
+	 * @since 1.0
+	 */
+	_storeDefaultValues() {
+		super._storeDefaultValues();
+		this.defaultValues.type = this.currentValues.inset;
+		this.defaultValues.color = this.currentValues.color;
+	}
+
+	/**
+	 * Get the current settings.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {object} Settings for a control.
+	 */
+	getSettings() {
+		let settings = super.getSettings();
+		settings.color = this.shadowColor;
+		settings.type = this.shadowType;
+		return settings;
+	}
+
+	/**
+	 * Override the get css rule method to use the box shadow property.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {string} CSS value.
+	 */
+	getCssRule() {
+		return 'box-shadow: ' + this.$target.css( 'box-shadow' );
 	}
 
 	/**
@@ -68,6 +147,7 @@ export class BoxShadow extends MultiSlider {
 	render() {
 		let $control;
 
+		this.switchControl.render();
 		super.render();
 
 		this._setupOutlineSwitch();
@@ -140,6 +220,7 @@ export class BoxShadow extends MultiSlider {
 		this.colorPicker.$input.iris( 'option', 'change', ( e, ui ) => {
 			this.shadowColor = ui.color.toString();
 			this._updateCss();
+			this._triggerChangeEvent();
 		} );
 	}
 
@@ -167,12 +248,12 @@ export class BoxShadow extends MultiSlider {
 	 * @since 1.0.0
 	 */
 	_setupOutlineSwitch() {
-		this.switchControl.render();
 		this.updateCheckedSetting();
 
 		this.switchControl.$input.on( 'change', () => {
 			this.updateShadowType();
 			this._updateCss();
+			this._triggerChangeEvent();
 		} );
 	}
 }

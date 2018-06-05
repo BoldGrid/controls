@@ -7,18 +7,89 @@ import config from './config.js';
 import deepmerge from 'deepmerge';
 import refreshSvg from './img/refresh.svg';
 import linkSvg from './img/link.svg';
+import { EventEmitter } from 'eventemitter3';
+
 
 export class MultiSlider {
 	constructor( options ) {
 		this.options = options || {};
 
+		this.$control = null;
 		this.slidersLinked = false;
 		this.$target = this.options.target;
 		this.template = _.template( template );
+		this.events = new EventEmitter();
 
 		if ( ! this.$target ) {
-			throw Error( 'Your must define a target element' );
+			this.$target = $( '<div>' ).hide();
+			$( 'body' ).append( this.$target );
 		}
+	}
+
+	/**
+	 * Set the current target.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param {jQuery} $target Target to update.
+	 */
+	setTarget( $target ) {
+		this.$target = $( $target );
+		this.refreshValues();
+	}
+
+	/**
+	 * Get the current settings.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {object} Settings for a control.
+	 */
+	getSettings() {
+		return {
+			unit: this.getUnit(),
+			slidersLinked: this.slidersLinked,
+			values: this.getValues(),
+			css: this.createCss()
+		};
+	}
+
+	/**
+	 * Create css string if a selecor is passed.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {string} [description]
+	 */
+	createCss() {
+		let css = false;
+		if ( this.controlOptions.control.selectors && this.controlOptions.control.selectors.length ) {
+			css = '';
+			css += this.controlOptions.control.selectors.join( ',' ) + '{';
+			css += this.getCssRule();
+			css += '}';
+		}
+
+		return css;
+	}
+
+	/**
+	 * Get the CSS definitions.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {string} css riles.
+	 */
+	getCssRule() {
+		let cssRule = '';
+
+		for ( let slider of this.controlOptions.control.sliders ) {
+			let sliderValue = this.sliders[ slider.name ].$slider.slider( 'option', 'value' );
+
+			cssRule += slider.cssProperty + ':' + sliderValue + this.getUnit() + ';';
+		}
+
+		return cssRule;
 	}
 
 	/**
@@ -30,6 +101,12 @@ export class MultiSlider {
 		this.controlOptions = deepmerge( config.defaults, this.controlOptions, {
 			arrayMerge: ( destination, source ) => source
 		} );
+
+		this.options.target = null;
+		this.controlOptions = deepmerge( this.controlOptions, this.options, {
+			arrayMerge: ( destination, source ) => source
+		} );
+
 	}
 
 	/**
@@ -52,16 +129,21 @@ export class MultiSlider {
 		this.$revert = this.$control.find( '.refresh' );
 
 		this._bindUnits();
-		this.setUnits( this.controlOptions.control.units.default );
+		this.setUnits( this._getDefaultUnits() );
 
 		// Create sliders and attach them to the template.
 		this._createSliders();
 		this.$links = this.$control.find( '.link' );
 
+		if ( this.options.defaults ) {
+			this.applySettings( this.options.defaults );
+		}
+
 		this._storeDefaultValues();
 		this._setDefaultLinkedState();
 		this._bindLinked();
 		this._bindRevert();
+		this.$control.rendered = true;
 
 		return this.$control;
 	}
@@ -79,7 +161,9 @@ export class MultiSlider {
 		for ( let key in settings.values ) {
 			let value = settings.values[key];
 
-			this.sliders[key].$slider.slider( 'option', 'value', value );
+			if ( this.sliders[key] )  {
+				this.sliders[key].$slider.slider( 'option', 'value', value );
+			}
 		}
 	}
 
@@ -106,6 +190,17 @@ export class MultiSlider {
 			.filter( '[value="' + unit + '"]' )
 			.prop( 'checked', true )
 			.change();
+	}
+
+	/**
+	 * Get the currently selected units.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {string} Selected units.
+	 */
+	getUnit() {
+		return this.$units.filter( ':checked' ).val();
 	}
 
 	/**
@@ -162,6 +257,22 @@ export class MultiSlider {
 	}
 
 	/**
+	 * Get the default unit set, takes into consideration defaults object.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {string} Unit.
+	 */
+	_getDefaultUnits() {
+		let defaultUnit = this.controlOptions.control.units.default;
+		if ( this.options.defaults && this.options.defaults.unit ) {
+			defaultUnit = this.options.defaults.unit;
+		}
+
+		return defaultUnit;
+	}
+
+	/**
 	 * Create sliders and attach them to the template.
 	 *
 	 * @since 1.0.0
@@ -173,6 +284,10 @@ export class MultiSlider {
 			let sliderControl;
 
 			slider.uiSettings = this.getSliderConfig( slider );
+			if ( this.options.defaults && this.options.defaults.values && this.options.defaults.values[slider.name] ) {
+				slider.uiSettings.value = this.options.defaults.values[slider.name];
+			}
+
 			sliderControl = new Slider( $.extend( true, {}, slider ) );
 
 			sliderControl.render();
@@ -195,7 +310,7 @@ export class MultiSlider {
 	 */
 	_storeDefaultValues() {
 		this.defaultValues = {
-			unit: this.controlOptions.control.units.default,
+			unit: this._getDefaultUnits(),
 			values: this.getValues()
 		};
 	}
@@ -276,9 +391,13 @@ export class MultiSlider {
 	 * @since 1.0.0
 	 */
 	_setDefaultLinkedState() {
-		if ( this.controlOptions.control.linkable ) {
-			let values = _.unique( _.values( this.getValues() ) );
-			this.slidersLinked = 1 === values.length;
+		if ( this.controlOptions.control.linkable.enabled ) {
+			if ( this.options.defaults && 'undefined' !== typeof this.options.defaults.slidersLinked ) {
+				this.slidersLinked = !! this.options.defaults.slidersLinked;
+			} else if ( this.controlOptions.control.linkable.isLinked ) {
+				let values = _.unique( _.values( this.getValues() ) );
+				this.slidersLinked = 1 === values.length;
+			}
 		}
 	}
 
@@ -298,6 +417,7 @@ export class MultiSlider {
 			$target.toggleClass( 'linked' );
 			this.slidersLinked = $target.hasClass( 'linked' );
 			this.$control.trigger( 'linked', { isLinked: this.slidersLinked } );
+			this._triggerChangeEvent();
 		} );
 	}
 
@@ -351,8 +471,20 @@ export class MultiSlider {
 			if ( ! this.slideChangeDisabled ) {
 				this._updateLinked( slider );
 				this._updateCss( slider );
+				this._triggerChangeEvent();
 			}
 		} );
+	}
+
+	/**
+	 * Trigger the change event only after setup is done.
+	 *
+	 * @since 1.0.0
+	 */
+	_triggerChangeEvent() {
+		if ( this.$control.rendered ) {
+			this.events.emit( 'change', this.getSettings() );
+		}
 	}
 }
 
