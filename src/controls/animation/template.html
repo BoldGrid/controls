@@ -4,9 +4,9 @@
 		<h4 class="control-title">Type</h4>
 		<select class="animations" name="animation-type">
 			<option value="">None</option>
-			<% _.each( animateConfig, function ( category, categoryName ) {   %>
+			<% _.each( animateConfig, function ( category, categoryName ) {  %>
 				<optgroup label="<%= titleCase( categoryName )%>">
-			<%	_.each( category, function ( animationName ) {  %>
+			<%	_.each( category, function ( enabled, animationName ) { %>
 					<option value="<%=animationName %>"><%=titleCase( animationName ) %></option>
 				<% } ); %>
 				</optgroup>

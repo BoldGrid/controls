@@ -12,6 +12,9 @@ export class Border extends MultiSlider {
 			control: {
 				title: 'Border Width',
 				name: 'border-width',
+				borderStyle: {
+					default: ''
+				},
 				units: {
 					default: 'px',
 					enabled: [ 'px', 'em' ]
@@ -44,15 +47,33 @@ export class Border extends MultiSlider {
 	render() {
 		let $control;
 
-		super.render();
-
 		this.$typeControl = $( template );
-
+		super.render();
 		this.bindEvents();
 
 		$control = this.$typeControl.append( this.$control );
 
 		return $control;
+	}
+
+	/**
+	 * Get CSS rules. Override to append style.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {string} CSS rules.
+	 */
+	getCssRule() {
+		let css = super.getCssRule(),
+			style = this._getBorderStyle();
+
+		if ( style ) {
+			css += 'border-style: ' + this._getBorderStyle() + ';';
+		} else {
+			css = 'border: 0;';
+		}
+
+		return css;
 	}
 
 	/**
@@ -63,7 +84,61 @@ export class Border extends MultiSlider {
 	bindEvents() {
 		this._bindTypeChange();
 		this.refreshValues();
-		this._setType();
+		this._setType( this._getBorderStyle() );
+	}
+
+	/**
+	 * Get the current settings.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {object} Settings for a control.
+	 */
+	getSettings() {
+		let settings = super.getSettings();
+		settings.type = this._getBorderStyle();
+		return settings;
+	}
+
+	/**
+	 * Save the default values for reverts.
+	 *
+	 * @since 1.0
+	 */
+	_storeDefaultValues() {
+		super._storeDefaultValues();
+		this.defaultValues.type = this._getDefaultBorderStyle();
+	}
+
+	/**
+	 * Given an object of settings, change the inputs.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  {object} settings Settings for control.
+	 */
+	applySettings( settings ) {
+		super.applySettings( settings );
+		this._setType( settings.type ).change();
+		this._toggleWidthControl( settings.type );
+		this.$target.css( 'border-style', settings.type );
+	}
+
+	/**
+	 * Get the default borer style to use.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {string} Default border style.
+	 */
+	_getDefaultBorderStyle() {
+		let defaultBorderStyle = this._getBorderStyle();
+
+		if ( this.options.defaults && this.options.defaults.type ) {
+			defaultBorderStyle = this.options.defaults.type;
+		}
+
+		return defaultBorderStyle;
 	}
 
 	/**
@@ -71,9 +146,7 @@ export class Border extends MultiSlider {
 	 *
 	 * @since 1.0.0
 	 */
-	_setType() {
-		let setting = this._getBorderStyle();
-
+	_setType( setting ) {
 		setting = 'none' !== setting ? setting : '';
 		return this.$typeControl
 			.find( '.border-type-control input' )
@@ -111,7 +184,7 @@ export class Border extends MultiSlider {
 	refreshValues() {
 		let $radio;
 		super.refreshValues();
-		$radio = this._setType();
+		$radio = this._setType( this._getBorderStyle() );
 		this._toggleWidthControl( $radio.val() );
 	}
 
@@ -146,6 +219,7 @@ export class Border extends MultiSlider {
 
 			this._toggleWidthControl( val );
 			this.$control.trigger( 'type-change', val );
+			this._triggerChangeEvent();
 		} );
 	}
 }
