@@ -55,6 +55,10 @@ export class BoxShadow extends MultiSlider {
 	 */
 	applySettings( settings ) {
 		super.applySettings( settings );
+		if ( ! this.currentValues ) {
+			return;
+		}
+
 		this.currentValues.inset = settings.type ? 'inset' : '';
 		this.updateCheckedSetting();
 		this.switchControl.$input.change();
@@ -188,16 +192,18 @@ export class BoxShadow extends MultiSlider {
 	_updateCss() {
 		let data = this.getValues(),
 			name = this.controlOptions.control.name,
+			cssString = '';
+
+		if ( data['horizontal-position'] || data['vertical-position'] || data['blur-radius'] || data['spread-radius'] ) {
 			cssString = [];
-
-		cssString.push( this.shadowType );
-		cssString.push( data['horizontal-position'] + this.selectedUnit );
-		cssString.push( data['vertical-position'] + this.selectedUnit );
-		cssString.push( data['blur-radius'] + this.selectedUnit );
-		cssString.push( data['spread-radius'] + this.selectedUnit );
-		cssString.push( this.shadowColor );
-
-		cssString = cssString.join( ' ' );
+			cssString.push( this.shadowType );
+			cssString.push( data['horizontal-position'] + this.selectedUnit );
+			cssString.push( data['vertical-position'] + this.selectedUnit );
+			cssString.push( data['blur-radius'] + this.selectedUnit );
+			cssString.push( data['spread-radius'] + this.selectedUnit );
+			cssString.push( this.shadowColor );
+			cssString = cssString.join( ' ' );
+		}
 
 		this.applyCssRules( {
 			'box-shadow': cssString
