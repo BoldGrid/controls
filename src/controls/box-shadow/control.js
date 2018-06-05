@@ -14,7 +14,8 @@ export class BoxShadow extends MultiSlider {
 		this.slidersLinked = false;
 		this.controlOptions = configs.controlOptions;
 		this.sliderConfig = configs.sliderConfig;
-		this.currentValues = this.getInitialValues();
+		this.initialValues = this.getInitialValues();
+		this.currentValues = this.initialValues;
 		this.shadowType = this.currentValues.inset ? 'inset' : '';
 		this.shadowColor = this.getShadowColor();
 
@@ -56,6 +57,7 @@ export class BoxShadow extends MultiSlider {
 		super.applySettings( settings );
 		this.currentValues.inset = settings.type ? 'inset' : '';
 		this.updateCheckedSetting();
+		this.switchControl.$input.change();
 
 		if ( this.colorPicker.$input ) {
 			this.colorPicker.setColor( settings.color );
@@ -80,8 +82,8 @@ export class BoxShadow extends MultiSlider {
 	 */
 	_storeDefaultValues() {
 		super._storeDefaultValues();
-		this.defaultValues.type = this.currentValues.inset;
-		this.defaultValues.color = this.currentValues.color;
+		this.defaultValues.color = this.initialValues.color;
+		this.defaultValues.inset = this.initialValues.inset;
 	}
 
 	/**
