@@ -3,8 +3,8 @@
   "author": "Rafael Ramos <rramo012@gmail.com>",
   "bundleDependencies": false,
   "scripts": {
-    "start": "npm run build & http-server dist/ -p $PORT",
-    "prod": "npm run build & http-server dist/ -p 8000 -o",
+    "start": "npm run build && http-server dist/ -p $PORT",
+    "prod": "npm run build && http-server dist/ -p 8000 -o",
     "build": "npm run rimraf ./dist && NODE_ENV=production webpack --colors",
     "devserver": "webpack-dev-server --colors --open",
     "karmadev": "karma start karma.config.js",
