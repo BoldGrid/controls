@@ -1,16 +1,32 @@
 <div class="directional-control <%=control.name %>-control boldgrid-control" data-linkable="<%= control.linkable.enabled %>">
 	<h3 class="control-name"><%=control.title %><a href="#" class="refresh" title="Reset to Default"><%= svg.refresh %></a></h3>
-	<p class="units">
-		<% if ( -1 !== control.units.enabled.indexOf( 'px' ) ) { %>
-		<label title="Pixel Unit"><input type="radio" name="<%=control.name %>-unit" class="unit" value="px"><span>PX</span></label>
-		<% } %>
-		<% if ( -1 !== control.units.enabled.indexOf( 'em' ) ) { %>
-			<label title="Em Unit"><input type="radio" name="<%=control.name %>-unit" class="unit" value="em"><span>EM</span></label>
-		<% } %>
-		<% if ( -1 !== control.units.enabled.indexOf( '%' ) ) { %>
-			<label title="Percentage Unit"><input type="radio" name="<%=control.name %>-unit" class="unit" value="%" ><span>%</span></label>
-		<% } %>
-	</p>
+	<div class="configs">
+		<ul class="device">
+			<%
+				var controlRandom = Math.random();
+				_.each( this.devices, function ( device ) {
+				var random = Math.random(),
+					name = control.name + '-' + 'device-' + controlRandom,
+					id = control.name + '-' + 'device-' + device.name + '-' + random;
+			%>
+				<li>
+					<input name="<%=name %>" <%= device.name === 'Desktop' ? 'checked="checked"' : ''  %>
+						type="radio" id="<%=id %>" name="contact" value="email">
+					<label for="<%=id %>"><%= device.icon %></label></li>
+			<% } ); %>
+		</ul>
+		<div class="units">
+			<% if ( -1 !== control.units.enabled.indexOf( 'px' ) ) { %>
+			<label title="Pixel Unit"><input type="radio" name="<%=control.name %>-unit" class="unit" value="px"><span>PX</span></label>
+			<% } %>
+			<% if ( -1 !== control.units.enabled.indexOf( 'em' ) ) { %>
+				<label title="Em Unit"><input type="radio" name="<%=control.name %>-unit" class="unit" value="em"><span>EM</span></label>
+			<% } %>
+			<% if ( -1 !== control.units.enabled.indexOf( '%' ) ) { %>
+				<label title="Percentage Unit"><input type="radio" name="<%=control.name %>-unit" class="unit" value="%" ><span>%</span></label>
+			<% } %>
+		</div>
+	</div>
 	<div class="slider-group">
 	</div>
 </div>

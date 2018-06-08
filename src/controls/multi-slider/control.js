@@ -24,6 +24,21 @@ export class MultiSlider {
 			this.$target = $( '<div>' ).hide();
 			$( 'body' ).append( this.$target );
 		}
+
+		this.devices = [
+			{
+				name: 'Desktop',
+				icon: require( '../device-visibility/img/desktop.svg' )
+			},
+			{
+				name: 'Tablet',
+				icon: require( '../device-visibility/img/tablet.svg' )
+			},
+			{
+				name: 'Phone',
+				icon: require( '../device-visibility/img/phone.svg' )
+			}
+		];
 	}
 
 	/**
