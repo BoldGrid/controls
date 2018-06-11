@@ -8,7 +8,7 @@ import deepmerge from 'deepmerge';
 import refreshSvg from './img/refresh.svg';
 import linkSvg from './img/link.svg';
 import { EventEmitter } from 'eventemitter3';
-
+import { Control as DeviceSelection } from './device-selection/control';
 
 export class MultiSlider {
 	constructor( options ) {
@@ -18,27 +18,13 @@ export class MultiSlider {
 		this.slidersLinked = false;
 		this.$target = this.options.target;
 		this.template = _.template( template );
+
 		this.events = new EventEmitter();
 
 		if ( ! this.$target ) {
 			this.$target = $( '<div>' ).hide();
 			$( 'body' ).append( this.$target );
 		}
-
-		this.devices = [
-			{
-				name: 'Desktop',
-				icon: require( '../device-visibility/img/desktop.svg' )
-			},
-			{
-				name: 'Tablet',
-				icon: require( '../device-visibility/img/tablet.svg' )
-			},
-			{
-				name: 'Phone',
-				icon: require( '../device-visibility/img/phone.svg' )
-			}
-		];
 	}
 
 	/**
@@ -83,6 +69,11 @@ export class MultiSlider {
 			css += this.controlOptions.control.selectors.join( ',' ) + '{';
 			css += this.getCssRule();
 			css += '}';
+
+			// If a device selection is enabled, add media queries.
+			if ( this.deviceSelection ) {
+				css = this.addMediaQuery( css );
+			}
 		}
 
 		return css;
@@ -143,6 +134,15 @@ export class MultiSlider {
 		this.$units = this.$control.find( '.unit' );
 		this.$revert = this.$control.find( '.refresh' );
 
+		// Add the device controls.
+		if ( this.controlOptions.responsive ) {
+			this.deviceSelection = new DeviceSelection( {
+				sizes: this.controlOptions.responsive
+			} );
+
+			this._setupDevices();
+		}
+
 		this._bindUnits();
 		this.setUnits( this._getDefaultUnits() );
 
@@ -161,6 +161,18 @@ export class MultiSlider {
 		this.$control.rendered = true;
 
 		return this.$control;
+	}
+
+	_setupDevices() {
+		let $deviceSelection = this.deviceSelection.render();
+		this.$control.find( 'device-selection' ).replaceWith( $deviceSelection );
+
+		this.deviceSelection.$inputs.on( 'change', () => {
+
+			// Get any saved Device sizes any update the sliders
+
+			// Trigger Slider Device Change Event
+		} );
 	}
 
 	/**

@@ -14,34 +14,6 @@
 		}
 	}
 
-	.device {
-		list-style: none;
-		padding: 0;
-		margin: 10px 0;
-		text-align: right;
-
-		li {
-			display: inline;
-			margin: 10px 4px;
-		}
-
-		input {
-			display: none;
-
-			+ label {
-				cursor: pointer;
-			}
-
-			&:checked + label svg {
-				fill: $accentColor;
-			}
-		}
-
-		svg {
-			width: 20px;
-		}
-	}
-
 	.configs {
 		position: absolute;
 		right: 28px;

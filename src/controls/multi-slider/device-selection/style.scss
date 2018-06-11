@@ -1,0 +1,44 @@
+@import '../../shared/scss/variables.scss';
+
+.boldgrid-control .device {
+	position: relative;
+	text-align: right;
+
+	ul {
+		list-style: none;
+		margin: 10px 0;
+		padding: 0;
+	}
+
+	.selection-text {
+		position: absolute;
+		right: 0;
+		top: -20px;
+		font-size: 12px;
+	}
+
+	li {
+		display: inline;
+		margin: 10px 4px;
+	}
+
+	input {
+		display: none;
+
+		+ label {
+			cursor: pointer;
+		}
+
+		&:checked + label svg {
+			fill: $accentColor;
+		}
+
+		&:checked + label {
+			color: $accentColor;
+		}
+	}
+
+	svg {
+		width: 20px;
+	}
+}

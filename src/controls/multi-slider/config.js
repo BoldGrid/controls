@@ -17,6 +17,11 @@ export default {
 				{ name: 'left', label: 'Left', cssProperty: 'border-left-width' }
 			]
 		},
+		responsive: {
+			phone: 480,
+			tablet: 780,
+			desktop: 1080
+		},
 		slider: {
 			px: {
 				min: 0,
