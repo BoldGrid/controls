@@ -144,6 +144,7 @@ export class MultiSlider {
 		this.$sliderGroup = this.$control.find( '.slider-group' );
 		this.$units = this.$control.find( '.unit' );
 		this.$revert = this.$control.find( '.refresh' );
+		this.$links = this.$control.find( '.link' );
 
 		// Add the device controls.
 		if ( this.controlOptions.responsive ) {
@@ -154,21 +155,31 @@ export class MultiSlider {
 			this._setupDeviceChange();
 		}
 
-		this._bindUnits();
+		// If defaults were provided store them as the current values.
+		if ( this.options.defaults ) {
+			this.settings = this.options.defaults;
+		}
+
+		// Unit defaults must be set before sliders are created.
 		this.setUnits( this._getDefaultUnits() );
+		this._bindUnits();
 
 		// Create sliders and attach them to the template.
 		this._createSliders();
-		this.$links = this.$control.find( '.link' );
 
+		// Set the default link and setup events.
+		this._setDefaultLinkedState();
+		this._bindLinked();
+
+		// Given default values, apply to control.
 		if ( this.options.defaults && this.options.defaults.all ) {
 			this.applySettings( this.options.defaults.all );
 		}
 
+		// Setup the revert process.
 		this._storeDefaultValues();
-		this._setDefaultLinkedState();
-		this._bindLinked();
 		this._bindRevert();
+
 		this.$control.rendered = true;
 
 		return this.$control;
@@ -234,6 +245,7 @@ export class MultiSlider {
 	 */
 	applySettings( settings ) {
 		this.setUnits( settings.unit );
+		this._updateLinkedStatus( true === settings.slidersLinked );
 
 		for ( let key in settings.values ) {
 			let value = settings.values[key];
@@ -263,6 +275,7 @@ export class MultiSlider {
 	 * @param {string} unit Units.
 	 */
 	setUnits( unit ) {
+		this.selectedUnit = unit;
 		this.$units
 			.filter( '[value="' + unit + '"]' )
 			.prop( 'checked', true )
@@ -342,8 +355,8 @@ export class MultiSlider {
 	 */
 	_getDefaultUnits() {
 		let defaultUnit = this.controlOptions.control.units.default;
-		if ( this.options.defaults && this.options.defaults.unit ) {
-			defaultUnit = this.options.defaults.unit;
+		if ( this.options.defaults && this.options.defaults.all && this.options.defaults.all.unit ) {
+			defaultUnit = this.options.defaults.all.unit;
 		}
 
 		return defaultUnit;
@@ -407,16 +420,14 @@ export class MultiSlider {
 	/**
 	 * Bind changing of units.
 	 *
+	 * Update the slider to respect bounds for the unit.
+	 *
 	 * @since 1.0
 	 */
 	_bindUnits() {
 		this.$control.find( '.unit' ).on( 'change', e => {
-			let $target = $( e.target );
-
-			this.selectedUnit = $target.val();
-			if ( this.sliders ) {
-				this._unitsChanged();
-			}
+			this.selectedUnit = e.target.value;
+			this._unitsChanged();
 		} );
 	}
 
@@ -469,13 +480,23 @@ export class MultiSlider {
 	 */
 	_setDefaultLinkedState() {
 		if ( this.controlOptions.control.linkable.enabled ) {
-			if ( this.options.defaults && 'undefined' !== typeof this.options.defaults.slidersLinked ) {
-				this.slidersLinked = !! this.options.defaults.slidersLinked;
-			} else if ( this.controlOptions.control.linkable.isLinked ) {
+			if ( this.controlOptions.control.linkable.isLinked ) {
 				let values = _.unique( _.values( this.getValues() ) );
 				this.slidersLinked = 1 === values.length;
 			}
 		}
+	}
+
+	/**
+	 * Update the linked status.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  {Boolean} isLinked Whether or not it should be linked.
+	 */
+	_updateLinkedStatus( isLinked ) {
+		this.$links.toggleClass( 'linked', isLinked );
+		this.slidersLinked = isLinked;
 	}
 
 	/**
