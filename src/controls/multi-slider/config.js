@@ -18,9 +18,11 @@ export default {
 			]
 		},
 		responsive: {
-			phone: 480,
-			tablet: 780,
-			desktop: 1080
+
+			// These are max widths.
+			phone: 480, // 0 to 480 is phone.
+			tablet: 992,  // 481 to 992 is tablet.
+			desktop: 1200  // 993 to 1200 is desktop.
 		},
 		slider: {
 			px: {

@@ -72,7 +72,7 @@ export class MultiSlider {
 
 			// If a device selection is enabled, add media queries.
 			if ( this.deviceSelection ) {
-				css = this.addMediaQuery( css );
+				css = this.deviceSelection.addMediaQuery( css );
 			}
 		}
 

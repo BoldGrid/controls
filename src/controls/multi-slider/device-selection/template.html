@@ -7,7 +7,7 @@
 			<li>
 				<input name="<%=id  %>"
 					type="radio" id="<%=id + '-' + device.name %>" value="<%= device.name %>">
-				<label title="<%=device.name %> Only" for="<%=id + '-' + device.name %>"><%= device.icon %></label>
+				<label title="<%=titleCase( device.name ) %> Only" for="<%=id + '-' + device.name %>"><%= device.icon %></label>
 			</li>
 		<% } ); %>
 	</ul>

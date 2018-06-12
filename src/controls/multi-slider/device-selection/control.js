@@ -2,6 +2,7 @@ const $ = jQuery;
 
 import template from './template.html';
 import './style.scss';
+import titleCase from 'title-case';
 
 export class Control {
 
@@ -14,15 +15,19 @@ export class Control {
 
 		this.devices = [
 			{
-				name: 'Desktop',
+				name: 'large',
+				icon: require( '../../device-visibility/img/large.svg' )
+			},
+			{
+				name: 'desktop',
 				icon: require( '../../device-visibility/img/desktop.svg' )
 			},
 			{
-				name: 'Tablet',
+				name: 'tablet',
 				icon: require( '../../device-visibility/img/tablet.svg' )
 			},
 			{
-				name: 'Phone',
+				name: 'phone',
 				icon: require( '../../device-visibility/img/phone.svg' )
 			}
 		];
@@ -37,7 +42,8 @@ export class Control {
 	 */
 	render() {
 		this.$control = $( this.template( {
-			id: this._id
+			id: this._id,
+			titleCase: titleCase
 		} ) );
 
 		this.$inputs = this.$control.find( 'input' );
@@ -67,17 +73,20 @@ export class Control {
 	 */
 	_createDeviceRanges() {
 		let ranges = {};
+
 		ranges.phone = {};
-		ranges.phone.min = 0;
-		ranges.phone.max = this.options.phone;
+		ranges.phone.max = this.options.sizes.phone;
 
 		ranges.tablet = {};
 		ranges.tablet.min = ranges.phone.max + 1;
-		ranges.tablet.max = ranges.tablet;
+		ranges.tablet.max = this.options.sizes.tablet;
 
 		ranges.desktop = {};
 		ranges.desktop.min = ranges.tablet.max + 1;
-		ranges.desktop.max = this.options.desktop;
+		ranges.desktop.max = this.options.sizes.desktop;
+
+		ranges.large = {};
+		ranges.large.min = ranges.desktop.max + 1;
 
 		return ranges;
 	}
@@ -92,10 +101,16 @@ export class Control {
 	_getMediaPrefix() {
 		let prefix = '',
 			selectedValue = this.getSelectedValue(),
-			range = ranges[ selectedValue ];
+			range = this.ranges[ selectedValue ];
 
 		if ( range ) {
-			prefix = `@media only screen and (min-width: ${range.min}px and max-width: ${range.min}px )`;
+			if ( range.min && range.max ) {
+				prefix = `@media only screen and ( min-width: ${range.min}px and max-width: ${range.max}px )`;
+			} else if ( range.min && ! range.max ) {
+				prefix = `@media only screen and ( min-width: ${range.min}px )`;
+			} else if ( ! range.min && range.max ) {
+				prefix = `@media only screen and ( max-width: ${range.max}px )`;
+			}
 		}
 
 		return prefix;
