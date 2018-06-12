@@ -175,6 +175,15 @@ export class MultiSlider {
 	}
 
 	/**
+	 * Update the settings with latest.
+	 *
+	 * @since 1.0.0
+	 */
+	_updateSettings() {
+		this.settings[ this.getSelectedDevice() ] = this.getSettings();
+	}
+
+	/**
 	 * When the user changes devices, remeber their settings.
 	 *
 	 * @since 1.0.0
@@ -185,15 +194,35 @@ export class MultiSlider {
 
 		this.deviceSelection.$inputs.on( 'change', () => {
 			const selectedDevice = this.deviceSelection.getSelectedValue();
+			let settings = this.defaultValues;
 
-			// Get any device properties sizes any update the sliders.
+			// If the user has customized a device, prepoulate.
 			if ( this.settings[ selectedDevice ] ) {
-				this.applySettings( this.settings[ selectedDevice ] );
+				settings = this.settings[ selectedDevice ];
+
+			// If the user has customized all, but not this device, prepoluate all.
+			} else if ( this.settings.all ) {
+				settings = this.settings.all;
 			}
+
+			this.silentApplySettings( settings );
 
 			// Trigger slider device change event.
 			this.events.emit( 'deviceChange', selectedDevice );
 		} );
+	}
+
+	/**
+	 * Apply settings without triggering change events.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  {object} settings Settings.
+	 */
+	silentApplySettings( settings ) {
+		this.slideChangeDisabled = true;
+		this.applySettings( settings );
+		this.slideChangeDisabled = false;
 	}
 
 	/**
@@ -531,7 +560,7 @@ export class MultiSlider {
 	 */
 	_triggerChangeEvent() {
 		if ( this.$control.rendered ) {
-			this.settings[ this.getSelectedDevice() ] = this.getSettings();
+			this._updateSettings();
 			this.events.emit( 'change', this.settings );
 		}
 	}
