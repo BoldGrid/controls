@@ -144,7 +144,6 @@ export class MultiSlider {
 		this.$sliderGroup = this.$control.find( '.slider-group' );
 		this.$units = this.$control.find( '.unit' );
 		this.$revert = this.$control.find( '.refresh' );
-		this.$links = this.$control.find( '.link' );
 
 		// Add the device controls.
 		if ( this.controlOptions.responsive ) {
@@ -166,6 +165,7 @@ export class MultiSlider {
 
 		// Create sliders and attach them to the template.
 		this._createSliders();
+		this.$links = this.$control.find( '.link' );
 
 		// Set the default link and setup events.
 		this._setDefaultLinkedState();
@@ -510,10 +510,9 @@ export class MultiSlider {
 		}
 
 		this.$links.on( 'click', event => {
-			let $target = $( event.target ).closest( 'a' );
 			event.preventDefault();
-			$target.toggleClass( 'linked' );
-			this.slidersLinked = $target.hasClass( 'linked' );
+			this.slidersLinked = ! this.slidersLinked;
+			this.$links.toggleClass( 'linked', this.slidersLinked );
 			this.$control.trigger( 'linked', { isLinked: this.slidersLinked } );
 			this._triggerChangeEvent();
 		} );
