@@ -1,0 +1,18 @@
+.bg-tabs-content.directional-controls {
+	position: relative;
+	padding-top: 50px;
+
+	.save {
+		position: absolute;
+		top: 10px;
+		left: 50%;
+		transform: translateX(-50%);
+
+		button {
+			cursor: pointer;
+			border: 0;
+			padding: 10px;
+			margin: 0 10px;
+		}
+	}
+}

@@ -5,17 +5,13 @@ import {
 	StyleUpdater,
 	ColorPaletteSelection,
 	PaletteConfiguration,
-	Padding,
-	Margin,
-	Border,
-	BoxShadow,
 	Animation,
 	Slider,
-	DeviceVisibility,
-	BorderRadius
+	DeviceVisibility
 } from '../controls';
 
 import '@boldgrid/components/src/app/scss/main.scss';
+import { Demo as MultiSlider } from './multi-slider';
 import './main.scss';
 
 export class Application {
@@ -46,7 +42,7 @@ export class Application {
 		this.paletteCustomize();
 		this.paletteSelection();
 		this.setupSlider();
-		this.multiSlider();
+		new MultiSlider().render();
 		this.animation();
 		this.deviceVisibility();
 	}
@@ -78,27 +74,6 @@ export class Application {
 		$tab.find( '.control' ).html( new Animation( {
 			target: $demoElement
 		} ).render() );
-	}
-
-	/**
-	 * Setup multislider demo control.
-	 *
-	 * @since 0.10.0
-	 */
-	multiSlider() {
-		let $tab = $( '.directional-controls' ),
-			$combined = $tab.find( '.combined' ),
-			padding = new Padding( { target: $combined } ),
-			border = new Border( { target: $combined } ),
-			boxShadow = new BoxShadow( { target: $combined } ),
-			borderRadius = new BorderRadius( { target: $combined } ),
-			margin = new Margin( { target: $combined } );
-
-		$tab.find( '.padding-control .control' ).html( padding.render() );
-		$tab.find( '.margin-control .control' ).html( margin.render() );
-		$tab.find( '.border-control .control' ).html( border.render() );
-		$tab.find( '.border-radius .control' ).html( borderRadius.render() );
-		$tab.find( '.box-shadow .control' ).html( boxShadow.render() );
 	}
 
 	paletteSelection() {

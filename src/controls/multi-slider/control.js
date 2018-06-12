@@ -161,8 +161,8 @@ export class MultiSlider {
 		this._createSliders();
 		this.$links = this.$control.find( '.link' );
 
-		if ( this.options.defaults ) {
-			this.applySettings( this.options.defaults );
+		if ( this.options.defaults && this.options.defaults.all ) {
+			this.applySettings( this.options.defaults.all );
 		}
 
 		this._storeDefaultValues();
