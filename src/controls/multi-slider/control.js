@@ -18,7 +18,7 @@ export class MultiSlider {
 		this.slidersLinked = false;
 		this.$target = this.options.target;
 		this.template = _.template( template );
-
+		this.settings = {};
 		this.events = new EventEmitter();
 
 		if ( ! this.$target ) {
@@ -77,6 +77,17 @@ export class MultiSlider {
 		}
 
 		return css;
+	}
+
+	/**
+	 * Get the current device selection. Handles devices feature disabled.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {string} Current Device.
+	 */
+	getSelectedDevice() {
+		return this.deviceSelection ? this.deviceSelection.getSelectedValue() : 'all';
 	}
 
 	/**
@@ -140,7 +151,7 @@ export class MultiSlider {
 				sizes: this.controlOptions.responsive
 			} );
 
-			this._setupDevices();
+			this._setupDeviceChange();
 		}
 
 		this._bindUnits();
@@ -163,15 +174,25 @@ export class MultiSlider {
 		return this.$control;
 	}
 
-	_setupDevices() {
+	/**
+	 * When the user changes devices, remeber their settings.
+	 *
+	 * @since 1.0.0
+	 */
+	_setupDeviceChange() {
 		let $deviceSelection = this.deviceSelection.render();
 		this.$control.find( 'device-selection' ).replaceWith( $deviceSelection );
 
 		this.deviceSelection.$inputs.on( 'change', () => {
+			const selectedDevice = this.deviceSelection.getSelectedValue();
 
-			// Get any saved Device sizes any update the sliders
+			// Get any device properties sizes any update the sliders.
+			if ( this.settings[ selectedDevice ] ) {
+				this.applySettings( this.settings[ selectedDevice ] );
+			}
 
-			// Trigger Slider Device Change Event
+			// Trigger slider device change event.
+			this.events.emit( 'deviceChange', selectedDevice );
 		} );
 	}
 
@@ -510,7 +531,8 @@ export class MultiSlider {
 	 */
 	_triggerChangeEvent() {
 		if ( this.$control.rendered ) {
-			this.events.emit( 'change', this.getSettings() );
+			this.settings[ this.getSelectedDevice() ] = this.getSettings();
+			this.events.emit( 'change', this.settings );
 		}
 	}
 }
