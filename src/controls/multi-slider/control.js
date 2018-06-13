@@ -136,10 +136,12 @@ export class MultiSlider {
 	 */
 	render() {
 		this.mergeDefaultConfigs();
+		this._saveConfigurationDefaults();
 
 		this._setSvgSettings();
 		this._createDOMElements();
 		this._setupDevices();
+		this._setupDelete();
 
 		// If defaults were provided store them as the current values.
 		if ( this.options.defaults ) {
@@ -152,10 +154,8 @@ export class MultiSlider {
 		this._createSliders();
 		this._setupLinks();
 
-		// Given default values, apply to control.
-		if ( this._getBaseDefault() ) {
-			this.applySettings( this._getBaseDefault() );
-		}
+		// Apply initial settings for the control, past saved settings or config defaults.
+		this.applySettings( this._getBaseDefault() || this.configDefaults.media.base );
 
 		// Setup the revert process.
 		this._storeDefaultValues();
@@ -307,7 +307,7 @@ export class MultiSlider {
 	 */
 	_setupLinks() {
 		this.$links = this.$control.find( '.link' );
-		this._setDefaultLinkedState();
+
 		this._bindLinked();
 	}
 
@@ -336,6 +336,7 @@ export class MultiSlider {
 		this.$sliderGroup = this.$control.find( '.slider-group' );
 		this.$units = this.$control.find( '.unit' );
 		this.$revert = this.$control.find( '.refresh' );
+		this.$deleteSaved = this.$control.find( '.delete-saved a' );
 	}
 
 	/**
@@ -356,6 +357,26 @@ export class MultiSlider {
 		this.settings.media = this.settings.media || {};
 		this.settings.media[ this.getSelectedDevice() ] = this.getSettings();
 		this.settings.css = this._consolidateMediaCss();
+	}
+
+	/**
+	 * Setup the delete saved setting button.
+	 *
+	 * @since 1.0.0
+	 */
+	_setupDelete() {
+		this.$deleteSaved.on( 'click', ( e ) => {
+			e.preventDefault();
+
+			// Apply the configured defaults (not loaded changes).
+			this.applySettings( this.configDefaults.media.base );
+
+			// Delete saved Settings.
+			this.settings = {};
+
+			// Trigger Delete Event.
+			this.events.emit( 'deleteSettings' );
+		} );
 	}
 
 	/**
@@ -414,7 +435,7 @@ export class MultiSlider {
 	 * @return {string} Unit.
 	 */
 	_getDefaultUnits() {
-		let defaultUnit = this.controlOptions.control.units.default,
+		let defaultUnit = this.configDefaults.media.base.unit,
 			baseDefault = this._getBaseDefault();
 
 		if ( baseDefault && baseDefault.unit ) {
@@ -422,6 +443,33 @@ export class MultiSlider {
 		}
 
 		return defaultUnit;
+	}
+
+	/**
+	 * Use the default settings to populate a customization object that can be used
+	 * for restoring to factory settings.
+	 *
+	 * @since 1.0.0
+	 */
+	_saveConfigurationDefaults() {
+		this.configurationDefaults = this.controlOptions.setting;
+
+		let config = {};
+		config.css = '';
+		config.media = {};
+		for ( let setting of this.configurationDefaults.settings ) {
+			for ( let media of setting.media ) {
+				let mediaConfig = {};
+				mediaConfig.css = '';
+				mediaConfig.values = setting.values;
+				mediaConfig.unit = setting.unit;
+				mediaConfig.slidersLinked = setting.isLinked;
+
+				config.media[ media ] = mediaConfig;
+			}
+		}
+
+		this.configDefaults = config;
 	}
 
 	/**
@@ -453,9 +501,6 @@ export class MultiSlider {
 			let sliderControl;
 
 			slider.uiSettings = this.getSliderConfig( slider );
-			if ( this.options.defaults && this.options.defaults.values && this.options.defaults.values[slider.name] ) {
-				slider.uiSettings.value = this.options.defaults.values[slider.name];
-			}
 
 			sliderControl = new Slider( $.extend( true, {}, slider ) );
 
@@ -554,20 +599,6 @@ export class MultiSlider {
 		for ( let slider of this.controlOptions.control.sliders ) {
 			let options = this.getSliderConfig( slider );
 			this.sliders[slider.name].$slider.slider( 'option', options );
-		}
-	}
-
-	/**
-	 * Set the default slider state.
-	 *
-	 * @since 1.0.0
-	 */
-	_setDefaultLinkedState() {
-		if ( this.controlOptions.control.linkable.enabled ) {
-			if ( this.controlOptions.control.linkable.isLinked ) {
-				let values = _.unique( _.values( this.getValues() ) );
-				this.slidersLinked = 1 === values.length;
-			}
 		}
 	}
 

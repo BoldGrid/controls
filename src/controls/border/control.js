@@ -16,7 +16,6 @@ export class Border extends MultiSlider {
 					default: ''
 				},
 				units: {
-					default: 'px',
 					enabled: [ 'px', 'em' ]
 				}
 			},

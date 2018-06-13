@@ -17,7 +17,8 @@ export class Demo {
 		this.controls = [
 			{ name: 'margin', className: Margin },
 			{ name: 'padding', className: Padding },
-			{ name: 'border', className: Border },
+
+			// { name: 'border', className: Border },
 			{ name: 'boxShadow', className: BoxShadow },
 			{ name: 'borderRadius', className: BorderRadius }
 		];
@@ -39,7 +40,7 @@ export class Demo {
 		config = {
 			defaults: storage,
 			control: {
-				selectors: [ '.combined.test-case' ]
+				selectors: [ '.bg-tabs-content.directional-controls .combined.test-case' ]
 			}
 		};
 

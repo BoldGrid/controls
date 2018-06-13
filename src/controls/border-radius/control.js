@@ -10,7 +10,6 @@ export class BorderRadius extends MultiSlider {
 				title: 'Border Radius',
 				name: 'border-radius',
 				units: {
-					default: 'px',
 					enabled: [ 'px', 'em', '%' ]
 				},
 				sliders: [
@@ -24,6 +23,26 @@ export class BorderRadius extends MultiSlider {
 					{ name: 'bottom-left', label: 'Bottom Left', cssProperty: 'border-bottom-left-radius' }
 				]
 			},
+
+			// Default settings for the control.
+			setting: {
+				css: '',
+				settings: [
+					{
+						media: [ 'base', 'phone', 'tablet', 'desktop', 'large' ],
+						unit: 'px',
+						isLinked: false,
+						values: {
+							'top-left': 0,
+							'top-right': 0,
+							'bottom-right': 0,
+							'bottom-left': 0
+						}
+					}
+				]
+			},
+
+			// Ranges for sliders.
 			slider: {
 				px: {
 					min: 0,

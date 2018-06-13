@@ -7,7 +7,6 @@ export default {
 				enabled: false
 			},
 			units: {
-				default: 'px',
 				enabled: [ 'px' ]
 			},
 			sliders: [
@@ -22,18 +21,27 @@ export default {
 				{ name: 'blur-radius', label: 'Blur Radius' },
 				{ name: 'spread-radius', label: 'Spread Radius' }
 			]
-		},
-		slider: {
-			px: {
-				min: -200,
-				max: 200
-			},
-			em: {
-				min: 0.1,
-				max: 5
-			}
 		}
 	},
+
+	// Default settings for the control.
+	setting: {
+		css: '',
+		settings: [
+			{
+				media: [ 'base', 'phone', 'tablet', 'desktop', 'large' ],
+				unit: 'px',
+				isLinked: false,
+				values: {
+					'horizontal-position': 0,
+					'vertical-position': 0,
+					'blur-radius': 0,
+					'spread-radius': 0
+				}
+			}
+		]
+	},
+
 	sliderConfig: {
 		'horizontal-position': {
 			min: -50,
