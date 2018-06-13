@@ -172,7 +172,7 @@ export class MultiSlider {
 		this._bindLinked();
 
 		// Given default values, apply to control.
-		if ( this.options.defaults && this.options.defaults.media.base && this.options.defaults.media.base ) {
+		if ( this.options.defaults && this.options.defaults.media && this.options.defaults.media.base ) {
 			this.applySettings( this.options.defaults.media.base );
 		}
 

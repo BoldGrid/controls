@@ -43,6 +43,10 @@ export class Demo {
 			}
 		};
 
+		if ( storage ) {
+			this.appendStyles( controlName, storage.css );
+		}
+
 		return config;
 	}
 
@@ -60,7 +64,7 @@ export class Demo {
 		for ( let control of this.controls ) {
 			const name = control.name;
 
-			this[ name ] = new control.className( this.getSavedConfigs( control ) );
+			this[ name ] = new control.className( this.getSavedConfigs( name ) );
 
 			this[ name ].events.on( 'change', ( e ) => {
 				this.appendStyles( name, e.css );
@@ -98,13 +102,13 @@ export class Demo {
 	_setupStorage() {
 		$( '.save-settings' ).on( 'click', () => {
 			for ( let control of this.controls ) {
-				this.storage.setItem( control, this[ control.name ].settings );
+				this.storage.setItem( control.name, this[ control.name ].settings );
 			}
 			location.reload();
 		} );
 
 		$( '.clear-storage' ).on( 'click', () => {
-			for ( let control of controls ) {
+			for ( let control of this.controls ) {
 				this.storage.removeItem( control.name );
 			}
 			location.reload();
