@@ -12,63 +12,102 @@ export class Demo {
 
 	constructor() {
 		this.storage = new Storage();
+		this.$head = $( 'head' );
+
+		this.controls = [
+			{ name: 'margin', className: Margin },
+			{ name: 'padding', className: Padding },
+			{ name: 'border', className: Border },
+			{ name: 'boxShadow', className: BoxShadow },
+			{ name: 'borderRadius', className: BorderRadius }
+		];
 	}
 
-	_setupSave() {
-		let controls = [ 'padding', 'border', 'boxShadow', 'borderRadius', 'margin' ];
+	/**
+	 * Get the value of a saved configuration.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  {string} controlName Control Type.
+	 * @return {object}             Config to pass into control.
+	 */
+	getSavedConfigs( controlName ) {
+		let storage = this.storage.getItem( controlName ),
+			$defaultTarget = $( '.directional-controls .combined' ),
+			config = { target: $defaultTarget };
 
+		config = {
+			defaults: storage,
+			control: {
+				selectors: [ '.combined.test-case' ]
+			}
+		};
+
+		return config;
+	}
+
+	/**
+	 * Render all the controls.
+	 *
+	 * @since 1.0.0
+	 */
+	render() {
+		let $tab = $( '.directional-controls' ),
+			$combined = $tab.find( '.combined' );
+
+		this._setupStorage();
+
+		for ( let control of this.controls ) {
+			const name = control.name;
+
+			this[ name ] = new control.className( this.getSavedConfigs( control ) );
+
+			this[ name ].events.on( 'change', ( e ) => {
+				this.appendStyles( name, e.css );
+			} );
+
+			$tab.find( '.' + name +  '-control .control' ).html( this[ name ].render() );
+		}
+	}
+
+	/**
+	 * Append the generated styles to the head element.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  {string} id  ID to save as.
+	 * @param  {string} css CSS values.
+	 */
+	appendStyles( id, css ) {
+		let $style = this.$head.find( '#' + id );
+
+		if ( ! $style.length ) {
+			$style = $( '<style>' );
+			$style.attr( 'id', id );
+			this.$head.append( $style );
+		}
+
+		$style.html( css );
+	}
+
+	/**
+	 * Setup local storage events.
+	 *
+	 * @since 1.0.0
+	 */
+	_setupStorage() {
 		$( '.save-settings' ).on( 'click', () => {
-			for ( let control of controls ) {
-				this.storage.setItem( control, this[ control ].settings );
+			for ( let control of this.controls ) {
+				this.storage.setItem( control, this[ control.name ].settings );
 			}
 			location.reload();
 		} );
 
 		$( '.clear-storage' ).on( 'click', () => {
 			for ( let control of controls ) {
-				this.storage.removeItem( control );
+				this.storage.removeItem( control.name );
 			}
 			location.reload();
 		} );
-	}
-
-	getSavedConfigs( type ) {
-		let storage = this.storage.getItem( type ),
-			$defaultTarget = $( '.directional-controls .combined' ),
-			config = { target: $defaultTarget };
-
-		if ( storage || 1 ) {
-			config = {
-				defaults: storage,
-				control: {
-					selectors: [ '.combined.test-case' ]
-				}
-			};
-		}
-
-		return config;
-	}
-
-	render() {
-		let $tab = $( '.directional-controls' ),
-			$combined = $tab.find( '.combined' );
-
-		this.padding = new Padding( this.getSavedConfigs( 'padding' ) ),
-		this.border = new Border( this.getSavedConfigs( 'border' ) ),
-		this.boxShadow = new BoxShadow( this.getSavedConfigs( 'boxShadow' ) ),
-		this.borderRadius = new BorderRadius( this.getSavedConfigs( 'borderRadius' ) ),
-		this.margin = new Margin( this.getSavedConfigs( 'margin' ) );
-
-		this._setupSave();
-
-		this.padding.events.on( 'change', ( e ) => {
-			console.log( e );
-		} );
-
-		$tab.find( '.padding-control .control' ).html( this.padding.render() );
-		$tab.find( '.margin-control .control' ).html( this.margin.render() );
-		$tab.find( '.border-control .control' ).html( this.border.render() );
-		$tab.find( '.border-radius .control' ).html( this.borderRadius.render() );
-		$tab.find( '.box-shadow .control' ).html( this.boxShadow.render() );
 	}
 }

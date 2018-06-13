@@ -87,7 +87,7 @@ export class MultiSlider {
 	 * @return {string} Current Device.
 	 */
 	getSelectedDevice() {
-		return this.deviceSelection ? this.deviceSelection.getSelectedValue() : 'all';
+		return this.deviceSelection ? this.deviceSelection.getSelectedValue() : 'base';
 	}
 
 	/**
@@ -172,8 +172,8 @@ export class MultiSlider {
 		this._bindLinked();
 
 		// Given default values, apply to control.
-		if ( this.options.defaults && this.options.defaults.all ) {
-			this.applySettings( this.options.defaults.all );
+		if ( this.options.defaults && this.options.defaults.media.base && this.options.defaults.media.base ) {
+			this.applySettings( this.options.defaults.media.base );
 		}
 
 		// Setup the revert process.
@@ -183,44 +183,6 @@ export class MultiSlider {
 		this.$control.rendered = true;
 
 		return this.$control;
-	}
-
-	/**
-	 * Update the settings with latest.
-	 *
-	 * @since 1.0.0
-	 */
-	_updateSettings() {
-		this.settings[ this.getSelectedDevice() ] = this.getSettings();
-	}
-
-	/**
-	 * When the user changes devices, remeber their settings.
-	 *
-	 * @since 1.0.0
-	 */
-	_setupDeviceChange() {
-		let $deviceSelection = this.deviceSelection.render();
-		this.$control.find( 'device-selection' ).replaceWith( $deviceSelection );
-
-		this.deviceSelection.$inputs.on( 'change', () => {
-			const selectedDevice = this.deviceSelection.getSelectedValue();
-			let settings = this.defaultValues;
-
-			// If the user has customized a device, prepoulate.
-			if ( this.settings[ selectedDevice ] ) {
-				settings = this.settings[ selectedDevice ];
-
-			// If the user has customized all, but not this device, prepoluate all.
-			} else if ( this.settings.all ) {
-				settings = this.settings.all;
-			}
-
-			this.silentApplySettings( settings );
-
-			// Trigger slider device change event.
-			this.events.emit( 'deviceChange', selectedDevice );
-		} );
 	}
 
 	/**
@@ -347,6 +309,77 @@ export class MultiSlider {
 	}
 
 	/**
+	 * An overridable method used to apply styles to a target.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  {object} property Styles for object
+	 */
+	applyCssRules( property ) {
+		this.$target.css( property );
+	}
+
+	/**
+	 * Update the settings with latest.
+	 *
+	 * @since 1.0.0
+	 */
+	_updateSettings() {
+		this.settings.media = this.settings.media || {};
+		this.settings.media[ this.getSelectedDevice() ] = this.getSettings();
+		this.settings.css = this._consolidateMediaCss();
+	}
+
+	/**
+	 * Merge the css values of each device into 1 value.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {string} Media CSS
+	 */
+	_consolidateMediaCss() {
+		let css = '',
+			mediaOrder = [ 'base', 'phone', 'tablet', 'desktop', 'large' ];
+
+		for ( const mediaType of mediaOrder ) {
+			if ( this.settings.media[ mediaType ] ) {
+				css += this.settings.media[ mediaType ].css;
+			}
+		}
+
+		return css;
+	}
+
+	/**
+	 * When the user changes devices, remeber their settings.
+	 *
+	 * @since 1.0.0
+	 */
+	_setupDeviceChange() {
+		let $deviceSelection = this.deviceSelection.render();
+		this.$control.find( 'device-selection' ).replaceWith( $deviceSelection );
+
+		this.deviceSelection.$inputs.on( 'change', () => {
+			const selectedDevice = this.deviceSelection.getSelectedValue();
+			let settings = this.defaultValues;
+
+			// If the user has customized a device, prepoulate.
+			if ( this.settings.media && this.settings.media[ selectedDevice ] ) {
+				settings = this.settings.media[ selectedDevice ];
+
+			// If the user has customized all, but not this device, prepoluate all.
+		} else if ( this.settings.media && this.settings.media.base ) {
+				settings = this.settings.media.base;
+			}
+
+			this.silentApplySettings( settings );
+
+			// Trigger slider device change event.
+			this.events.emit( 'deviceChange', selectedDevice );
+		} );
+	}
+
+	/**
 	 * Get the default unit set, takes into consideration defaults object.
 	 *
 	 * @since 1.0.0
@@ -355,8 +388,8 @@ export class MultiSlider {
 	 */
 	_getDefaultUnits() {
 		let defaultUnit = this.controlOptions.control.units.default;
-		if ( this.options.defaults && this.options.defaults.all && this.options.defaults.all.unit ) {
-			defaultUnit = this.options.defaults.all.unit;
+		if ( this.options.defaults && this.options.defaults.media && this.options.defaults.media.base && this.options.defaults.media.base.unit ) {
+			defaultUnit = this.options.defaults.media.base.unit;
 		}
 
 		return defaultUnit;
@@ -401,6 +434,7 @@ export class MultiSlider {
 	_storeDefaultValues() {
 		this.defaultValues = {
 			unit: this._getDefaultUnits(),
+			slidersLinked: this.slidersLinked,
 			values: this.getValues()
 		};
 	}
@@ -552,10 +586,6 @@ export class MultiSlider {
 		let property = {};
 		property[slider.options.cssProperty] = slider.$slider.slider( 'value' ) + this.selectedUnit;
 		this.applyCssRules( property );
-	}
-
-	applyCssRules( property ) {
-		this.$target.css( property );
 	}
 
 	/**

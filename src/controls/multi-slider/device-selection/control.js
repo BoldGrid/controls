@@ -105,7 +105,7 @@ export class Control {
 
 		if ( range ) {
 			if ( range.min && range.max ) {
-				prefix = `@media only screen and ( min-width: ${range.min}px and max-width: ${range.max}px )`;
+				prefix = `@media only screen and (max-width: ${range.max}px) and (min-width: ${range.min}px)`;
 			} else if ( range.min && ! range.max ) {
 				prefix = `@media only screen and ( min-width: ${range.min}px )`;
 			} else if ( ! range.min && range.max ) {
