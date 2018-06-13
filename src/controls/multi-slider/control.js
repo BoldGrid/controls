@@ -18,6 +18,7 @@ export class MultiSlider {
 		this.slidersLinked = false;
 		this.$target = this.options.target;
 		this.template = _.template( template );
+		this.mediaOrder = [ 'base', 'phone', 'tablet', 'desktop', 'large' ];
 		this.settings = {};
 		this.events = new EventEmitter();
 
@@ -136,44 +137,24 @@ export class MultiSlider {
 	render() {
 		this.mergeDefaultConfigs();
 
-		this.controlOptions.svg = {};
-		this.controlOptions.svg.link = linkSvg;
-		this.controlOptions.svg.refresh = refreshSvg;
-
-		this.$control = $( this.template( this.controlOptions ) );
-		this.$sliderGroup = this.$control.find( '.slider-group' );
-		this.$units = this.$control.find( '.unit' );
-		this.$revert = this.$control.find( '.refresh' );
-
-		// Add the device controls.
-		if ( this.controlOptions.responsive ) {
-			this.deviceSelection = new DeviceSelection( {
-				sizes: this.controlOptions.responsive
-			} );
-
-			this._setupDeviceChange();
-		}
+		this._setSvgSettings();
+		this._createDOMElements();
+		this._setupDevices();
 
 		// If defaults were provided store them as the current values.
 		if ( this.options.defaults ) {
 			this.settings = this.options.defaults;
 		}
 
-		// Unit defaults must be set before sliders are created.
-		this.setUnits( this._getDefaultUnits() );
 		this._bindUnits();
 
 		// Create sliders and attach them to the template.
 		this._createSliders();
-		this.$links = this.$control.find( '.link' );
-
-		// Set the default link and setup events.
-		this._setDefaultLinkedState();
-		this._bindLinked();
+		this._setupLinks();
 
 		// Given default values, apply to control.
-		if ( this.options.defaults && this.options.defaults.media && this.options.defaults.media.base ) {
-			this.applySettings( this.options.defaults.media.base );
+		if ( this._getBaseDefault() ) {
+			this.applySettings( this._getBaseDefault() );
 		}
 
 		// Setup the revert process.
@@ -320,6 +301,53 @@ export class MultiSlider {
 	}
 
 	/**
+	 * Set the default link and setup events.
+	 *
+	 * @since 1.0.0
+	 */
+	_setupLinks() {
+		this.$links = this.$control.find( '.link' );
+		this._setDefaultLinkedState();
+		this._bindLinked();
+	}
+
+	/**
+	 * Setup device support.
+	 *
+	 * @since 1.0.0
+	 */
+	_setupDevices() {
+		if ( this.controlOptions.responsive ) {
+			this.deviceSelection = new DeviceSelection( {
+				sizes: this.controlOptions.responsive
+			} );
+
+			this._setupDeviceChange();
+		}
+	}
+
+	/**
+	 * Create required DOM elements.
+	 *
+	 * @since 1.0.0
+	 */
+	_createDOMElements() {
+		this.$control = $( this.template( this.controlOptions ) );
+		this.$sliderGroup = this.$control.find( '.slider-group' );
+		this.$units = this.$control.find( '.unit' );
+		this.$revert = this.$control.find( '.refresh' );
+	}
+
+	/**
+	 * Add svg elements to configs.
+	 */
+	_setSvgSettings() {
+		this.controlOptions.svg = {};
+		this.controlOptions.svg.link = linkSvg;
+		this.controlOptions.svg.refresh = refreshSvg;
+	}
+
+	/**
 	 * Update the settings with latest.
 	 *
 	 * @since 1.0.0
@@ -338,10 +366,9 @@ export class MultiSlider {
 	 * @return {string} Media CSS
 	 */
 	_consolidateMediaCss() {
-		let css = '',
-			mediaOrder = [ 'base', 'phone', 'tablet', 'desktop', 'large' ];
+		let css = '';
 
-		for ( const mediaType of mediaOrder ) {
+		for ( const mediaType of this.mediaOrder ) {
 			if ( this.settings.media[ mediaType ] ) {
 				css += this.settings.media[ mediaType ].css;
 			}
@@ -368,7 +395,7 @@ export class MultiSlider {
 				settings = this.settings.media[ selectedDevice ];
 
 			// If the user has customized all, but not this device, prepoluate all.
-		} else if ( this.settings.media && this.settings.media.base ) {
+			} else if ( this.settings.media && this.settings.media.base ) {
 				settings = this.settings.media.base;
 			}
 
@@ -387,12 +414,31 @@ export class MultiSlider {
 	 * @return {string} Unit.
 	 */
 	_getDefaultUnits() {
-		let defaultUnit = this.controlOptions.control.units.default;
-		if ( this.options.defaults && this.options.defaults.media && this.options.defaults.media.base && this.options.defaults.media.base.unit ) {
-			defaultUnit = this.options.defaults.media.base.unit;
+		let defaultUnit = this.controlOptions.control.units.default,
+			baseDefault = this._getBaseDefault();
+
+		if ( baseDefault && baseDefault.unit ) {
+			defaultUnit = baseDefault.unit;
 		}
 
 		return defaultUnit;
+	}
+
+	/**
+	 * Get the default settings passed for the base media type.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {object} Base Styles
+	 */
+	_getBaseDefault() {
+		let baseDefault = false;
+
+		if ( this.options.defaults && this.options.defaults.media ) {
+			baseDefault = this.options.defaults.media.base;
+		}
+
+		return baseDefault;
 	}
 
 	/**
@@ -459,6 +505,10 @@ export class MultiSlider {
 	 * @since 1.0
 	 */
 	_bindUnits() {
+
+		// Unit defaults must be set before sliders are created.
+		this.setUnits( this._getDefaultUnits() );
+
 		this.$control.find( '.unit' ).on( 'change', e => {
 			this.selectedUnit = e.target.value;
 			this._unitsChanged();
