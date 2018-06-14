@@ -8,7 +8,9 @@ export class Control {
 
 	constructor( options ) {
 		this.options = options || {};
-		this._id = Math.floor( Math.random() * 1000000 );
+
+		let maxRand = 1000000;
+		this._id = _.random( 0, maxRand );
 		this.template = _.template( template );
 		this.$control = null;
 		this.ranges = this._createDeviceRanges();
@@ -60,8 +62,6 @@ export class Control {
 	 * @param  {string} device Device.
 	 */
 	activate( device ) {
-		console.log( `#${this._id}-${device}`, this.$inputs
-			.filter( `#${this._id}-${device}` ) );
 		this.$inputs
 			.filter( `#${this._id}-${device}` )
 			.prop( 'checked', true )
