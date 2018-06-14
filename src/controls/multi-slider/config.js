@@ -34,9 +34,11 @@ let config = {
 		responsive: {
 
 			// These are max widths.
-			phone: 480, // 0 to 480 is phone.
-			tablet: 992,  // 481 to 992 is tablet.
-			desktop: 1200  // 993 to 1200 is desktop.
+			phone: 767, // 0 to 767 is phone.
+			tablet: 991,  // 768 to 991 is tablet.
+			desktop: 1199  // 992 to 1199 is desktop.
+
+			// Large is 1200+
 		},
 		slider: {
 			px: {
