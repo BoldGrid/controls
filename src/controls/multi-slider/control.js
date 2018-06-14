@@ -137,6 +137,7 @@ export class MultiSlider {
 	render() {
 		this.mergeDefaultConfigs();
 		this._saveConfigurationDefaults();
+		this._saveConfigurationInitial();
 
 		this._setSvgSettings();
 		this._createDOMElements();
@@ -145,7 +146,7 @@ export class MultiSlider {
 
 		// If defaults were provided store them as the current values.
 		if ( this.options.defaults ) {
-			this.settings = this.options.defaults;
+			this.settings = $.extend( true, {}, this.options.defaults );
 		}
 
 		this._bindUnits();
@@ -155,7 +156,7 @@ export class MultiSlider {
 		this._setupLinks();
 
 		// Apply initial settings for the control, past saved settings or config defaults.
-		this.applySettings( this._getBaseDefault() || this.configDefaults.media.base );
+		this.applySettings( this.configInitial.media.base );
 
 		// Setup the revert process.
 		this._storeDefaultValues();
@@ -164,6 +165,28 @@ export class MultiSlider {
 		this.$control.rendered = true;
 
 		return this.$control;
+	}
+
+	/**
+	 * The intitial configuration loaded when the user renders the control.
+	 *
+	 * We use this when the user clicks on the revert button. We've merged any
+	 * saved settings with the controls defaults.
+	 *
+	 * @since 1.0.0
+	 */
+	_saveConfigurationInitial() {
+		let savedValues = {},
+			configInitial = { css: '', media: {} };
+
+		if ( this.options.defaults && this.options.defaults.media ) {
+			savedValues = this.options.defaults.media;
+		}
+		for ( let [ mediaType, value ] of Object.entries( this.configDefaults.media ) ) {
+			configInitial.media[ mediaType ] = savedValues[ mediaType ] || value;
+		}
+
+		this.configInitial = configInitial;
 	}
 
 	/**
@@ -409,15 +432,11 @@ export class MultiSlider {
 
 		this.deviceSelection.$inputs.on( 'change', () => {
 			const selectedDevice = this.deviceSelection.getSelectedValue();
-			let settings = this.defaultValues;
+			let settings = this.configDefaults.media.base;
 
 			// If the user has customized a device, prepoulate.
 			if ( this.settings.media && this.settings.media[ selectedDevice ] ) {
 				settings = this.settings.media[ selectedDevice ];
-
-			// If the user has customized all, but not this device, prepoluate all.
-			} else if ( this.settings.media && this.settings.media.base ) {
-				settings = this.settings.media.base;
 			}
 
 			this.silentApplySettings( settings );
@@ -468,6 +487,8 @@ export class MultiSlider {
 				config.media[ media ] = mediaConfig;
 			}
 		}
+
+		// Todo if not all devices, defined populate them with 0
 
 		this.configDefaults = config;
 	}
@@ -538,7 +559,13 @@ export class MultiSlider {
 	_bindRevert() {
 		this.$revert.on( 'click', event => {
 			event.preventDefault();
-			this.applySettings( this.defaultValues );
+			if ( this.deviceSelection ) {
+				this.deviceSelection.activate( 'base' );
+			}
+
+			this.applySettings( this.configInitial.media.base );
+			this.settings = $.extend( true, {}, this.options.defaults || {} );
+			this.events.emit( 'change', this.settings );
 		} );
 	}
 

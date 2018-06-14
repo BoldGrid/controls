@@ -50,7 +50,10 @@ module.exports = {
 			{
 				test: /\.js$/,
 				exclude: /node_modules/,
-				use: [ 'babel-loader' ]
+				loader: 'babel-loader',
+				options: {
+					presets: [ '@babel/preset-env' ]
+				}
 			},
 			{
 				test: /\.js$/,

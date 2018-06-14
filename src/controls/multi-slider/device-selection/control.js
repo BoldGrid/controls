@@ -8,7 +8,7 @@ export class Control {
 
 	constructor( options ) {
 		this.options = options || {};
-		this._id = Math.random();
+		this._id = Math.floor( Math.random() * 1000000 );
 		this.template = _.template( template );
 		this.$control = null;
 		this.ranges = this._createDeviceRanges();
@@ -50,6 +50,22 @@ export class Control {
 		this.$selectionText = this.$control.find( '.selection-text' );
 
 		return this.$control;
+	}
+
+	/**
+	 * Activate the requested device.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  {string} device Device.
+	 */
+	activate( device ) {
+		console.log( `#${this._id}-${device}`, this.$inputs
+			.filter( `#${this._id}-${device}` ) );
+		this.$inputs
+			.filter( `#${this._id}-${device}` )
+			.prop( 'checked', true )
+			.change();
 	}
 
 	/**
