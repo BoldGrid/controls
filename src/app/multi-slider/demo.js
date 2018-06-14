@@ -17,8 +17,7 @@ export class Demo {
 		this.controls = [
 			{ name: 'margin', className: Margin },
 			{ name: 'padding', className: Padding },
-
-			// { name: 'border', className: Border },
+			{ name: 'border', className: Border },
 			{ name: 'boxShadow', className: BoxShadow },
 			{ name: 'borderRadius', className: BorderRadius }
 		];
