@@ -13,7 +13,7 @@
 	.selection-text {
 		position: absolute;
 		right: 0;
-		top: -20px;
+		top: -22px;
 		font-size: 12px;
 	}
 
@@ -27,6 +27,7 @@
 
 		+ label {
 			cursor: pointer;
+			vertical-align: top;
 		}
 
 		&:checked + label svg {
