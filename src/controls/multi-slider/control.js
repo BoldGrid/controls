@@ -437,6 +437,8 @@ export class MultiSlider {
 			// If the user has customized a device, prepoulate.
 			if ( this.settings.media && this.settings.media[ selectedDevice ] ) {
 				settings = this.settings.media[ selectedDevice ];
+			} else if ( this.settings.media && this.settings.media.base ) {
+				settings = this.settings.media.base;
 			}
 
 			this.silentApplySettings( settings );
