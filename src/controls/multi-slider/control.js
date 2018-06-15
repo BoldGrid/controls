@@ -392,6 +392,7 @@ export class MultiSlider {
 			e.preventDefault();
 
 			// Apply the configured defaults (not loaded changes).
+			this.resetDeviceSelection();
 			this.applySettings( this.configDefaults.media.base );
 
 			// Delete saved Settings.
@@ -561,14 +562,22 @@ export class MultiSlider {
 	_bindRevert() {
 		this.$revert.on( 'click', event => {
 			event.preventDefault();
-			if ( this.deviceSelection ) {
-				this.deviceSelection.activate( 'base' );
-			}
-
+			this.resetDeviceSelection();
 			this.applySettings( this.configInitial.media.base );
 			this.settings = $.extend( true, {}, this.options.defaults || {} );
 			this.events.emit( 'change', this.settings );
 		} );
+	}
+
+	/**
+	 * Change device selection back to base.
+	 *
+	 * @since 1.0.0
+	 */
+	resetDeviceSelection() {
+		if ( this.deviceSelection ) {
+			this.deviceSelection.activate( 'base' );
+		}
 	}
 
 	/**
