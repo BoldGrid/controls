@@ -14,10 +14,6 @@ export class BoxShadow extends MultiSlider {
 		this.slidersLinked = false;
 		this.controlOptions = configs.controlOptions;
 		this.sliderConfig = configs.sliderConfig;
-		this.initialValues = this.getInitialValues();
-		this.currentValues = this.initialValues;
-		this.shadowType = this.currentValues.inset ? 'inset' : '';
-		this.shadowColor = this.getShadowColor();
 
 		this.switchControl = new Switch( {
 			name: 'box-shadow-outline',
@@ -35,12 +31,17 @@ export class BoxShadow extends MultiSlider {
 	 * @return {object} Values.
 	 */
 	getInitialValues() {
-		let values = this.getCurrentValues();
+		let values = this.getCurrentValues(),
+			baseDefault = this._getBaseDefault();
 
-		if ( this.options.defaults && this.options.defaults.values ) {
-			values = this.options.defaults.values || {};
-			values.inset = this.options.defaults.type;
-			values.color = this.options.defaults.color;
+		if ( baseDefault ) {
+			values = baseDefault.values || {};
+			values.inset = baseDefault.type;
+			values.color = baseDefault.color;
+		} else if ( ! values ) {
+			values = values || {};
+			values.inset = this.configDefaults.media.base.type;
+			values.color = this.configDefaults.media.base.color;
 		}
 
 		return values;
@@ -77,17 +78,6 @@ export class BoxShadow extends MultiSlider {
 	 */
 	getShadowColor() {
 		return this.currentValues.color || '#cecece';
-	}
-
-	/**
-	 * Save the default values for reverts.
-	 *
-	 * @since 1.0
-	 */
-	_storeDefaultValues() {
-		super._storeDefaultValues();
-		this.defaultValues.color = this.initialValues.color;
-		this.defaultValues.inset = this.initialValues.inset;
 	}
 
 	/**
@@ -155,6 +145,10 @@ export class BoxShadow extends MultiSlider {
 
 		this.switchControl.render();
 		super.render();
+
+		this.currentValues = this.getInitialValues();
+		this.shadowType = this.currentValues.inset ? 'inset' : '';
+		this.shadowColor = this.getShadowColor();
 
 		this._setupOutlineSwitch();
 		this._setupColorPicker();

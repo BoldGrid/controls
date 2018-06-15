@@ -21,25 +21,27 @@ export default {
 				{ name: 'blur-radius', label: 'Blur Radius' },
 				{ name: 'spread-radius', label: 'Spread Radius' }
 			]
-		}
-	},
+		},
 
-	// Default settings for the control.
-	setting: {
-		css: '',
-		settings: [
-			{
-				media: [ 'base', 'phone', 'tablet', 'desktop', 'large' ],
-				unit: 'px',
-				isLinked: false,
-				values: {
-					'horizontal-position': 0,
-					'vertical-position': 0,
-					'blur-radius': 0,
-					'spread-radius': 0
+		// Default settings for the control.
+		setting: {
+			css: '',
+			settings: [
+				{
+					media: [ 'base', 'phone', 'tablet', 'desktop', 'large' ],
+					unit: 'px',
+					isLinked: false,
+					type: '',
+					color: '#cecece',
+					values: {
+						'horizontal-position': 0,
+						'vertical-position': 0,
+						'blur-radius': 0,
+						'spread-radius': 0
+					}
 				}
-			}
-		]
+			]
+		}
 	},
 
 	sliderConfig: {

@@ -474,18 +474,20 @@ export class MultiSlider {
 	 * @since 1.0.0
 	 */
 	_saveConfigurationDefaults() {
-		this.configurationDefaults = this.controlOptions.setting;
+		let configurationDefaults = this.controlOptions.setting;
 
 		let config = {};
 		config.css = '';
 		config.media = {};
-		for ( let setting of this.configurationDefaults.settings ) {
+		for ( let setting of configurationDefaults.settings ) {
 			for ( let media of setting.media ) {
-				let mediaConfig = {};
+				let mediaConfig = { ...setting };
+
 				mediaConfig.css = '';
-				mediaConfig.values = setting.values;
-				mediaConfig.unit = setting.unit;
 				mediaConfig.slidersLinked = setting.isLinked;
+
+				delete mediaConfig.media;
+				delete mediaConfig.slidersLinked;
 
 				config.media[ media ] = mediaConfig;
 			}
