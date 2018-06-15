@@ -52,7 +52,19 @@ export class Application {
 			$demoElement = $tab.find( '.demo-element' );
 
 		$tab.find( '.control' ).html( new DeviceVisibility( {
-			target: $demoElement
+			target: $demoElement,
+			control: {
+				selectors: [ '.headdings' ],
+				responsive: {
+
+					// These are max widths.
+					phone: 767, // 0 to 767 is phone.
+					tablet: 991,  // 768 to 991 is tablet.
+					desktop: 1199  // 992 to 1199 is desktop.
+
+					// Large is 1200+
+				}
+			}
 		} ).render() );
 	}
 

@@ -2,6 +2,8 @@ var $ = window.jQuery;
 
 import template from './template.html';
 import { Checkbox } from '../checkbox';
+import { EventEmitter } from 'eventemitter3';
+import { Control as DeviceSelection } from '../multi-slider/device-selection/control';
 
 export class Control {
 	constructor( options ) {
@@ -35,6 +37,16 @@ export class Control {
 				icon: require( './img/large.svg' )
 			}
 		];
+
+		this.classes = [];
+
+		this.events = new EventEmitter();
+
+		if ( ! this.$target ) {
+			this.$target = $( '<div>' ).hide();
+			$( 'body' ).append( this.$target );
+			this.$target.detach();
+		}
 	}
 
 	/**
@@ -47,6 +59,12 @@ export class Control {
 	render() {
 		this.$control = $( this.template() );
 		this._appendCheckboxes();
+
+		this.deviceSelection = new DeviceSelection( {
+			sizes: this.options.control ? this.options.control.responsive || {} : {}
+		} );
+
+		this.deviceSelection.render();
 
 		return this.$control;
 	}
@@ -111,10 +129,47 @@ export class Control {
 
 			if ( isChecked ) {
 				this.$target.addClass( checkbox.class );
+				this.classes.push( checkbox.class );
+				this.classes = _.uniq( this.classes );
 			} else {
 				this.$target.removeClass( checkbox.class );
+				this.classes = _.without( this.classes, checkbox.class );
 			}
+
+			this.events.emit( 'change', {
+				css: this.createCss(),
+				classes: this.classes
+			} );
 		} );
+	}
+
+	/**
+	 * Create css that can be saved.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {string} CSS.
+	 */
+	createCss() {
+		let css = '';
+		if ( this.options.control && this.options.control.selectors ) {
+			for ( const className of this.classes ) {
+				let device = _.find( this.checkboxConfigs, ( e ) => className === e.class ),
+					name = device.name.replace( '-visibility', '' );
+
+				// Force the library to use the device we want.
+				this.deviceSelection.$inputs
+					.prop( 'checked', false )
+					.filter( `[value="${name}"]` )
+					.prop( 'checked', true )
+					.change();
+
+				css += this.deviceSelection
+					.addMediaQuery( this.options.control.selectors.join( ',' ) + '{ display: none !important; }' );
+			}
+		}
+
+		return css;
 	}
 }
 
