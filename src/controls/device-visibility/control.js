@@ -44,7 +44,7 @@ export class Control {
 			}
 		];
 
-		this.classes = this.options.defaults.classes || this.convertDefaults( this.options.control.setting );
+		this.classes = this.options.defaults.media || this.convertDefaults( this.options.control.setting );
 		this.events = new EventEmitter();
 
 		if ( ! this.$target ) {
@@ -117,7 +117,7 @@ export class Control {
 	getSettings() {
 		return {
 			css: this.createCss(),
-			classes: this.classes
+			media: this.classes
 		};
 	}
 
