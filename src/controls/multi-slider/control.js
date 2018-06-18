@@ -25,6 +25,7 @@ export class MultiSlider {
 		if ( ! this.$target ) {
 			this.$target = $( '<div>' ).hide();
 			$( 'body' ).append( this.$target );
+			this.$target.detach();
 		}
 	}
 
