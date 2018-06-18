@@ -8,8 +8,14 @@ import { Control as DeviceSelection } from '../multi-slider/device-selection/con
 export class Control {
 	constructor( options ) {
 		this.options = options || {};
-		this.$target = this.options.target;
 
+		// Merge in configs.
+		this.options.control = this.options.control || {};
+		this.options.control.setting = this.options.control.setting || [ 'large' ];
+		this.options.defaults = this.options.defaults || {};
+
+		this.$target = this.options.target;
+		this.controlRendered = false;
 		this.template = _.template( template );
 		this.checkboxConfigs = [
 			{
@@ -38,8 +44,7 @@ export class Control {
 			}
 		];
 
-		this.classes = [];
-
+		this.classes = this.options.defaults.classes || this.convertDefaults( this.options.control.setting );
 		this.events = new EventEmitter();
 
 		if ( ! this.$target ) {
@@ -61,12 +66,59 @@ export class Control {
 		this._appendCheckboxes();
 
 		this.deviceSelection = new DeviceSelection( {
-			sizes: this.options.control ? this.options.control.responsive || {} : {}
+			sizes: this.options.control.responsive || null
 		} );
 
 		this.deviceSelection.render();
 
+		this.controlRendered = true;
+
 		return this.$control;
+	}
+
+	/**
+	 * Trigger the change event for this control.
+	 *
+	 * @since 1.0.0
+	 */
+	triggerChangeEvent() {
+		if ( this.controlRendered ) {
+			this.events.emit( 'change', this.getSettings() );
+		}
+	}
+
+	/**
+	 * Given an array of devices to hide by default, add classes to list.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {array} Classes to use on element.
+	 */
+	convertDefaults( settings ) {
+		let classes = [];
+
+		for ( const setting of settings ) {
+			let config = this.checkboxConfigs.find( ( val ) => val.name === setting + '-visibility' );
+			if ( config ) {
+				classes.push( config.class );
+			}
+		}
+
+		return classes;
+	}
+
+	/**
+	 * Get the current settings of the control.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {object} Current Settings including css.
+	 */
+	getSettings() {
+		return {
+			css: this.createCss(),
+			classes: this.classes
+		};
 	}
 
 	/**
@@ -80,8 +132,12 @@ export class Control {
 		for ( const [ index, checkbox ] of this.checkboxConfigs.entries() ) {
 			this.checkboxConfigs[index].control = new Checkbox( checkbox );
 			$container.append( this.checkboxConfigs[index].control.render() );
-			this._preset( checkbox );
 			this._bind( checkbox );
+		}
+
+		// Preset after all are rendered.
+		for ( const [ index, checkbox ] of this.checkboxConfigs.entries() ) {
+			this._preset( checkbox );
 		}
 	}
 
@@ -104,8 +160,8 @@ export class Control {
 	 * @param  {object} checkbox Checkbox configuration object.
 	 */
 	_preset( checkbox ) {
-		if ( this.$target.hasClass( checkbox.class ) ) {
-			checkbox.control.$input.prop( 'checked', true );
+		if ( this.$target.hasClass( checkbox.class ) || -1 !== this.classes.indexOf( checkbox.class ) ) {
+			checkbox.control.$input.prop( 'checked', true ).change();
 		}
 	}
 
@@ -136,10 +192,7 @@ export class Control {
 				this.classes = _.without( this.classes, checkbox.class );
 			}
 
-			this.events.emit( 'change', {
-				css: this.createCss(),
-				classes: this.classes
-			} );
+			this.triggerChangeEvent();
 		} );
 	}
 

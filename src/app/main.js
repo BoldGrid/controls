@@ -10,9 +10,14 @@ import {
 	DeviceVisibility
 } from '../controls';
 
+import { Preview } from './preview';
 import '@boldgrid/components/src/app/scss/main.scss';
-import { Demo as MultiSlider } from './multi-slider';
 import './main.scss';
+import { Control as Save } from './save';
+
+// Import Demo files.
+import { Demo as MultiSliderDemo } from './multi-slider';
+import { Demo as DeviceVisibilityDemo } from './device-visibility/demo';
 
 export class Application {
 
@@ -23,14 +28,19 @@ export class Application {
 	 */
 	init() {
 		this.paletteConfig = new PaletteConfiguration();
+		this.preview = new Preview();
 
 		new ComponentApplication().init();
+
+		this.saveUI = new Save();
+		this.saveUI.render();
 
 		// Instantiate the css loader.
 		this.styleUpdater = new StyleUpdater( document );
 		this.styleUpdater.setup();
 
 		this.renderControls();
+
 	}
 
 	/**
@@ -42,30 +52,9 @@ export class Application {
 		this.paletteCustomize();
 		this.paletteSelection();
 		this.setupSlider();
-		new MultiSlider().render();
+		new MultiSliderDemo( this.saveUI ).render();
 		this.animation();
-		this.deviceVisibility();
-	}
-
-	deviceVisibility() {
-		let $tab = $( '.device-visibility' ),
-			$demoElement = $tab.find( '.demo-element' );
-
-		$tab.find( '.control' ).html( new DeviceVisibility( {
-			target: $demoElement,
-			control: {
-				selectors: [ '.headdings' ],
-				responsive: {
-
-					// These are max widths.
-					phone: 767, // 0 to 767 is phone.
-					tablet: 991,  // 768 to 991 is tablet.
-					desktop: 1199  // 992 to 1199 is desktop.
-
-					// Large is 1200+
-				}
-			}
-		} ).render() );
+		new DeviceVisibilityDemo( this.saveUI, this.preview ).render();
 	}
 
 	setupSlider() {

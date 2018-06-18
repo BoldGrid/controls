@@ -9,6 +9,16 @@ export class Control {
 	constructor( options ) {
 		this.options = options || {};
 
+		this.options.sizes = this.options.sizes || {
+
+			// These are max widths.
+			phone: 767, // 0 to 767 is phone.
+			tablet: 991,  // 768 to 991 is tablet.
+			desktop: 1199  // 992 to 1199 is desktop.
+
+			// Large is 1200+
+		};
+
 		let maxRand = 1000000;
 		this._id = _.random( 0, maxRand );
 		this.template = _.template( template );
