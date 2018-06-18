@@ -11,7 +11,7 @@ export class Control {
 
 		// Merge in configs.
 		this.options.control = this.options.control || {};
-		this.options.control.setting = this.options.control.setting || [ 'large' ];
+		this.options.control.setting = this.options.control.setting || [];
 		this.options.defaults = this.options.defaults || {};
 
 		this.$target = this.options.target;
