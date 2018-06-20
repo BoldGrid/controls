@@ -19,32 +19,32 @@ export class Control {
 		this.template = _.template( template );
 		this.checkboxConfigs = [
 			{
-				name: 'phone-visibility',
+				name: 'phone',
 				label: 'Phone',
 				class: 'hidden-xs',
 				icon: require( './img/phone.svg' )
 			},
 			{
-				name: 'tablet-visibility',
+				name: 'tablet',
 				label: 'Tablet',
 				class: 'hidden-sm',
 				icon: require( './img/tablet.svg' )
 			},
 			{
-				name: 'desktop-visibility',
+				name: 'desktop',
 				label: 'Desktop',
 				class: 'hidden-md',
 				icon: require( './img/desktop.svg' )
 			},
 			{
-				name: 'large-visibility',
+				name: 'large',
 				label: 'Large Displays',
 				class: 'hidden-lg',
 				icon: require( './img/large.svg' )
 			}
 		];
 
-		this.classes = this.options.defaults.media || this.convertDefaults( this.options.control.setting );
+		this.hiddenDeviceNames = this.options.defaults.media || this.convertDefaults( this.options.control.setting );
 		this.events = new EventEmitter();
 
 		if ( ! this.$target ) {
@@ -88,23 +88,23 @@ export class Control {
 	}
 
 	/**
-	 * Given an array of devices to hide by default, add classes to list.
+	 * Given an array of devices to hide by default, add device names to list.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @return {array} Classes to use on element.
 	 */
 	convertDefaults( settings ) {
-		let classes = [];
+		let names = [];
 
 		for ( const setting of settings ) {
-			let config = this.checkboxConfigs.find( ( val ) => val.name === setting + '-visibility' );
+			let config = this.checkboxConfigs.find( ( val ) => val.name === setting );
 			if ( config ) {
-				classes.push( config.class );
+				names.push( config.name );
 			}
 		}
 
-		return classes;
+		return names;
 	}
 
 	/**
@@ -117,7 +117,7 @@ export class Control {
 	getSettings() {
 		return {
 			css: this.createCss(),
-			media: this.classes
+			media: this.hiddenDeviceNames
 		};
 	}
 
@@ -130,7 +130,8 @@ export class Control {
 		const $container = this.$control.find( '.checkboxes' );
 
 		for ( const [ index, checkbox ] of this.checkboxConfigs.entries() ) {
-			this.checkboxConfigs[index].control = new Checkbox( checkbox );
+			let checkboxArgs = this._createUniqueName( checkbox );
+			this.checkboxConfigs[index].control = new Checkbox( checkboxArgs );
 			$container.append( this.checkboxConfigs[index].control.render() );
 			this._bind( checkbox );
 		}
@@ -139,6 +140,19 @@ export class Control {
 		for ( const [ index, checkbox ] of this.checkboxConfigs.entries() ) {
 			this._preset( checkbox );
 		}
+	}
+
+	/**
+	 * Create a unique name for a checkbox.
+	 *
+	 * Names are also used for Id's
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param {object} checkbox Object.
+	 */
+	_createUniqueName( checkbox ) {
+		return { ..._.clone( checkbox ), name: `${checkbox.name}-${_.random( 0, 100000 )}` };
 	}
 
 	/**
@@ -160,7 +174,7 @@ export class Control {
 	 * @param  {object} checkbox Checkbox configuration object.
 	 */
 	_preset( checkbox ) {
-		if ( this.$target.hasClass( checkbox.class ) || -1 !== this.classes.indexOf( checkbox.class ) ) {
+		if ( this.$target.hasClass( checkbox.class ) || -1 !== this.hiddenDeviceNames.indexOf( checkbox.name ) ) {
 			checkbox.control.$input.prop( 'checked', true ).change();
 		}
 	}
@@ -185,11 +199,11 @@ export class Control {
 
 			if ( isChecked ) {
 				this.$target.addClass( checkbox.class );
-				this.classes.push( checkbox.class );
-				this.classes = _.uniq( this.classes );
+				this.hiddenDeviceNames.push( checkbox.name );
+				this.hiddenDeviceNames = _.uniq( this.hiddenDeviceNames );
 			} else {
 				this.$target.removeClass( checkbox.class );
-				this.classes = _.without( this.classes, checkbox.class );
+				this.hiddenDeviceNames = _.without( this.hiddenDeviceNames, checkbox.name );
 			}
 
 			this.triggerChangeEvent();
@@ -206,9 +220,7 @@ export class Control {
 	createCss() {
 		let css = '';
 		if ( this.options.control && this.options.control.selectors ) {
-			for ( const className of this.classes ) {
-				let device = _.find( this.checkboxConfigs, ( e ) => className === e.class ),
-					name = device.name.replace( '-visibility', '' );
+			for ( const name of this.hiddenDeviceNames ) {
 
 				// Force the library to use the device we want.
 				this.deviceSelection.$inputs

@@ -24,7 +24,9 @@ export class Demo {
 		$tab.find( '.control' ).html( control.render() );
 
 		// On change of the control, update the styles.
-		control.events.on( 'change', ( settings ) => this.preview.appendStyles( name, settings.css ) );
+		control.events.on( 'change', ( settings ) => {
+			this.preview.appendStyles( name, settings.css );
+		} );
 
 		// When the user clicks on save, save the settings.
 		this.saveUI.setup( name, () => control.getSettings() );

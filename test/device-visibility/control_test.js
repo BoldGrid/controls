@@ -10,7 +10,7 @@ describe( 'Responsive Utility', function() {
 	} );
 
 	it( 'Sets Default', function() {
-		expect( $control.find( '.checkboxes input[name="tablet-visibility"]:checked' ).length ).toEqual( 1 );
+		expect( $control.find( '.checkboxes input[name*="tablet-"]:checked' ).length ).toEqual( 1 );
 	} );
 	it( 'Prevents all hidden', function() {
 		$control.find( '.checkboxes input' ).prop( 'checked', true ).change();
