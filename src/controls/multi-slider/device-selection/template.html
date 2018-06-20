@@ -4,7 +4,7 @@
 			<li>
 				<input <%= 'base' === device.name ? 'checked="checked"' : '' %> name="<%=id %>"
 					type="radio" id="<%=id + '-' + device.name %>" value="<%= device.name %>">
-				<label title="<%= device.tooltip ? device.tooltip : titleCase( device.name ) %> Only" for="<%=id + '-' + device.name %>"><%= device.icon %></label>
+				<label title="<%= device.tooltip ? device.tooltip : titleCase( device.name ) + 'Only' %>" for="<%=id + '-' + device.name %>"><%= device.icon %></label>
 			</li>
 		<% } ); %>
 	</ul>
