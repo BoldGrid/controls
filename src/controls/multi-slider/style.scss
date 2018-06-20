@@ -3,17 +3,6 @@
 .directional-control {
 	position: relative;
 
-	.refresh svg {
-		width: 19px;
-		margin: 0 20px;
-		position: absolute;
-		transition: fill 0.25s;
-
-		&:hover {
-			fill: $accentColor;
-		}
-	}
-
 	.configs {
 		position: absolute;
 		right: 28px;
@@ -24,6 +13,7 @@
 		font-size: 12px;
 		color: currentColor;
 		text-align: right;
+		margin-top: -5px;
 
 		label {
 			margin: 4px;
@@ -62,17 +52,34 @@
 	}
 
 	.delete-saved {
-		text-align: center;
 		font-size: 12px;
-		text-decoration: underline;
 		margin: 30px 0;
 
 		a {
-			color: black;
+			text-decoration: underline;
 			transition: color 0.25s;
 
-			&:hover {
-				color: $accentColor;
+			&:first-of-type::after {
+				content: ' | ';
+				margin: 0 6px;
+				display: inline-block;
+				color: #7a7a7a;
+			}
+
+			&.undo {
+				color: black;
+
+				&:hover {
+					color: $accentColor;
+				}
+			}
+
+			&.remove {
+				color: red;
+
+				&:hover {
+					color: red;
+				}
 			}
 		}
 	}

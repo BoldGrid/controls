@@ -27,6 +27,11 @@ export class Control {
 
 		this.devices = [
 			{
+				name: 'base',
+				icon: require( '../../device-visibility/img/all-devices.svg' ),
+				tooltip: 'All Devices'
+			},
+			{
 				name: 'large',
 				icon: require( '../../device-visibility/img/large.svg' )
 			},

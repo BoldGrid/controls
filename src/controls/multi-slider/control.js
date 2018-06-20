@@ -359,8 +359,8 @@ export class MultiSlider {
 		this.$control = $( this.template( this.controlOptions ) );
 		this.$sliderGroup = this.$control.find( '.slider-group' );
 		this.$units = this.$control.find( '.unit' );
-		this.$revert = this.$control.find( '.refresh' );
-		this.$deleteSaved = this.$control.find( '.delete-saved a' );
+		this.$revert = this.$control.find( '.undo' );
+		this.$deleteSaved = this.$control.find( '.delete-saved .remove' );
 	}
 
 	/**

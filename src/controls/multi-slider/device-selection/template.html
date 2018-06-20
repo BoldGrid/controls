@@ -1,13 +1,10 @@
 <div class="device">
-	<span class="selection-text"><input type="radio" checked="checked" name="<%=id  %>" id="<%=id + '-' + 'base' %>" value="base">
-		<label for="<%=id + '-' + 'base' %>">All Devices</label>
-</span>
 	<ul>
 		<%	_.each( this.devices, function ( device ) { %>
 			<li>
-				<input name="<%=id  %>"
+				<input <%= 'base' === device.name ? 'checked="checked"' : '' %> name="<%=id %>"
 					type="radio" id="<%=id + '-' + device.name %>" value="<%= device.name %>">
-				<label title="<%=titleCase( device.name ) %> Only" for="<%=id + '-' + device.name %>"><%= device.icon %></label>
+				<label title="<%= device.tooltip ? device.tooltip : titleCase( device.name ) %> Only" for="<%=id + '-' + device.name %>"><%= device.icon %></label>
 			</li>
 		<% } ); %>
 	</ul>
