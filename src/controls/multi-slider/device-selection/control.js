@@ -5,6 +5,7 @@ import './style.scss';
 import unlinkIcon from '../img/unlink.svg';
 import linkIcon from '../img/link.svg';
 import titleCase from 'title-case';
+import { EventEmitter } from 'eventemitter3';
 
 export class Control {
 
@@ -26,6 +27,7 @@ export class Control {
 		this.template = _.template( template );
 		this.$control = null;
 		this.ranges = this._createDeviceRanges();
+		this.events = new EventEmitter();
 
 		this.devices = [
 			{
@@ -70,6 +72,8 @@ export class Control {
 		this.$inputs = this.$control.find( 'input' );
 		this.$selectionText = this.$control.find( '.selection-text' );
 		this.$relationship = this.$control.find( '.relationship' );
+
+		this._setupLinkedChange();
 
 		return this.$control;
 	}
@@ -116,6 +120,19 @@ export class Control {
 	addMediaQuery( css ) {
 		let prefix = this._getMediaPrefix();
 		return prefix ? `${prefix}{${css}}` : css;
+	}
+
+	/**
+	 * When the user clicks on the linked status, change to the opsite state.
+	 *
+	 * @since 1.0.0
+	 */
+	_setupLinkedChange() {
+		this.$relationship.on( 'click', () => {
+			let isLinked = ! parseInt( this.$control.attr( 'data-relationship-linked' ), 10 );
+			this.updateRelationship( isLinked );
+			this.events.emit( 'linkedToggle', isLinked );
+		} );
 	}
 
 	/**

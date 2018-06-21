@@ -28,6 +28,7 @@
 
 	.relationship {
 		display: none;
+		user-select: none;
 		background: black;
 		position: absolute;
 		top: -45px;
@@ -121,6 +122,10 @@
 
 	&[data-relationship-linked="0"] .relationship-unlinked {
 		display: inline;
+	}
+
+	&[data-relationship-linked="0"] .relationship svg {
+		padding: 0;
 	}
 
 	&[data-relationship-linked="0"] .relationship {

@@ -20,6 +20,7 @@ export class MultiSlider {
 		this.template = _.template( template );
 		this.mediaOrder = [ 'base', 'phone', 'tablet', 'desktop', 'large' ];
 		this.settings = {};
+		this.tempSavedSettings = {};
 		this.events = new EventEmitter();
 
 		if ( ! this.$target ) {
@@ -349,7 +350,49 @@ export class MultiSlider {
 			} );
 
 			this._setupDeviceChange();
+			this._setupLinkedChange();
 		}
+	}
+
+	/**
+	 * When a user change the relationship to the base styles, change their settings.
+	 *
+	 * @since 1.0.0
+	 */
+	_setupLinkedChange() {
+		this.deviceSelection.events.on( 'linkedToggle', ( isLinked ) => {
+			const selectedDevice = this.deviceSelection.getSelectedValue();
+
+			if ( isLinked ) {
+				this.tempSavedSettings[ selectedDevice ] = this.settings.media[ selectedDevice ];
+
+				// Determine the correct base styles to use.
+				let baseSettings = this.configDefaults.media.base;
+				if ( this.settings.media && this.settings.media.base ) {
+					baseSettings = this.settings.media.base;
+				}
+
+				// Update inputs.
+				this.applySettings( baseSettings );
+
+				// Trigger an event where the device is unset.
+				delete this.settings.media[ selectedDevice ];
+				this.settings.css = this._consolidateMediaCss();
+				this._updateRelationshipStatus( this.settings );
+				this.events.emit( 'change', this.settings );
+			} else {
+				let unlinkSettings = this.configDefaults.media.base;
+				if ( this.settings.media && this.settings.media.base ) {
+					unlinkSettings = this.settings.media.base;
+				}
+
+				if ( this.tempSavedSettings[ selectedDevice ] ) {
+					unlinkSettings = this.tempSavedSettings[ selectedDevice ];
+				}
+
+				this.applySettings( unlinkSettings );
+			}
+		} );
 	}
 
 	/**
@@ -464,9 +507,10 @@ export class MultiSlider {
 
 			// If the selected device settings were different from the base styles when control initialized,
 			// Then use the custom styles.
-			} else if ( JSON.stringify( this.configInitial.media[ selectedDevice ] ) !== JSON.stringify( this.configInitial.media.base ) ) {
-				settings = this.configInitial.media[ selectedDevice ];
-				isLinkedToBase = false;
+			// This was disabled because it was catching instances where a user saved the base setting and not the mobile setting.
+			//} else if ( JSON.stringify( this.configInitial.media[ selectedDevice ] ) !== JSON.stringify( this.configInitial.media.base ) ) {
+			//	settings = this.configInitial.media[ selectedDevice ];
+			//	isLinkedToBase = false;
 
 			// If the user has customized base.
 			} else if ( this.settings.media && this.settings.media.base ) {
@@ -475,10 +519,7 @@ export class MultiSlider {
 			}
 
 			this.silentApplySettings( settings );
-
-			if ( this.deviceSelection ) {
-				this.deviceSelection.updateRelationship( isLinkedToBase );
-			}
+			this.deviceSelection.updateRelationship( isLinkedToBase );
 
 			// Trigger slider device change event.
 			this.events.emit( 'deviceChange', selectedDevice );
