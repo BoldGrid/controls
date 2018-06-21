@@ -16,6 +16,28 @@
 		padding: 0;
 	}
 
+	input:checked ~ .relationship {
+		display: block;
+	}
+
+	.relationship {
+		display: none;
+		background: black;
+		position: absolute;
+		top: -40px;
+		border-radius: 4px;
+		transform: translateX(-50%);
+		left: 50%;
+		width: 80px;
+		box-shadow: 2px 2px 1px 0 rgba(0, 0, 0, 0.25);
+		cursor: pointer;
+
+		svg {
+			vertical-align: middle;
+			fill: white;
+		}
+	}
+
 	.selection-text {
 		position: absolute;
 		right: 0;
@@ -26,6 +48,7 @@
 	li {
 		display: inline;
 		margin: 10px 3px;
+		position: relative;
 	}
 
 	input {
