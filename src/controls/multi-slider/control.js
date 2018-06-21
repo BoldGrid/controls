@@ -394,10 +394,10 @@ export class MultiSlider {
 
 			// Apply the configured defaults (not loaded changes).
 			this.resetDeviceSelection();
-			this.applySettings( this.configDefaults.media.base );
 
 			// Delete saved Settings.
 			this.settings = {};
+			this.applySettings( this.configDefaults.media.base );
 
 			// Trigger Delete Event.
 			this.events.emit( 'deleteSettings' );
