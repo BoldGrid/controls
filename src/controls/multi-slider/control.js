@@ -198,9 +198,9 @@ export class MultiSlider {
 	 * @param  {object} settings Settings.
 	 */
 	silentApplySettings( settings ) {
-		this.slideChangeDisabled = true;
+		this.changeEventDisabled = true;
 		this.applySettings( settings );
-		this.slideChangeDisabled = false;
+		this.changeEventDisabled = false;
 	}
 
 	/**
@@ -566,10 +566,10 @@ export class MultiSlider {
 		this.$revert.on( 'click', event => {
 			event.preventDefault();
 			this.resetDeviceSelection();
+			this.settings = $.extend( true, {}, this.options.defaults || {} );
 
 			// Update the slider, with the derived base config (Also Triggers Change).
 			this.applySettings( this.configInitial.media.base );
-			this.settings = $.extend( true, {}, this.options.defaults || {} );
 
 			/*
 			 * @todo Remove this hack
@@ -633,12 +633,12 @@ export class MultiSlider {
 	 * @since 1.0.0
 	 */
 	refreshValues() {
-		this.slideChangeDisabled = true;
+		this.changeEventDisabled = true;
 
 		this._resetOptions();
 
 		setTimeout( () => {
-			this.slideChangeDisabled = false;
+			this.changeEventDisabled = false;
 		} );
 	}
 
@@ -728,7 +728,7 @@ export class MultiSlider {
 	 */
 	_bindSliderChange( slider ) {
 		slider.$control.on( 'slide-change', ( e, data ) => {
-			if ( ! this.slideChangeDisabled ) {
+			if ( ! this.changeEventDisabled ) {
 				this._updateLinked( slider );
 				this._updateCss( slider );
 				this._triggerChangeEvent();
@@ -742,7 +742,7 @@ export class MultiSlider {
 	 * @since 1.0.0
 	 */
 	_triggerChangeEvent() {
-		if ( this.$control.rendered ) {
+		if ( this.$control.rendered && ! this.changeEventDisabled ) {
 			this._updateSettings();
 			this.events.emit( 'change', this.settings );
 		}
