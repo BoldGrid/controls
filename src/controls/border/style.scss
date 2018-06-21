@@ -1,5 +1,9 @@
-.border-width-control {
+.border-width-control .slider-group {
 	display: none;
+
+	.control-name {
+		margin-bottom: 10px;
+	}
 }
 
 .border-type-control {
