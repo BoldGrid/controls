@@ -566,9 +566,20 @@ export class MultiSlider {
 		this.$revert.on( 'click', event => {
 			event.preventDefault();
 			this.resetDeviceSelection();
+
+			// Update the slider, with the derived base config (Also Triggers Change).
 			this.applySettings( this.configInitial.media.base );
 			this.settings = $.extend( true, {}, this.options.defaults || {} );
-			this.events.emit( 'change', this.settings );
+
+			/*
+			 * @todo Remove this hack
+			 * This is a hack to make sure any throttling of this event doesnt ignore the
+			 * previous change event. Without this timeout, reverting to an empty
+			 * value css update ignores the css change if throttled.
+			 */
+			setTimeout( () => {
+				this.events.emit( 'change', this.settings );
+			}, 75 );
 		} );
 	}
 
