@@ -2,6 +2,8 @@ const $ = jQuery;
 
 import template from './template.html';
 import './style.scss';
+import unlinkIcon from '../img/unlink.svg';
+import linkIcon from '../img/link.svg';
 import titleCase from 'title-case';
 
 export class Control {
@@ -60,13 +62,34 @@ export class Control {
 	render() {
 		this.$control = $( this.template( {
 			id: this._id,
-			titleCase: titleCase
+			titleCase: titleCase,
+			linkIcon: linkIcon,
+			unlinkIcon: unlinkIcon
 		} ) );
 
 		this.$inputs = this.$control.find( 'input' );
 		this.$selectionText = this.$control.find( '.selection-text' );
+		this.$relationship = this.$control.find( '.relationship' );
 
 		return this.$control;
+	}
+
+	/**
+	 * Update the current linked status.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  {boolean} linked Is this device linked to the base?
+	 */
+	updateRelationship( linked ) {
+		let title = 'Inherting from All Devices setting';
+
+		if ( ! linked ) {
+			title = 'Unlinked from All Devices setting';
+		}
+
+		this.$control.attr( 'data-relationship-linked', linked ? 1 : 0 );
+		this.$relationship.attr( 'title', title );
 	}
 
 	/**

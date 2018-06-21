@@ -383,6 +383,8 @@ export class MultiSlider {
 		this.settings.media = this.settings.media || {};
 		this.settings.media[ this.getSelectedDevice() ] = this.getSettings();
 		this.settings.css = this._consolidateMediaCss();
+
+		this._updateRelationshipStatus( this.settings );
 	}
 
 	/**
@@ -404,6 +406,22 @@ export class MultiSlider {
 			// Trigger Delete Event.
 			this.events.emit( 'deleteSettings' );
 		} );
+	}
+
+	/**
+	 * Update the linked status to the base styles.
+	 *
+	 * Note: this will only work correctly after settings are updated.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  {object} settings Settings.
+	 */
+	_updateRelationshipStatus( settings ) {
+		if ( this.deviceSelection ) {
+			const selectedDevice = this.deviceSelection.getSelectedValue();
+			this.deviceSelection.updateRelationship( ! settings.media[ selectedDevice ] );
+		}
 	}
 
 	/**
@@ -436,21 +454,31 @@ export class MultiSlider {
 
 		this.deviceSelection.$inputs.on( 'change', () => {
 			const selectedDevice = this.deviceSelection.getSelectedValue();
-			let settings = this.configDefaults.media.base;
+			let settings = this.configDefaults.media.base,
+				isLinkedToBase = true;
 
 			// If the user has customized a device, prepoulate.
 			if ( this.settings.media && this.settings.media[ selectedDevice ] ) {
 				settings = this.settings.media[ selectedDevice ];
+				isLinkedToBase = false;
 
 			// If the selected device settings were different from the base styles when control initialized,
 			// Then use the custom styles.
 			} else if ( JSON.stringify( this.configInitial.media[ selectedDevice ] ) !== JSON.stringify( this.configInitial.media.base ) ) {
 				settings = this.configInitial.media[ selectedDevice ];
+				isLinkedToBase = false;
+
+			// If the user has customized base.
 			} else if ( this.settings.media && this.settings.media.base ) {
 				settings = this.settings.media.base;
+				isLinkedToBase = true;
 			}
 
 			this.silentApplySettings( settings );
+
+			if ( this.deviceSelection ) {
+				this.deviceSelection.updateRelationship( isLinkedToBase );
+			}
 
 			// Trigger slider device change event.
 			this.events.emit( 'deviceChange', selectedDevice );
