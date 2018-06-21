@@ -121,6 +121,8 @@ export class MultiSlider {
 			arrayMerge: ( destination, source ) => source
 		} );
 
+		this.originalConfiguration = $.extend( true, {}, this.controlOptions );
+
 		this.options.target = null;
 		this.controlOptions = deepmerge( this.controlOptions, this.options, {
 			arrayMerge: ( destination, source ) => source
@@ -439,6 +441,11 @@ export class MultiSlider {
 			// If the user has customized a device, prepoulate.
 			if ( this.settings.media && this.settings.media[ selectedDevice ] ) {
 				settings = this.settings.media[ selectedDevice ];
+
+			// If the selected device settings were different from the base styles when control initialized,
+			// Then use the custom styles.
+			} else if ( JSON.stringify( this.configInitial.media[ selectedDevice ] ) !== JSON.stringify( this.configInitial.media.base ) ) {
+				settings = this.configInitial.media[ selectedDevice ];
 			} else if ( this.settings.media && this.settings.media.base ) {
 				settings = this.settings.media.base;
 			}
@@ -477,10 +484,10 @@ export class MultiSlider {
 	_saveConfigurationDefaults() {
 		let configurationDefaults = this.controlOptions.setting;
 
-		let config = {};
-		config.css = '';
-		config.media = {};
-		for ( let setting of configurationDefaults.settings ) {
+		let configDefault = {};
+		configDefault.css = '';
+		configDefault.media = {};
+		for ( let setting of [ ...this.originalConfiguration.setting.settings, ...configurationDefaults.settings ] ) {
 			for ( let media of setting.media ) {
 				let mediaConfig = { ...setting };
 
@@ -488,15 +495,13 @@ export class MultiSlider {
 				mediaConfig.slidersLinked = setting.isLinked;
 
 				delete mediaConfig.media;
-				delete mediaConfig.slidersLinked;
+				delete mediaConfig.isLinked;
 
-				config.media[ media ] = mediaConfig;
+				configDefault.media[ media ] = mediaConfig;
 			}
 		}
 
-		// Todo if not all devices, defined populate them with 0
-
-		this.configDefaults = config;
+		this.configDefaults = configDefault;
 	}
 
 	/**

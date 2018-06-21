@@ -40,6 +40,27 @@ export class Demo {
 
 		config = {
 			defaults: storage,
+
+			/*
+			Temporary Example for overriding Defaults.
+			setting: {
+				css: '',
+				settings: [
+					{
+						media: [ 'desktop' ],
+						unit: 'em',
+						isLinked: true,
+						values: {
+							top: 10,
+							right: 10,
+							bottom: 10,
+							left: 10
+						}
+					}
+				]
+			},
+			*/
+
 			control: {
 				selectors: [ '.bg-tabs-content.directional-controls .combined.test-case' ]
 			}
