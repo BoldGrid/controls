@@ -6,7 +6,7 @@
 			<li>
 				<input <%= 'base' === device.name ? 'checked="checked"' : '' %> name="<%=id %>"
 					type="radio" id="<%=id + '-' + device.name %>" value="<%= device.name %>">
-				<label title="<%= device.tooltip ? device.tooltip : titleCase( device.name ) %> Only" for="<%=id + '-' + device.name %>"><%= device.icon %></label>
+				<label title="<%= device.tooltip ? device.tooltip : titleCase( device.name ) + ' Only' %>" for="<%=id + '-' + device.name %>"><%= device.icon %></label>
 				<div class="relationship">
 					<%= devices[0].icon %>
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 125" x="0px" y="0px"><path d="M68.25,64.71,78.42,74.88l-3.54,3.54L61.51,65.05H53V59.28h2.8L49.42,53H38.05v-5.9h5.46l-6.33-6.33H35a9.25,9.25,0,0,0-6.54,15.82A8.92,8.92,0,0,0,35,59.28h12.1v5.77H35a14.25,14.25,0,0,1-10.54-4.43,15.11,15.11,0,0,1,0-21.24,14.34,14.34,0,0,1,7.34-4.1L21.58,25.12l3.54-3.54L38.49,35h.07l5.77,5.77h-.08l6.33,6.33h0L56.53,53h0l6.33,6.33h0L68.3,64.7Zm7.34-4.09a15.11,15.11,0,0,0,0-21.24A14.25,14.25,0,0,0,65.05,35H53v5.77h12.1a9.25,9.25,0,0,1,6.54,15.82,9.87,9.87,0,0,1-2.14,1.63l4.16,4.15A15.65,15.65,0,0,0,75.59,60.62Z"/></svg>

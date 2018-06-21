@@ -1,8 +1,7 @@
-.box-shadow-control {
-	margin-bottom: 20px;
-}
-
-.box-shadow-outline-switch {
-	font-size: 14px;
-	user-select: none;
+.boldgrid-control.box-shadow-control {
+	.box-shadow-outline-switch {
+		font-size: 14px;
+		user-select: none;
+		margin-top: 25px;
+	}
 }

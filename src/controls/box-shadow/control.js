@@ -141,8 +141,6 @@ export class BoxShadow extends MultiSlider {
 	 * @return {jQuery} Control.
 	 */
 	render() {
-		let $control;
-
 		this.switchControl.render();
 		super.render();
 
@@ -153,10 +151,11 @@ export class BoxShadow extends MultiSlider {
 		this._setupOutlineSwitch();
 		this._setupColorPicker();
 
-		$control = this.$control.add( this.switchControl.$element );
-		$control = $control.add( this.colorPicker.$element );
+		this.$control.find( '.delete-saved' )
+			.before( this.switchControl.$element )
+			.before( this.colorPicker.$element );
 
-		return $control;
+		return this.$control;
 	}
 
 	/**

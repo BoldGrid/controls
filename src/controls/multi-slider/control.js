@@ -121,6 +121,8 @@ export class MultiSlider {
 			arrayMerge: ( destination, source ) => source
 		} );
 
+		this.originalConfiguration = $.extend( true, {}, this.controlOptions );
+
 		this.options.target = null;
 		this.controlOptions = deepmerge( this.controlOptions, this.options, {
 			arrayMerge: ( destination, source ) => source
@@ -198,9 +200,9 @@ export class MultiSlider {
 	 * @param  {object} settings Settings.
 	 */
 	silentApplySettings( settings ) {
-		this.slideChangeDisabled = true;
+		this.changeEventDisabled = true;
 		this.applySettings( settings );
-		this.slideChangeDisabled = false;
+		this.changeEventDisabled = false;
 	}
 
 	/**
@@ -394,10 +396,10 @@ export class MultiSlider {
 
 			// Apply the configured defaults (not loaded changes).
 			this.resetDeviceSelection();
-			this.applySettings( this.configDefaults.media.base );
 
 			// Delete saved Settings.
 			this.settings = {};
+			this.applySettings( this.configDefaults.media.base );
 
 			// Trigger Delete Event.
 			this.events.emit( 'deleteSettings' );
@@ -439,6 +441,11 @@ export class MultiSlider {
 			// If the user has customized a device, prepoulate.
 			if ( this.settings.media && this.settings.media[ selectedDevice ] ) {
 				settings = this.settings.media[ selectedDevice ];
+
+			// If the selected device settings were different from the base styles when control initialized,
+			// Then use the custom styles.
+			} else if ( JSON.stringify( this.configInitial.media[ selectedDevice ] ) !== JSON.stringify( this.configInitial.media.base ) ) {
+				settings = this.configInitial.media[ selectedDevice ];
 			} else if ( this.settings.media && this.settings.media.base ) {
 				settings = this.settings.media.base;
 			}
@@ -477,10 +484,10 @@ export class MultiSlider {
 	_saveConfigurationDefaults() {
 		let configurationDefaults = this.controlOptions.setting;
 
-		let config = {};
-		config.css = '';
-		config.media = {};
-		for ( let setting of configurationDefaults.settings ) {
+		let configDefault = {};
+		configDefault.css = '';
+		configDefault.media = {};
+		for ( let setting of [ ...this.originalConfiguration.setting.settings, ...configurationDefaults.settings ] ) {
 			for ( let media of setting.media ) {
 				let mediaConfig = { ...setting };
 
@@ -488,15 +495,13 @@ export class MultiSlider {
 				mediaConfig.slidersLinked = setting.isLinked;
 
 				delete mediaConfig.media;
-				delete mediaConfig.slidersLinked;
+				delete mediaConfig.isLinked;
 
-				config.media[ media ] = mediaConfig;
+				configDefault.media[ media ] = mediaConfig;
 			}
 		}
 
-		// Todo if not all devices, defined populate them with 0
-
-		this.configDefaults = config;
+		this.configDefaults = configDefault;
 	}
 
 	/**
@@ -566,9 +571,20 @@ export class MultiSlider {
 		this.$revert.on( 'click', event => {
 			event.preventDefault();
 			this.resetDeviceSelection();
-			this.applySettings( this.configInitial.media.base );
 			this.settings = $.extend( true, {}, this.options.defaults || {} );
-			this.events.emit( 'change', this.settings );
+
+			// Update the slider, with the derived base config (Also Triggers Change).
+			this.applySettings( this.configInitial.media.base );
+
+			/*
+			 * @todo Remove this hack
+			 * This is a hack to make sure any throttling of this event doesnt ignore the
+			 * previous change event. Without this timeout, reverting to an empty
+			 * value css update ignores the css change if throttled.
+			 */
+			setTimeout( () => {
+				this.events.emit( 'change', this.settings );
+			}, 75 );
 		} );
 	}
 
@@ -622,12 +638,12 @@ export class MultiSlider {
 	 * @since 1.0.0
 	 */
 	refreshValues() {
-		this.slideChangeDisabled = true;
+		this.changeEventDisabled = true;
 
 		this._resetOptions();
 
 		setTimeout( () => {
-			this.slideChangeDisabled = false;
+			this.changeEventDisabled = false;
 		} );
 	}
 
@@ -717,7 +733,7 @@ export class MultiSlider {
 	 */
 	_bindSliderChange( slider ) {
 		slider.$control.on( 'slide-change', ( e, data ) => {
-			if ( ! this.slideChangeDisabled ) {
+			if ( ! this.changeEventDisabled ) {
 				this._updateLinked( slider );
 				this._updateCss( slider );
 				this._triggerChangeEvent();
@@ -731,7 +747,7 @@ export class MultiSlider {
 	 * @since 1.0.0
 	 */
 	_triggerChangeEvent() {
-		if ( this.$control.rendered ) {
+		if ( this.$control.rendered && ! this.changeEventDisabled ) {
 			this._updateSettings();
 			this.events.emit( 'change', this.settings );
 		}

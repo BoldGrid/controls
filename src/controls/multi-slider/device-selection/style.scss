@@ -8,6 +8,8 @@
 		vertical-align: top;
 		transform: scale(1.4);
 		margin-right: 6px;
+		position: relative;
+		top: 3px;
 	}
 
 	ul {
@@ -20,21 +22,46 @@
 		display: block;
 	}
 
+	ul li:first-of-type input:checked ~ .relationship {
+		display: none;
+	}
+
 	.relationship {
 		display: none;
 		background: black;
 		position: absolute;
-		top: -40px;
+		top: -45px;
 		border-radius: 4px;
 		transform: translateX(-50%);
 		left: 50%;
-		width: 80px;
-		box-shadow: 2px 2px 1px 0 rgba(0, 0, 0, 0.25);
+		width: 87px;
 		cursor: pointer;
+		text-align: center;
+
+		&::after {
+			content: '';
+			width: 0;
+			height: 0;
+			border-left: 8px solid transparent;
+			border-right: 8px solid transparent;
+			border-top: 7px solid $primaryColor;
+			position: absolute;
+			bottom: -4px;
+			left: 50%;
+			transform: translateX(-50%);
+		}
 
 		svg {
-			vertical-align: middle;
+			padding: 0 2px;
+			vertical-align: -webkit-baseline-middle;
+			vertical-align: -moz-middle-with-baseline;
 			fill: white;
+
+			&:last-of-type {
+				width: 15px;
+				position: relative;
+				top: -2px;
+			}
 		}
 	}
 
@@ -47,7 +74,7 @@
 
 	li {
 		display: inline;
-		margin: 10px 3px;
+		margin: 10px 0;
 		position: relative;
 	}
 
@@ -55,6 +82,7 @@
 		display: none;
 
 		+ label {
+			display: table-cell;
 			cursor: pointer;
 			vertical-align: top;
 		}
@@ -69,6 +97,7 @@
 	}
 
 	svg {
+		padding: 0 5px;
 		width: 20px;
 	}
 }

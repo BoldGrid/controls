@@ -10,7 +10,7 @@ export class Border extends MultiSlider {
 
 		this.controlOptions = {
 			control: {
-				title: 'Border Width',
+				title: 'Border',
 				name: 'border-width',
 				borderStyle: {
 					default: ''
@@ -66,6 +66,7 @@ export class Border extends MultiSlider {
 		this.$typeControl = $( template );
 		super.render();
 		this.bindEvents();
+		this._sortControls();
 
 		$control = this.$typeControl.append( this.$control );
 
@@ -117,6 +118,18 @@ export class Border extends MultiSlider {
 	}
 
 	/**
+	 * Arange the controls.
+	 *
+	 * @since 1.0.0
+	 */
+	_sortControls() {
+		this.$sliderGroup = this.$control.find( '.slider-group' );
+		this.$sliderGroup
+			.before( this.$typeControl.find( '.border-type-control' ) )
+			.prepend( '<h4 class="control-name">Width</h4>' );
+	}
+
+	/**
 	 * Save the default values for reverts.
 	 *
 	 * @since 1.0
@@ -137,7 +150,7 @@ export class Border extends MultiSlider {
 		super.applySettings( settings );
 		this._setType( settings.type ).change();
 		this._toggleWidthControl( settings.type );
-		this.$target.css( 'border-style', settings.type );
+		this.applyCssRules( { 'border-style': settings.type } );
 	}
 
 	/**
@@ -213,9 +226,9 @@ export class Border extends MultiSlider {
 	 */
 	_toggleWidthControl( val ) {
 		if ( val ) {
-			this.$control.show();
+			this.$sliderGroup.show();
 		} else {
-			this.$control.hide();
+			this.$sliderGroup.hide();
 		}
 	}
 
