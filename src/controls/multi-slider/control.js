@@ -20,6 +20,7 @@ export class MultiSlider {
 		this.template = _.template( template );
 		this.mediaOrder = [ 'base', 'phone', 'tablet', 'desktop', 'large' ];
 		this.settings = {};
+		this.params = {};
 		this.tempSavedSettings = {};
 		this.events = new EventEmitter();
 
@@ -122,7 +123,7 @@ export class MultiSlider {
 			arrayMerge: ( destination, source ) => source
 		} );
 
-		this.originalConfiguration = $.extend( true, {}, this.controlOptions );
+		this.baseConfig = $.extend( true, {}, this.controlOptions );
 
 		this.options.target = null;
 		this.controlOptions = deepmerge( this.controlOptions, this.options, {
@@ -140,7 +141,7 @@ export class MultiSlider {
 	 */
 	render() {
 		this.mergeDefaultConfigs();
-		this._saveConfigurationDefaults();
+		this._saveMergedDefaults();
 		this._saveConfigurationInitial();
 
 		this._setSvgSettings();
@@ -149,10 +150,11 @@ export class MultiSlider {
 		this._setupDelete();
 
 		// If defaults were provided store them as the current values.
+		this.settings = this.params.settings || this.settings;
 		if ( this.options.defaults ) {
 			this.settings = $.extend( true, {}, this.options.defaults );
 		}
-
+console.log( this.settings );
 		this._bindUnits();
 
 		// Create sliders and attach them to the template.
@@ -550,13 +552,22 @@ export class MultiSlider {
 	 *
 	 * @since 1.0.0
 	 */
-	_saveConfigurationDefaults() {
-		let configurationDefaults = this.controlOptions.setting;
+	_saveMergedDefaults() {
+		this.configDefaults = this._convertDefault(
+			[ ...this.baseConfig.setting.settings, ...this.controlOptions.setting.settings ]
+		);
 
-		let configDefault = {};
-		configDefault.css = '';
-		configDefault.media = {};
-		for ( let setting of [ ...this.originalConfiguration.setting.settings, ...configurationDefaults.settings ] ) {
+		if ( this.options.setting && this.options.setting.settings ) {
+			this.params.settings = this._convertDefault( this.options.setting.settings );
+		}
+	}
+
+	_convertDefault( defaults ) {
+		let settings = {};
+		settings.css = '';
+		settings.media = {};
+
+		for ( let setting of defaults ) {
 			for ( let media of setting.media ) {
 				let mediaConfig = { ...setting };
 
@@ -566,11 +577,11 @@ export class MultiSlider {
 				delete mediaConfig.media;
 				delete mediaConfig.isLinked;
 
-				configDefault.media[ media ] = mediaConfig;
+				settings.media[ media ] = mediaConfig;
 			}
 		}
 
-		this.configDefaults = configDefault;
+		return settings;
 	}
 
 	/**
