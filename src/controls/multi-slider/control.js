@@ -171,7 +171,6 @@ export class MultiSlider {
 		this.settings = this._getParamDefaultSettings() || this.settings;
 
 		this._setSettingCSS( this.settings );
-console.log( this.settings  );
 
 		// Setup the revert process.
 		this._storeDefaultValues();
