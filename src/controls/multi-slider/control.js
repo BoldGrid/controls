@@ -562,13 +562,6 @@ console.log( this.settings  );
 				settings = this.settings.media[ selectedDevice ];
 				isLinkedToBase = false;
 
-			// If the selected device settings were different from the base styles when control initialized,
-			// Then use the custom styles.
-			// This was disabled because it was catching instances where a user saved the base setting and not the mobile setting.
-			//} else if ( JSON.stringify( this.configInitial.media[ selectedDevice ] ) !== JSON.stringify( this.configInitial.media.base ) ) {
-			//	settings = this.configInitial.media[ selectedDevice ];
-			//	isLinkedToBase = false;
-
 			// If the user has customized base.
 			} else if ( this.settings.media && this.settings.media.base ) {
 				settings = this.settings.media.base;
