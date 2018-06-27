@@ -71,6 +71,7 @@ export class MultiSlider {
 	 */
 	createCss( settings ) {
 		let css = false;
+
 		if ( this.controlOptions.control.selectors && this.controlOptions.control.selectors.length ) {
 			css = '';
 			css += this.controlOptions.control.selectors.join( ',' ) + '{';
@@ -108,7 +109,9 @@ export class MultiSlider {
 		let cssRule = '';
 
 		for ( let slider in settings.values ) {
-			cssRule += this.sliders[ slider ].options.cssProperty + ':' + settings.values[slider] + settings.unit + ';';
+			if ( this.sliders[ slider ] ) {
+				cssRule += this.sliders[ slider ].options.cssProperty + ':' + settings.values[slider] + settings.unit + ';';
+			}
 		}
 
 		return cssRule;
@@ -165,12 +168,10 @@ export class MultiSlider {
 		this.applySettings( this.configInitial.media.base );
 
 		// If defaults passed in set them as the initial values.
-		if ( _.isEmpty( this.settings ) && this.options.setting && this.options.setting.settings ) {
-			this.params.settings = this._convertDefault( this.options.setting.settings );
-			this.settings = this.params.settings;
-		}
+		this.settings = this._getParamDefaultSettings() || this.settings;
 
 		this._setSettingCSS( this.settings );
+console.log( this.settings  );
 
 		// Setup the revert process.
 		this._storeDefaultValues();
@@ -182,6 +183,31 @@ export class MultiSlider {
 	}
 
 	/**
+	 * If a developer overwrote the defaults on instantiation, pull the settings
+	 * from the configs so they can be applies to the settings object.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {object} Settings.
+	 */
+	_getParamDefaultSettings() {
+		let settings = false;
+
+		if ( _.isEmpty( this.settings ) && this.options.setting && this.options.setting.settings ) {
+
+			settings = { css: '', media: {} };
+			let mediaOverrides = [];
+			for ( let setting of this.options.setting.settings ) {
+				for ( let media of setting.media ) {
+					settings.media[ media ] = this.configDefaults.media[ media ];
+				}
+			}
+		}
+
+		return settings;
+	}
+
+	/**
 	 * Update CSS for all initial settings to match control configurations.
 	 *
 	 * @since 1.0.0
@@ -189,7 +215,7 @@ export class MultiSlider {
 	 * @param {object} settings Settings configuration.
 	 */
 	_setSettingCSS( settings ) {
-		_.each( settings.media, ( setting, device ) => {
+		_.each( settings.media || [], ( setting, device ) => {
 			setting.css = this.createCss( setting );
 
 			if ( this.deviceSelection ) {
@@ -197,7 +223,9 @@ export class MultiSlider {
 			}
 		} );
 
-		settings.css = this._consolidateMediaCss( settings );
+		if ( settings.media ) {
+			settings.css = this._consolidateMediaCss( settings );
+		}
 	}
 
 	/**
@@ -585,6 +613,16 @@ export class MultiSlider {
 		);
 	}
 
+	/**
+	 * Convert settings passed in as defaults to settings passed in to settings used by the controls.
+	 *
+	 * This are different so to minimize the amount number of settings a developer must define.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  {object} defaults Defaults array
+	 * @return {object}          Updated Settings.
+	 */
 	_convertDefault( defaults ) {
 		let settings = {};
 		settings.css = '';
@@ -596,11 +634,15 @@ export class MultiSlider {
 
 				mediaConfig.css = '';
 				mediaConfig.slidersLinked = setting.isLinked;
+				mediaConfig.unit = mediaConfig.unit;
 
 				delete mediaConfig.media;
 				delete mediaConfig.isLinked;
 
-				settings.media[ media ] = mediaConfig;
+				// Merge the in the previous value, this ensures that all values are defined.
+				settings.media[ media ] = deepmerge( settings.media[ media ] || {}, mediaConfig, {
+					arrayMerge: ( destination, source ) => source
+				} );
 			}
 		}
 
