@@ -153,9 +153,9 @@ export class MultiSlider {
 		this._setupDevices();
 		this._setupDelete();
 
-		// If defaults were provided store them as the current values.
-		if ( this.options.defaults ) {
-			this.settings = $.extend( true, {}, this.options.defaults );
+		// If saved settings were provided store them as the current values.
+		if ( this.options.saved ) {
+			this.settings = $.extend( true, {}, this.options.saved );
 		}
 
 		this._bindUnits();
@@ -192,11 +192,11 @@ export class MultiSlider {
 	_getParamDefaultSettings() {
 		let settings = false;
 
-		if ( _.isEmpty( this.settings ) && this.options.setting && this.options.setting.settings ) {
+		if ( _.isEmpty( this.settings ) && this.options.defaults ) {
 
 			settings = { css: '', media: {} };
 			let mediaOverrides = [];
-			for ( let setting of this.options.setting.settings ) {
+			for ( let setting of this.options.defaults ) {
 				for ( let media of setting.media ) {
 					settings.media[ media ] = this.configDefaults.media[ media ];
 				}
@@ -239,8 +239,8 @@ export class MultiSlider {
 		let savedValues = {},
 			configInitial = { css: '', media: {} };
 
-		if ( this.options.defaults && this.options.defaults.media ) {
-			savedValues = this.options.defaults.media;
+		if ( this.options.saved && this.options.saved.media ) {
+			savedValues = this.options.saved.media;
 		}
 		for ( let [ mediaType, value ] of Object.entries( this.configDefaults.media ) ) {
 			configInitial.media[ mediaType ] = savedValues[ mediaType ] || value;
@@ -600,7 +600,7 @@ export class MultiSlider {
 	 */
 	_saveMergedDefaults() {
 		this.configDefaults = this._convertDefault(
-			[ ...this.baseConfig.setting.settings, ...this.controlOptions.setting.settings ]
+			[ ...this.baseConfig.defaults, ...this.controlOptions.defaults ]
 		);
 	}
 
@@ -650,8 +650,8 @@ export class MultiSlider {
 	_getBaseDefault() {
 		let baseDefault = false;
 
-		if ( this.options.defaults && this.options.defaults.media ) {
-			baseDefault = this.options.defaults.media.base;
+		if ( this.options.saved && this.options.saved.media ) {
+			baseDefault = this.options.saved.media.base;
 		}
 
 		return baseDefault;
@@ -707,7 +707,7 @@ export class MultiSlider {
 		this.$revert.on( 'click', event => {
 			event.preventDefault();
 			this.resetDeviceSelection();
-			this.settings = $.extend( true, {}, this.options.defaults || {} );
+			this.settings = $.extend( true, {}, this.options.saved || {} );
 
 			// Update the slider, with the derived base config (Also Triggers Change).
 			this.applySettings( this.configInitial.media.base );

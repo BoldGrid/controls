@@ -25,22 +25,19 @@ export class BorderRadius extends MultiSlider {
 			},
 
 			// Default settings for the control.
-			setting: {
-				css: '',
-				settings: [
-					{
-						media: [ 'base', 'phone', 'tablet', 'desktop', 'large' ],
-						unit: 'px',
-						isLinked: false,
-						values: {
-							'top-left': 0,
-							'top-right': 0,
-							'bottom-right': 0,
-							'bottom-left': 0
-						}
+			defaults: [
+				{
+					media: [ 'base', 'phone', 'tablet', 'desktop', 'large' ],
+					unit: 'px',
+					isLinked: false,
+					values: {
+						'top-left': 0,
+						'top-right': 0,
+						'bottom-right': 0,
+						'bottom-left': 0
 					}
-				]
-			},
+				}
+			],
 
 			// Ranges for sliders.
 			slider: {

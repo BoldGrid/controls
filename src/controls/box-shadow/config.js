@@ -24,24 +24,21 @@ export default {
 		},
 
 		// Default settings for the control.
-		setting: {
-			css: '',
-			settings: [
-				{
-					media: [ 'base', 'phone', 'tablet', 'desktop', 'large' ],
-					unit: 'px',
-					isLinked: false,
-					type: '',
-					color: '#cecece',
-					values: {
-						'horizontal-position': 0,
-						'vertical-position': 0,
-						'blur-radius': 0,
-						'spread-radius': 0
-					}
+		defaults: [
+			{
+				media: [ 'base', 'phone', 'tablet', 'desktop', 'large' ],
+				unit: 'px',
+				isLinked: false,
+				type: '',
+				color: '#cecece',
+				values: {
+					'horizontal-position': 0,
+					'vertical-position': 0,
+					'blur-radius': 0,
+					'spread-radius': 0
 				}
-			]
-		}
+			}
+		]
 	},
 
 	sliderConfig: {

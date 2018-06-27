@@ -19,23 +19,20 @@ export class Border extends MultiSlider {
 					enabled: [ 'px', 'em' ]
 				}
 			},
-			setting: {
-				css: '',
-				settings: [
-					{
-						media: [ 'base', 'phone', 'tablet', 'desktop', 'large' ],
-						unit: 'px',
-						isLinked: false,
-						type: '',
-						values: {
-							top: 0,
-							right: 0,
-							bottom: 0,
-							left: 0
-						}
+			defaults: [
+				{
+					media: [ 'base', 'phone', 'tablet', 'desktop', 'large' ],
+					unit: 'px',
+					isLinked: false,
+					type: '',
+					values: {
+						top: 0,
+						right: 0,
+						bottom: 0,
+						left: 0
 					}
-				]
-			},
+				}
+			],
 			slider: {
 				px: {
 					step: 0.1,

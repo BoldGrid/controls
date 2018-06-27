@@ -18,22 +18,19 @@ export class Padding extends MultiSlider {
 					{ name: 'left', label: 'Left', cssProperty: 'padding-left' }
 				]
 			},
-			setting: {
-				css: '',
-				settings: [
-					{
-						media: [ 'base', 'phone', 'tablet', 'desktop', 'large' ],
-						unit: 'em',
-						isLinked: false,
-						values: {
-							top: 0,
-							right: 0,
-							bottom: 0,
-							left: 0
-						}
+			defaults: [
+				{
+					media: [ 'base', 'phone', 'tablet', 'desktop', 'large' ],
+					unit: 'em',
+					isLinked: false,
+					values: {
+						top: 0,
+						right: 0,
+						bottom: 0,
+						left: 0
 					}
-				]
-			},
+				}
+			],
 			slider: {
 				px: {
 					min: 0,

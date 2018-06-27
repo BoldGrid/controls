@@ -15,22 +15,19 @@ let config = {
 				{ name: 'left', label: 'Left', cssProperty: 'border-left-width' }
 			]
 		},
-		setting: {
-			css: '',
-			settings: [
-				{
-					media: [ 'base', 'phone', 'tablet', 'desktop', 'large' ],
-					unit: 'px',
-					isLinked: false,
-					values: {
-						top: 0,
-						right: 0,
-						bottom: 0,
-						left: 0
-					}
+		defaults: [
+			{
+				media: [ 'base', 'phone', 'tablet', 'desktop', 'large' ],
+				unit: 'px',
+				isLinked: false,
+				values: {
+					top: 0,
+					right: 0,
+					bottom: 0,
+					left: 0
 				}
-			]
-		},
+			}
+		],
 		responsive: {
 
 			// These are max widths.
