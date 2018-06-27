@@ -117,8 +117,8 @@ export class Control {
 	 *
 	 * @param {string} css CSS to wrap.
 	 */
-	addMediaQuery( css ) {
-		let prefix = this._getMediaPrefix();
+	addMediaQuery( css, mediaDevice ) {
+		let prefix = this._getMediaPrefix( mediaDevice || this.getSelectedValue() );
 		return prefix ? `${prefix}{${css}}` : css;
 	}
 
@@ -169,9 +169,8 @@ export class Control {
 	 *
 	 * @return {string} Media Query prefix.
 	 */
-	_getMediaPrefix() {
+	_getMediaPrefix( selectedValue ) {
 		let prefix = '',
-			selectedValue = this.getSelectedValue(),
 			range = this.ranges[ selectedValue ];
 
 		if ( range ) {

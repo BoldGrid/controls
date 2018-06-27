@@ -51,12 +51,15 @@ export class MultiSlider {
 	 * @return {object} Settings for a control.
 	 */
 	getSettings() {
-		return {
+		let settings = {
 			unit: this.getUnit(),
 			slidersLinked: this.slidersLinked,
-			values: this.getValues(),
-			css: this.createCss()
+			values: this.getValues()
 		};
+
+		settings.css = this.createCss( settings );
+
+		return settings;
 	}
 
 	/**
@@ -66,12 +69,12 @@ export class MultiSlider {
 	 *
 	 * @return {string} [description]
 	 */
-	createCss() {
+	createCss( settings ) {
 		let css = false;
 		if ( this.controlOptions.control.selectors && this.controlOptions.control.selectors.length ) {
 			css = '';
 			css += this.controlOptions.control.selectors.join( ',' ) + '{';
-			css += this.getCssRule();
+			css += this.getCssRule( settings );
 			css += '}';
 
 			// If a device selection is enabled, add media queries.
@@ -101,13 +104,11 @@ export class MultiSlider {
 	 *
 	 * @return {string} css riles.
 	 */
-	getCssRule() {
+	getCssRule( settings ) {
 		let cssRule = '';
 
-		for ( let slider of this.controlOptions.control.sliders ) {
-			let sliderValue = this.sliders[ slider.name ].$slider.slider( 'option', 'value' );
-
-			cssRule += slider.cssProperty + ':' + sliderValue + this.getUnit() + ';';
+		for ( let slider in settings.values ) {
+			cssRule += this.sliders[ slider ].options.cssProperty + ':' + settings.values[slider] + settings.unit + ';';
 		}
 
 		return cssRule;
@@ -150,11 +151,10 @@ export class MultiSlider {
 		this._setupDelete();
 
 		// If defaults were provided store them as the current values.
-		this.settings = this.params.settings || this.settings;
 		if ( this.options.defaults ) {
 			this.settings = $.extend( true, {}, this.options.defaults );
 		}
-console.log( this.settings );
+
 		this._bindUnits();
 
 		// Create sliders and attach them to the template.
@@ -164,6 +164,14 @@ console.log( this.settings );
 		// Apply initial settings for the control, past saved settings or config defaults.
 		this.applySettings( this.configInitial.media.base );
 
+		// If defaults passed in set them as the initial values.
+		if ( _.isEmpty( this.settings ) && this.options.setting && this.options.setting.settings ) {
+			this.params.settings = this._convertDefault( this.options.setting.settings );
+			this.settings = this.params.settings;
+		}
+
+		this._setSettingCSS( this.settings );
+
 		// Setup the revert process.
 		this._storeDefaultValues();
 		this._bindRevert();
@@ -171,6 +179,25 @@ console.log( this.settings );
 		this.$control.rendered = true;
 
 		return this.$control;
+	}
+
+	/**
+	 * Update CSS for all initial settings to match control configurations.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param {object} settings Settings configuration.
+	 */
+	_setSettingCSS( settings ) {
+		_.each( settings.media, ( setting, device ) => {
+			setting.css = this.createCss( setting );
+
+			if ( this.deviceSelection ) {
+				setting.css = this.deviceSelection.addMediaQuery( setting.css, device );
+			}
+		} );
+
+		settings.css = this._consolidateMediaCss( settings );
 	}
 
 	/**
@@ -379,7 +406,7 @@ console.log( this.settings );
 
 				// Trigger an event where the device is unset.
 				delete this.settings.media[ selectedDevice ];
-				this.settings.css = this._consolidateMediaCss();
+				this.settings.css = this._consolidateMediaCss( this.settings );
 				this._updateRelationshipStatus( this.settings );
 				this.events.emit( 'change', this.settings );
 			} else {
@@ -427,7 +454,7 @@ console.log( this.settings );
 	_updateSettings() {
 		this.settings.media = this.settings.media || {};
 		this.settings.media[ this.getSelectedDevice() ] = this.getSettings();
-		this.settings.css = this._consolidateMediaCss();
+		this.settings.css = this._consolidateMediaCss( this.settings );
 
 		this._updateRelationshipStatus( this.settings );
 	}
@@ -476,12 +503,12 @@ console.log( this.settings );
 	 *
 	 * @return {string} Media CSS
 	 */
-	_consolidateMediaCss() {
+	_consolidateMediaCss( settings ) {
 		let css = '';
 
 		for ( const mediaType of this.mediaOrder ) {
-			if ( this.settings.media[ mediaType ] ) {
-				css += this.settings.media[ mediaType ].css;
+			if ( settings.media[ mediaType ] ) {
+				css += settings.media[ mediaType ].css;
 			}
 		}
 
@@ -556,10 +583,6 @@ console.log( this.settings );
 		this.configDefaults = this._convertDefault(
 			[ ...this.baseConfig.setting.settings, ...this.controlOptions.setting.settings ]
 		);
-
-		if ( this.options.setting && this.options.setting.settings ) {
-			this.params.settings = this._convertDefault( this.options.setting.settings );
-		}
 	}
 
 	_convertDefault( defaults ) {
