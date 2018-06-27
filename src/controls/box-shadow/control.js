@@ -56,10 +56,8 @@ export class BoxShadow extends MultiSlider {
 	 */
 	applySettings( settings ) {
 		super.applySettings( settings );
-		if ( ! this.currentValues ) {
-			return;
-		}
 
+		this.currentValues = this.currentValues || {};
 		this.currentValues.inset = settings.type ? 'inset' : '';
 		this.updateCheckedSetting();
 		this.switchControl.$input.change();
@@ -142,14 +140,9 @@ export class BoxShadow extends MultiSlider {
 	 */
 	render() {
 		this.switchControl.render();
-		super.render();
-
-		this.currentValues = this.getInitialValues();
-		this.shadowType = this.currentValues.inset ? 'inset' : '';
-		this.shadowColor = this.getShadowColor();
-
 		this._setupOutlineSwitch();
 		this._setupColorPicker();
+		super.render();
 
 		this.$control.find( '.delete-saved' )
 			.before( this.switchControl.$element )
@@ -175,6 +168,19 @@ export class BoxShadow extends MultiSlider {
 		this.colorPicker.$input.iris( 'option', 'change', () => {} );
 		this.colorPicker.$input.iris( 'color', this.getShadowColor() );
 		this.colorPicker.$input.iris( 'option', 'change', colorChange );
+	}
+
+	/**
+	 * Tie into the config saving process, and save shadow specific settings.
+	 *
+	 * @since 1.0.0
+	 */
+	_saveConfigurationInitial() {
+		super._saveConfigurationInitial();
+
+		this.currentValues = this.getInitialValues();
+		this.shadowType = this.currentValues.inset ? 'inset' : '';
+		this.shadowColor = this.getShadowColor();
 	}
 
 	/**
@@ -249,8 +255,6 @@ export class BoxShadow extends MultiSlider {
 	 * @since 1.0.0
 	 */
 	_setupOutlineSwitch() {
-		this.updateCheckedSetting();
-
 		this.switchControl.$input.on( 'change', () => {
 			this.updateShadowType();
 			this._updateCss();
