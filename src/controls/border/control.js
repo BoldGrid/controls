@@ -80,12 +80,12 @@ export class Border extends MultiSlider {
 	 *
 	 * @return {string} CSS rules.
 	 */
-	getCssRule() {
-		let css = super.getCssRule(),
-			style = this._getBorderStyle();
+	getCssRule( settings ) {
+		let css = super.getCssRule( settings ),
+			type = settings.type || this._getBorderStyle();
 
-		if ( style ) {
-			css += 'border-style: ' + this._getBorderStyle() + ';';
+		if ( type ) {
+			css += 'border-style: ' + type + ';';
 		} else {
 			css = 'border: 0;';
 		}
@@ -100,7 +100,8 @@ export class Border extends MultiSlider {
 	 */
 	bindEvents() {
 		this._bindTypeChange();
-		this.refreshValues();
+
+		// this.refreshValues();
 		this._setType( this._getBorderStyle() );
 	}
 
