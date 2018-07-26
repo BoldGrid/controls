@@ -2,6 +2,8 @@ import { MultiSlider } from '../../multi-slider';
 import { Picker as ColorPicker } from '../../color-picker';
 import { Parser } from '../../box-shadow/parser';
 import configs from './config.js';
+import template from './template.html';
+import { Switch } from '../../switch';
 
 export class Control extends MultiSlider {
 	constructor( options ) {
@@ -16,6 +18,11 @@ export class Control extends MultiSlider {
 		this.shadowColor = this.getShadowColor();
 
 		this.colorPicker = new ColorPicker();
+
+		this.switchControl = new Switch( {
+			name: 'text-shadow',
+			label: 'Text Shadow'
+		} );
 	}
 
 	getShadowColor() {
@@ -37,6 +44,20 @@ export class Control extends MultiSlider {
 		}
 
 		return this.sliderConfig[slider.name];
+	}
+
+	/**
+	 * Setup events and rendering for outline switch.
+	 *
+	 * @since 1.0.0
+	 */
+	_setupSwitch() {
+		this.switchControl.render();
+
+		this.switchControl.$input.on( 'change', () => {
+			this.$control.find( '.directional-control.text-shadow-control' ).toggle();
+			this.$control.find( '.bg-color-picker-control' ).toggle();
+		} );
 	}
 
 	/**
@@ -62,11 +83,19 @@ export class Control extends MultiSlider {
 
 		super.render();
 
+
 		this._setupColorPicker();
+		this._setupSwitch();
 
 		$control = this.$control.add( this.colorPicker.$element );
 
-		return $control;
+		let $template = $( template );
+		$template.find( 'switch' ).replaceWith( this.switchControl.$element );
+		$template.find( 'text-shadow' ).replaceWith( $control );
+
+		this.$control = $template;
+
+		return this.$control;
 	}
 
 	/**
