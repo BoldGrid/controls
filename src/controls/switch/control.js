@@ -7,7 +7,8 @@ export class Switch {
 	constructor( options ) {
 		this.options = _.defaults( options || {}, {
 			name: _.random( 0, 10000 ),
-			label: 'Off / On'
+			label: 'Off / On',
+			direction: 'forward'
 		} );
 
 		this.template = _.template( template );
@@ -36,4 +37,5 @@ export class Switch {
 	isEnabled() {
 		return this.$input.prop( 'checked' );
 	}
+
 }

@@ -4,6 +4,7 @@ import { Parser } from '../../box-shadow/parser';
 import configs from './config.js';
 import template from './template.html';
 import { Switch } from '../../switch';
+import './style.scss';
 
 export class Control extends MultiSlider {
 	constructor( options ) {
@@ -21,10 +22,18 @@ export class Control extends MultiSlider {
 
 		this.switchControl = new Switch( {
 			name: 'text-shadow',
+			direction: 'reverse',
 			label: 'Text Shadow'
 		} );
 	}
 
+	/**
+	 * Get the current shadow color.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {string} Shadow Color.
+	 */
 	getShadowColor() {
 		return this.currentValues.color || '#cecece';
 	}
@@ -47,6 +56,20 @@ export class Control extends MultiSlider {
 	}
 
 	/**
+	 * Based on the users current text shadow setting update the checkbox.
+	 *
+	 * @since 1.0.0
+	 */
+	updateControlDisplay() {
+		let checked,
+			shadow = this.$target.css( 'text-shadow' );
+
+		// Checked if shadow is set.
+		checked = ( shadow && 'none' !== shadow );
+		this.switchControl.$input.prop( 'checked', checked ).change();
+	}
+
+	/**
 	 * Setup events and rendering for outline switch.
 	 *
 	 * @since 1.0.0
@@ -55,8 +78,15 @@ export class Control extends MultiSlider {
 		this.switchControl.render();
 
 		this.switchControl.$input.on( 'change', () => {
-			this.$control.find( '.directional-control.text-shadow-control' ).toggle();
-			this.$control.find( '.bg-color-picker-control' ).toggle();
+			if ( this.switchControl.isEnabled() ) {
+				this.$shadowSliders.show();
+				this.$colorPicker.show();
+				this._updateCss();
+			} else {
+				this.$shadowSliders.hide();
+				this.$colorPicker.hide();
+				this.applyCssRules( { 'text-shadow': '' } );
+			}
 		} );
 	}
 
@@ -94,6 +124,12 @@ export class Control extends MultiSlider {
 		$template.find( 'text-shadow' ).replaceWith( $control );
 
 		this.$control = $template;
+
+		this.$shadowSliders = this.$control.find( '.directional-control.text-shadow-control' );
+		this.$colorPicker = this.$control.find( '.bg-color-picker-control' );
+
+		// Presets.
+		this.updateControlDisplay();
 
 		return this.$control;
 	}

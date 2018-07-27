@@ -1,0 +1,12 @@
+.text-shadow-control {
+	.mdc-switch {
+		+ label {
+			font-variant: small-caps;
+			font-weight: bold;
+		}
+	}
+
+	.directional-control .control-name {
+		display: none;
+	}
+}

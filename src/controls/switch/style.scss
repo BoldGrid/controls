@@ -7,4 +7,11 @@
 	label {
 		cursor: pointer;
 	}
+
+	&.left-text {
+		.mdc-switch {
+			margin-top: 3px;
+			float: right;
+		}
+	}
 }
