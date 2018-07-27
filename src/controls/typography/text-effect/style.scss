@@ -1,0 +1,27 @@
+.boldgrid-control.text-effect-control {
+	.control-title {
+		margin-bottom: 0;
+	}
+
+	ul {
+		list-style: none;
+		padding-left: 0;
+		text-align: center;
+
+		.preset {
+			display: inline-block;
+			padding: 10px 18px;
+			margin: 5px;
+			font-size: 25px;
+			cursor: pointer;
+			background: #f1f1f1;
+			border-radius: 3px;
+			transition: all 0.25s;
+
+			&:hover {
+				background: black;
+				color: white;
+			}
+		}
+	}
+}

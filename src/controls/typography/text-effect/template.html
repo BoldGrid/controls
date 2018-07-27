@@ -1,0 +1,9 @@
+<div class="boldgrid-control text-effect-control">
+	<switch />
+	<ul>
+		<li class="preset">d</li>
+		<% _.each( presets, function ( preset ) { %>
+			<li class="<%=preset %> preset" data-value="<%=preset %>">B</li>
+			<%  } ); %>
+	</ul>
+</div>
