@@ -16,6 +16,11 @@ import 'select2/dist/js/select2.min.js';
 
 export class Control {
 
+	/**
+	 * Instantiate all related controls.
+	 *
+	 * @since 1.0.0
+	 */
 	constructor( options ) {
 		this.options = options;
 
@@ -28,6 +33,13 @@ export class Control {
 		this.textShadow = new TextShadow( { target: this.options.target } );
 	}
 
+	/**
+	 * Render the entire typography control.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {jQuery} jQuery.
+	 */
 	render() {
 		const $template = $( template );
 

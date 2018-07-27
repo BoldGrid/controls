@@ -1,6 +1,6 @@
 import { MultiSlider } from '../../multi-slider';
 import { Picker as ColorPicker } from '../../color-picker';
-import { Parser } from '../../box-shadow/parser';
+import { Parser } from './parser';
 import configs from './config.js';
 import template from './template.html';
 import { Switch } from '../../switch';
@@ -112,7 +112,6 @@ export class Control extends MultiSlider {
 		let $control;
 
 		super.render();
-
 
 		this._setupColorPicker();
 		this._setupSwitch();
