@@ -1,9 +1,12 @@
 <div class="boldgrid-control text-effect-control">
 	<switch />
-	<ul>
-		<li class="preset">d</li>
-		<% _.each( presets, function ( preset ) { %>
-			<li class="<%=preset %> preset" data-value="<%=preset %>">B</li>
+	<ul class="selections">
+		<% _.each( presets, function ( preset, key ) { %>
+			<label class="<%=preset %> preset">
+				<input name="testie" type="radio" value="<%=preset %>" >
+				<span class="current-selection"><%= selectedSVG %></span>
+				<span>B</span>
+			</label>
 			<%  } ); %>
 	</ul>
 </div>

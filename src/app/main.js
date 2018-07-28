@@ -17,6 +17,8 @@ import {
 } from '../controls';
 
 import '@boldgrid/components/src/app/scss/main.scss';
+import '@boldgrid/components/dist/css/components.css';
+
 import './main.scss';
 
 export class Application {
