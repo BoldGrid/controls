@@ -45,9 +45,42 @@ export class Control {
 		this.selectStyleConfig.dropdownParent = $control;
 		this.$select = $control.find( 'select' ).select2( this.selectStyleConfig );
 
+		this._preset();
 		this._onChange();
 
 		return $control;
+	}
+
+	/**
+	 * Get the current CSS value of the item.
+	 *
+	 * Handles the differnce between no inline styles and calculated values.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {string} Current Value.
+	 */
+	getCssValue() {
+		let styleAttr = this.options.target.attr( 'style' ) || '',
+			propExists = !! ( styleAttr.match( this.controlOptions.property ) || [] ).length;
+
+		return propExists ? this.options.target.css( this.controlOptions.property ) : '';
+	}
+
+	/**
+	 * When the control loads. Set the value of the select item.
+	 *
+	 * @since 1.0.0
+	 */
+	_preset() {
+		const currentValue = this.getCssValue(),
+			supportedProp = this.controlOptions.options.find( ( setting ) => {
+				return ! currentValue || ( setting.value && currentValue.match( setting.value ) );
+			} );
+
+		if ( supportedProp ) {
+			this.$select.val( supportedProp.value ).change();
+		}
 	}
 
 	/**

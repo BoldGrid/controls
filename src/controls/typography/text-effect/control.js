@@ -14,8 +14,8 @@ export class TextEffect {
 			'bg-text-fx bg-text-fx-closeheavy',
 			'bg-text-fx bg-text-fx-enjoy-css',
 			'bg-text-fx bg-text-fx-retro',
-			'bg-text-fx bg-text-fx-retro',
-			'bg-text-fx bg-text-fx-stroke'
+			'bg-text-fx bg-text-fx-stroke',
+			'bg-text-fx bg-text-fx-anaglyph'
 		];
 
 		this.$target = this.options.target;
