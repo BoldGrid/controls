@@ -8,6 +8,7 @@ import { FontFamily } from './family';
 import { LineHeight } from './line-height';
 import { LetterSpacing } from './letter-spacing';
 import { FontTransform } from './transform';
+import { FontColor } from './font-color';
 import { FontSize } from './font-size';
 import { TextShadow } from './text-shadow';
 import { TextEffect } from './text-effect';
@@ -33,6 +34,7 @@ export class Control {
 		this.textDecoration = new TextDecoration( { target: this.options.target } );
 		this.textShadow = new TextShadow( { target: this.options.target } );
 		this.textEffect = new TextEffect( { target: this.options.target } );
+		this.fontColor = new FontColor( { target: this.options.target } );
 	}
 
 	/**
@@ -53,6 +55,7 @@ export class Control {
 		$template.find( 'text-decoration' ).replaceWith( this.textDecoration.render() );
 		$template.find( 'text-shadow' ).replaceWith( this.textShadow.render() );
 		$template.find( 'text-effect' ).replaceWith( this.textEffect.render() );
+		$template.find( 'font-color' ).replaceWith( this.fontColor.render() );
 
 		this._setupShadowSwitch();
 

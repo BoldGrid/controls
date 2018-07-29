@@ -2,13 +2,16 @@
 	padding: 5px 20px;
 	min-width: 300px;
 
-	.directional-control {
-		margin-bottom: 20px;
-	}
-
+	> h5,
 	.control-name {
 		font-weight: normal;
 		font-variant: small-caps;
+	}
+
+	> h5 {
+		font-weight: bold;
+		margin: 0;
+		font-size: 15px;
 	}
 
 	.directional-control svg {
@@ -18,5 +21,9 @@
 
 	.text-effect-control {
 		margin: 20px 0;
+	}
+
+	.font-color-control.boldgrid-control {
+		margin: 12px 0;
 	}
 }

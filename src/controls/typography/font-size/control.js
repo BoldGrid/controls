@@ -8,7 +8,7 @@ export class Control extends MultiSlider {
 
 		this.controlOptions = {
 			control: {
-				title: 'Font Size',
+				title: 'Size',
 				name: 'font-size',
 				linkable: false,
 				units: {

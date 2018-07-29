@@ -1,7 +1,7 @@
 import templateHtml from './template.html';
 import googleFonts from 'google-fonts-complete';
-import './style.scss';
 import systemFonts from './system-fonts.js';
+import './style.scss';
 import $ from 'jquery';
 import titleCase from 'title-case';
 import { Slider } from '../../slider';
@@ -21,12 +21,26 @@ export class Control {
 
 		this.defaultWeights = [ '400', '600' ];
 
+		this.weightNames = {
+			200: 'Thin',
+			300: 'Light',
+			400: 'Regular',
+			500: 'Medium',
+			600: 'Bold',
+			700: 'Thick'
+		};
+
 		this.selectStyleConfig = {
 			minimumResultsForSearch: 10,
 			width: '100%'
 		};
 
 		this.webFont = new WebFont( { $scope: $( 'html' ) } );
+
+		this.fonts = {
+			system: systemFonts,
+			google: googleFonts
+		};
 	}
 
 	/**
@@ -38,15 +52,13 @@ export class Control {
 	 */
 	render() {
 		const template = _.template( templateHtml )( {
-			fonts: googleFonts,
-			defaultWeights: this.defaultWeights,
-			systemFonts: systemFonts
+			fonts: this.fonts,
+			defaultWeights: this.defaultWeights
 		} );
 		const $control = $( template );
 
 		this.selectStyleConfig.dropdownParent = $control;
 
-		this.fonts = googleFonts;
 		this.$familySelect = $control
 			.find( '.font-family-control select' )
 			.select2( this.selectStyleConfig );
@@ -59,6 +71,7 @@ export class Control {
 			.find( '.font-weight-control select' )
 			.select2( this.selectStyleConfig );
 
+		this._preset();
 		this._bindEvents();
 
 		return $control;
@@ -87,7 +100,31 @@ export class Control {
 	 * @return {object} Font configuration.
 	 */
 	getSelectedConfig() {
-		return ! this._getSystemFont() ? this.fonts[this.$familySelect.val()] || {} : {};
+		return ! this._getSystemFont() ? this.fonts.google[this.$familySelect.val()] || {} : {};
+	}
+
+	/**
+	 * Given the attributes font the family selection populate the dropdowns.
+	 *
+	 * @since 1.0.0
+	 */
+	_preset() {
+		let family = this.options.target.attr( 'data-font-family' ),
+			weight = this.options.target.attr( 'data-font-weight' ),
+			style = this.options.target.attr( 'data-font-style' );
+
+		if ( family && this.$familySelect.find( '[value="' + family + '"]' ).length ) {
+			this.$familySelect.val( family ).change();
+			this._updateWeightSelection();
+		}
+
+		if ( weight && this.$weightSelect.find( '[value="' + weight + '"]' ).length ) {
+			this.$weightSelect.val( weight ).change();
+		}
+
+		if ( style && this.$variantSelect.find( '[value="' + style + '"]' ).length ) {
+			this.$variantSelect.val( style ).change();
+		}
 	}
 
 	/**
@@ -98,7 +135,7 @@ export class Control {
 	 * @return {boolean} system font.
 	 */
 	_getSystemFont() {
-		return _.find( systemFonts, font => font.name === this.$familySelect.val() );
+		return _.find( this.fonts.system, font => font.name === this.$familySelect.val() );
 	}
 
 	/**
@@ -178,28 +215,39 @@ export class Control {
 	 * @since 1.0.0
 	 */
 	_bindWeightOptions() {
-		this.$familySelect.on( 'change', () => {
-			const config = this.getSelectedConfig();
-			let weights = config.variants ? config.variants[this.$variantSelect.val()] || {} : {};
-			weights = Object.keys( weights );
-			weights = weights.concat( this.defaultWeights );
+		this.$familySelect.on( 'change', () => this._updateWeightSelection() );
+	}
 
-			let defaultWeight = '400';
+	/**
+	 * Update the list of avilable font weights.
+	 *
+	 * @since 1.0.0
+	 */
+	_updateWeightSelection() {
+		const config = this.getSelectedConfig(),
+			varient = this.$variantSelect.val() || 'normal';
+		let weights = config.variants ? config.variants[varient] || {} : {};
 
-			// Add bold to weights.
-			weights.sort();
-			weights = _.uniq( weights );
+		weights = Object.keys( weights );
+		weights = weights.concat( this.defaultWeights );
 
-			this.$weightSelect.empty();
+		let defaultWeight = '400';
 
-			for ( const weight of weights ) {
-				this.$weightSelect.append( `<option value="${weight}">${weight}</option>` );
-			}
+		// Add bold to weights.
+		weights.sort();
+		weights = _.uniq( weights );
 
-			this.$weightSelect
-				.prop( 'disabled', 1 === weights.length )
-				.val( defaultWeight )
-				.select2( this.selectStyleConfig );
-		} );
+		this.$weightSelect.empty();
+
+		for ( let weight of weights ) {
+			let text = this.weightNames[ parseInt( weight, 10 ) ] || '';
+			text = text ? `${weight} (${text})` : weight;
+			this.$weightSelect.append( `<option value="${weight}">${text}</option>` );
+		}
+
+		this.$weightSelect
+			.prop( 'disabled', 1 === weights.length )
+			.val( defaultWeight )
+			.select2( this.selectStyleConfig );
 	}
 }

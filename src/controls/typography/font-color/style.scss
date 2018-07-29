@@ -1,0 +1,51 @@
+.font-color-control {
+	position: relative;
+
+	.control-name {
+		font-weight: bold;
+		font-size: 15px;
+		margin: 5px 0;
+	}
+
+	.value {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+
+	.bg-color-picker-control.boldgrid-control {
+		display: none;
+	}
+
+	.color-preview {
+		padding: 4px;
+		border-radius: 2px;
+		background: red;
+		height: 20px;
+		border: 4px solid black;
+		text-align: right;
+		box-shadow: 0 0 20px -3px black inset;
+
+		.edit-link {
+			user-select: none;
+			box-shadow: -2px 0 3px 2px black;
+			font-variant: small-caps;
+			display: inline-block;
+			color: white;
+			background: black;
+			margin-top: -5px;
+			margin-right: -4px;
+			padding: 5px 22px;
+			transition: background 0.5s;
+			text-decoration: none;
+
+			&:hover {
+				background: rgba(0, 0, 0, 0.7);
+			}
+
+			&:active {
+				background: rgba(0, 0, 0, 0.3);
+			}
+		}
+	}
+}
