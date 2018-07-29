@@ -30,10 +30,10 @@ export class Parser {
 		string = string + ' ';
 
 		let setting = _.clone( this.default ),
-			matches = string.match( this.regex ),
+			matches = string.match( this.regex ) || [],
 			propertyIndex = 0;
 
-		if ( ! matches || 2 > matches.length || 4 < matches.length ) {
+		if ( 2 > matches.length || 3 < ( string.match( /px/g ) || [] ).length ) {
 			return false;
 		}
 

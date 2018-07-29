@@ -54,6 +54,22 @@ export class Control {
 		$template.find( 'text-shadow' ).replaceWith( this.textShadow.render() );
 		$template.find( 'text-effect' ).replaceWith( this.textEffect.render() );
 
+		this._setupShadowSwitch();
+
 		return $template;
+	}
+
+	/**
+	 * Close 1 switch when the other 1 opens.
+	 *
+	 * @since 1.0.0
+	 */
+	_setupShadowSwitch() {
+		this.textShadow.events.on( 'open', () => {
+			this.textEffect.switchControl.$input.prop( 'checked', false ).change();
+		} );
+		this.textEffect.events.on( 'open', () => {
+			this.textShadow.switchControl.$input.prop( 'checked', false ).change();
+		} );
 	}
 }

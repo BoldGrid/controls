@@ -2,6 +2,7 @@ import template from './template.html';
 import { Switch } from '../../switch';
 import './style.scss';
 import selectedSVG from './check.svg';
+import { EventEmitter } from 'eventemitter3';
 
 export class TextEffect {
 	constructor( options ) {
@@ -18,6 +19,7 @@ export class TextEffect {
 		];
 
 		this.$target = this.options.target;
+		this.events = new EventEmitter();
 	}
 
 	/**
@@ -74,6 +76,7 @@ export class TextEffect {
 	applySelection() {
 		this.removeClasses();
 		this.$target.addClass( this.getValue() );
+		this.$target.css( 'text-shadow', '' );
 	}
 
 	/**
@@ -163,8 +166,10 @@ export class TextEffect {
 				}
 
 				this.applySelection();
+				this.events.emit( 'open' );
 			} else {
 				this.removeClasses();
+				this.events.emit( 'close' );
 			}
 		} );
 	}

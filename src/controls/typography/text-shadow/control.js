@@ -4,6 +4,7 @@ import { Parser } from './parser';
 import configs from './config.js';
 import template from './template.html';
 import { Switch } from '../../switch';
+import { EventEmitter } from 'eventemitter3';
 import './style.scss';
 
 export class Control extends MultiSlider {
@@ -17,6 +18,7 @@ export class Control extends MultiSlider {
 		this.sliderConfig = configs.sliderConfig;
 		this.currentValues = this.getCurrentValues();
 		this.shadowColor = this.getShadowColor();
+		this.events = new EventEmitter();
 
 		this.colorPicker = new ColorPicker();
 
@@ -65,7 +67,7 @@ export class Control extends MultiSlider {
 			shadow = this.$target.css( 'text-shadow' );
 
 		// Checked if shadow is set.
-		checked = ( shadow && 'none' !== shadow );
+		checked = ( shadow && 'none' !== shadow && ! this.$target.hasClass( 'bg-text-fx' ) );
 		this.switchControl.$input.prop( 'checked', checked ).change();
 	}
 
@@ -78,16 +80,18 @@ export class Control extends MultiSlider {
 		this.switchControl.render();
 
 		this.switchControl.$input.on( 'change', () => {
+
 			if ( this.switchControl.isEnabled() ) {
-				this.$shadowSliders.show();
-				this.$colorPicker.show();
+				this.$selections.slideDown();
 				this._updateCss();
+				this.events.emit( 'open' );
 			} else {
-				this.$shadowSliders.hide();
-				this.$colorPicker.hide();
+				this.$selections.slideUp();
 				this.applyCssRules( { 'text-shadow': '' } );
+				this.events.emit( 'close' );
 			}
 		} );
+
 	}
 
 	/**
@@ -116,16 +120,16 @@ export class Control extends MultiSlider {
 		this._setupColorPicker();
 		this._setupSwitch();
 
-		$control = this.$control.add( this.colorPicker.$element );
-
 		let $template = $( template );
 		$template.find( 'switch' ).replaceWith( this.switchControl.$element );
-		$template.find( 'text-shadow' ).replaceWith( $control );
+		$template.find( 'text-shadow' ).replaceWith( this.$control );
+		$template.find( 'color-picker' ).replaceWith( this.colorPicker.$element );
 
 		this.$control = $template;
 
 		this.$shadowSliders = this.$control.find( '.directional-control.text-shadow-control' );
 		this.$colorPicker = this.$control.find( '.bg-color-picker-control' );
+		this.$selections = this.$control.find( '.selections' );
 
 		// Presets.
 		this.updateControlDisplay();
