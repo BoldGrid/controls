@@ -31,12 +31,14 @@ export class Control {
 		this.$currentValue = this.$control.find( '.value' );
 		this.$editLink = this.$control.find( '.edit-link' );
 		this.$colorPreview = this.$control.find( '.color-preview' );
+		this.$colorVal = this.$control.find( '[name="font-color"]' );
 		this.$picker = this.colorPicker.$element.find( '.bg-color-picker-control.boldgrid-control' );
 
 		this._preset();
 
 		this._setupColorChange();
 		this._setupEditClick();
+		this._setupInputChange();
 
 		return this.$control;
 	}
@@ -78,6 +80,20 @@ export class Control {
 	}
 
 	/**
+	 * When the input changes update the UI.
+	 *
+	 * This is a litle convoluted. The system could jsut update the UI when the color picker
+	 * updates the color. Reasoning is that the BoldGrid Post and Page builder overrides
+	 * the color picking process. It relies on an input in the control to comminucate the
+	 * current selection.
+	 *
+	 * @since 1.0.0
+	 */
+	_setupInputChange() {
+		this.$colorVal.on( 'change', ( ) => this.updateUI( this.$colorVal.val() ) );
+	}
+
+	/**
 	 * Bind the handler for color changes.
 	 *
 	 * @since 1.0.0
@@ -86,7 +102,7 @@ export class Control {
 		this.colorPicker.$input.iris( 'option', 'change', ( e, ui ) => {
 			const color = ui.color.toString();
 			this.options.target.css( 'color', color );
-			this.updateUI( color );
+			this.$colorVal.val( color ).change();
 		} );
 	}
 
