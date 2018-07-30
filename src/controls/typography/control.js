@@ -26,15 +26,15 @@ export class Control {
 	constructor( options ) {
 		this.options = options;
 
-		this.fontFamily = new FontFamily( { target: this.options.target } );
-		this.fontSize = new FontSize( { target: this.options.target } );
-		this.lineHeight = new LineHeight( { target: this.options.target } );
-		this.letterSpacing = new LetterSpacing( { target: this.options.target } );
-		this.fontTransform = new FontTransform( { target: this.options.target } );
-		this.textDecoration = new TextDecoration( { target: this.options.target } );
-		this.textShadow = new TextShadow( { target: this.options.target } );
-		this.textEffect = new TextEffect( { target: this.options.target } );
-		this.fontColor = new FontColor( { target: this.options.target } );
+		this.fontFamily = new FontFamily( this.options );
+		this.fontSize = new FontSize( this.options );
+		this.lineHeight = new LineHeight( this.options );
+		this.letterSpacing = new LetterSpacing( this.options );
+		this.fontTransform = new FontTransform( this.options );
+		this.textDecoration = new TextDecoration( this.options );
+		this.textShadow = new TextShadow( this.options );
+		this.textEffect = new TextEffect( this.options );
+		this.fontColor = new FontColor( this.options );
 	}
 
 	/**

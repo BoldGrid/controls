@@ -35,7 +35,7 @@ export class Control {
 			width: '100%'
 		};
 
-		this.webFont = new WebFont( { $scope: $( 'html' ) } );
+		this.webFont = new WebFont( { $scope: this.options.target.closest( 'html' ) } );
 
 		this.fonts = {
 			system: systemFonts,
