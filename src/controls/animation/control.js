@@ -77,9 +77,7 @@ export class Control {
 
 		this._presetType();
 
-		this.$typeControl.select2( {
-			dropdownParent: this.$control
-		} );
+		this.$typeControl.select2();
 
 		this._bindEvents();
 

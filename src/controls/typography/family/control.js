@@ -57,8 +57,6 @@ export class Control {
 		} );
 		const $control = $( template );
 
-		this.selectStyleConfig.dropdownParent = $control;
-
 		this.$familySelect = $control
 			.find( '.font-family-control select' )
 			.select2( this.selectStyleConfig );

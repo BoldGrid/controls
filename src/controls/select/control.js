@@ -42,7 +42,6 @@ export class Control {
 			controlOptions: this.controlOptions
 		} ) );
 
-		this.selectStyleConfig.dropdownParent = $control;
 		this.$select = $control.find( 'select' ).select2( this.selectStyleConfig );
 
 		this._preset();
