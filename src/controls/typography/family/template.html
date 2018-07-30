@@ -6,15 +6,15 @@
 				<optgroup label="">
 					<option value="">Default</option>
 				</optgroup>
-				<optgroup label="System Fonts">
-					<% for ( let systemFont of fonts.system ) { %>
-						<option value="<%=systemFont.name %>"><%=systemFont.name %></option>
-					<% } %>
-				</optgroup>
-				<optgroup label="Google Fonts">
-					<% for ( let name in fonts.google ) { %>
-						<option value="<%=name %>"><%=name %></option>
-					<% } %>
+				<% _.each( options, function ( section ) { %>
+					<optgroup label="<%=section.sectionName %>">
+						<% _.each( section.options, function( font, name ) { %>
+							<option value="<%= 'class' === section.type ? section.type + '-' + name : name %>"
+								data-font-class="<%=font.class %>"
+								data-font-type="<%=section.type %>"><%=name %></option>
+						<% } ); %>
+					</optgroup>
+				<% } ); %>
 				</optgroup>
 			</select>
 		</label>
@@ -23,17 +23,9 @@
 		<label>
 			<span class="bg-select-title">Font Weight</span>
 			<select>
-				<% for ( let weight of defaultWeights ) { %>
-					<option value="<%=weight %>">
-						<%=weight %>
-						<% if ( '400' === weight ) {  %>
-							(Regular)
-						<% } %>
-						<% if ( '600' === weight ) {  %>
-							(Bold)
-						<% } %>
-					</option>
-				<% } %>
+				<% _.each( defaultWeights, function ( weight ) { %>
+					<option value="<%=weight %>"></option>
+				<% } ); %>
 			</select>
 		</label>
 	</div>

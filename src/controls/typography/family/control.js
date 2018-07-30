@@ -36,12 +36,21 @@ export class Control {
 			width: '100%'
 		};
 
-		this.webFont = new WebFont( { $scope: this.options.target.closest( 'html' ) } );
+		this.fonts = this.options.fonts || [];
+		this.fonts = this.fonts.concat( [
+			{
+				sectionName: 'System Fonts',
+				type: 'inline',
+				options: systemFonts
+			},
+			{
+				sectionName: 'Google Fonts',
+				type: 'inline',
+				options: googleFonts
+			}
+		] );
 
-		this.fonts = {
-			system: systemFonts,
-			google: googleFonts
-		};
+		this.webFont = new WebFont( { $scope: this.options.target.closest( 'html' ) } );
 	}
 
 	/**
@@ -53,7 +62,7 @@ export class Control {
 	 */
 	render() {
 		const template = _.template( templateHtml )( {
-			fonts: this.fonts,
+			options: this.fonts,
 			defaultWeights: this.defaultWeights
 		} );
 		const $control = $( template );
@@ -66,9 +75,11 @@ export class Control {
 			.find( '.font-variant-control select' )
 			.select2( this.selectStyleConfig );
 
+		this.$weightControl = $control.find( '.font-weight-control' );
 		this.$weightSelect = $control
 			.find( '.font-weight-control select' )
 			.select2( this.selectStyleConfig );
+
 
 		this._preset();
 		this._bindEvents();
@@ -99,7 +110,7 @@ export class Control {
 	 * @return {object} Font configuration.
 	 */
 	getSelectedConfig() {
-		return ! this._getSystemFont() ? this.fonts.google[this.$familySelect.val()] || {} : {};
+		return ! this._getSystemFont() ? googleFonts[this.$familySelect.val()] || {} : {};
 	}
 
 	/**
@@ -112,7 +123,13 @@ export class Control {
 			weight = this.options.target.attr( 'data-font-weight' ),
 			style = this.options.target.attr( 'data-font-style' );
 
-		if ( family && this.$familySelect.find( '[value="' + family + '"]' ).length ) {
+		// If the target has the bg-font class, select the font from the menu.
+		if ( this.hasFontClass() ) {
+			let fontClass = this.getFontClass();
+			let value = this.$familySelect.find( `[data-font-class="${fontClass}"]` ).attr( 'value' );
+			this.$familySelect.val( value ).change();
+			this._updateWeightSelection();
+		} else if ( family && this.$familySelect.find( '[value="' + family + '"]' ).length ) {
 			this.$familySelect.val( family ).change();
 			this._updateWeightSelection();
 		}
@@ -127,6 +144,26 @@ export class Control {
 	}
 
 	/**
+	 * Get the the font class on the element.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {string} Classname.
+	 */
+	getFontClass() {
+		let classString = this.options.target.attr( 'class' );
+		let matches = classString.match( /(^|\s)bg-font-family-\S+/g );
+
+		let className = false;
+		if ( matches && matches.length ) {
+			className = matches[ 0 ] || '';
+			className = className.trim();
+		}
+
+		return className;
+	}
+
+	/**
 	 * Get the configured system font
 	 *
 	 * @since 1.0.0
@@ -134,7 +171,7 @@ export class Control {
 	 * @return {boolean} system font.
 	 */
 	_getSystemFont() {
-		return _.find( this.fonts.system, font => font.name === this.$familySelect.val() );
+		return systemFonts[ this.$familySelect.val() ];
 	}
 
 	/**
@@ -189,24 +226,80 @@ export class Control {
 	 */
 	_bindFamilyChange() {
 		this.$familySelect.on( 'change', () => {
-			const selections = this.getSelections();
-			const systemFont = this._getSystemFont();
+			const $selection = this.$familySelect.find( ':checked' );
+			const type = $selection.data( 'font-type' );
 
-			this.options.target.attr( 'data-font-family', selections.family );
-			this.options.target.attr( 'data-font-weight', selections.weight );
-			this.options.target.attr( 'data-font-style', selections.variant );
-
-			if ( systemFont ) {
-				window.BOLDGRID.CONTROLS.addStyle( this.options.target, 'font-family', systemFont.style );
+			if ( 'class' === type ) {
+				this.applyClassFont( $selection );
 			} else {
-				window.BOLDGRID.CONTROLS.addStyle( this.options.target, 'font-family', selections.family );
+				this.applyInlineFont();
 			}
-
-			window.BOLDGRID.CONTROLS.addStyle( this.options.target, 'font-weight', selections.weight );
-			window.BOLDGRID.CONTROLS.addStyle( this.options.target, 'font-style', selections.variant );
 
 			this.webFont.updateFontLink();
 		} );
+	}
+
+	/**
+	 * Add the selected font class to the element.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  {$} $selection Current Selection.
+	 */
+	applyClassFont( $selection ) {
+		let className = $selection.data( 'font-class' );
+
+		this.removeFontClasses();
+		this.options.target.addClass( className );
+		this.options.target.removeAttr( 'data-font-family' );
+		this.options.target.removeAttr( 'data-font-weight' );
+		window.BOLDGRID.CONTROLS.addStyle( this.options.target, 'font-weight', '' );
+	}
+
+	/**
+	 * Remove all font class names.
+	 *
+	 * @since 1.0.0
+	 */
+	removeFontClasses() {
+		this.options.target.removeClass( ( index, className ) => {
+			return ( className.match( /(^|\s)bg-font-family-\S+/g ) || [] ).join( ' ' );
+		} );
+	}
+
+	/**
+	 * Check if the target has a font class.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {Boolean} Does the elemt have a font class.
+	 */
+	hasFontClass() {
+		return this.options.target.is( '[class*="bg-font-family-"]' );
+	}
+
+	/**
+	 * Add the styles for fonts that are applied inline.
+	 *
+	 * @since 1.0.0
+	 */
+	applyInlineFont() {
+		const selections = this.getSelections();
+		const systemFont = this._getSystemFont();
+
+		this.removeFontClasses();
+		this.options.target.attr( 'data-font-family', selections.family );
+		this.options.target.attr( 'data-font-weight', selections.weight );
+		this.options.target.attr( 'data-font-style', selections.variant );
+
+		if ( systemFont ) {
+			window.BOLDGRID.CONTROLS.addStyle( this.options.target, 'font-family', systemFont.style );
+		} else {
+			window.BOLDGRID.CONTROLS.addStyle( this.options.target, 'font-family', selections.family );
+		}
+
+		window.BOLDGRID.CONTROLS.addStyle( this.options.target, 'font-weight', selections.weight );
+		window.BOLDGRID.CONTROLS.addStyle( this.options.target, 'font-style', selections.variant );
 	}
 
 	/**
@@ -225,8 +318,11 @@ export class Control {
 	 */
 	_updateWeightSelection() {
 		const config = this.getSelectedConfig(),
-			varient = this.$variantSelect.val() || 'normal';
+			varient = this.$variantSelect.val() || 'normal',
+			$selectedElement = this.$familySelect.find( ':checked' );
 		let weights = config.variants ? config.variants[varient] || {} : {};
+
+		this.$weightControl.toggle( 'class' !== $selectedElement.data( 'font-type' ) );
 
 		weights = Object.keys( weights );
 		weights = weights.concat( this.defaultWeights );
