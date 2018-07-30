@@ -20,7 +20,7 @@ export class WebFont {
 		this.options.$scope.find( '[data-font-family]' ).each( ( index, el ) => {
 			let $this = $( el ),
 				family = $this.attr( 'data-font-family' ),
-				variant = $this.attr( 'data-font-style' ),
+				variant = $this.attr( 'data-font-style' ) || 'normal',
 				weight = $this.attr( 'data-font-weight' );
 
 			if ( family && googleFonts[ family ] ) {
