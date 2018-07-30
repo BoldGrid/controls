@@ -2,6 +2,7 @@ import templateHtml from './template.html';
 import googleFonts from 'google-fonts-complete';
 import systemFonts from './system-fonts.js';
 import './style.scss';
+import '../../util';
 import $ from 'jquery';
 import titleCase from 'title-case';
 import { Slider } from '../../slider';
@@ -161,7 +162,8 @@ export class Control {
 		this.$weightSelect.on( 'change', () => {
 			const selections = this.getSelections();
 			this.options.target.attr( 'data-font-weight', selections.weight );
-			this.options.target.css( 'font-weight', selections.weight );
+			window.BOLDGRID.CONTROLS.addStyle( this.options.target, 'font-weight', selections.weight );
+
 			this.webFont.updateFontLink();
 		} );
 	}
@@ -175,7 +177,7 @@ export class Control {
 		this.$variantSelect.on( 'change', () => {
 			const selections = this.getSelections();
 			this.options.target.attr( 'data-font-style', selections.variant );
-			this.options.target.css( 'font-style', selections.variant );
+			window.BOLDGRID.CONTROLS.addStyle( this.options.target, 'font-style', selections.variant );
 			this.webFont.updateFontLink();
 		} );
 	}
@@ -195,13 +197,13 @@ export class Control {
 			this.options.target.attr( 'data-font-style', selections.variant );
 
 			if ( systemFont ) {
-				this.options.target.css( 'font-family', systemFont.style );
+				window.BOLDGRID.CONTROLS.addStyle( this.options.target, 'font-family', systemFont.style );
 			} else {
-				this.options.target.css( 'font-family', selections.family );
+				window.BOLDGRID.CONTROLS.addStyle( this.options.target, 'font-family', selections.family );
 			}
 
-			this.options.target.css( 'font-weight', selections.weight );
-			this.options.target.css( 'font-style', selections.variant );
+			window.BOLDGRID.CONTROLS.addStyle( this.options.target, 'font-weight', selections.weight );
+			window.BOLDGRID.CONTROLS.addStyle( this.options.target, 'font-style', selections.variant );
 
 			this.webFont.updateFontLink();
 		} );

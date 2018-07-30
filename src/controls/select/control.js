@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import template from './template.html';
 import './style.scss';
+import '../util';
 
 export class Control {
 	constructor( options ) {
@@ -89,7 +90,7 @@ export class Control {
 	 */
 	_onChange() {
 		this.$select.on( 'change', () => {
-			this.options.target.css( this.controlOptions.property, this.$select.val() );
+			window.BOLDGRID.CONTROLS.addStyle( this.options.target, this.controlOptions.property, this.$select.val() );
 		} );
 	}
 }

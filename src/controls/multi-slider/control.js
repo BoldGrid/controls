@@ -350,7 +350,7 @@ export class MultiSlider {
 	}
 
 	applyCssRules( property ) {
-		this.$target.css( property );
+		window.BOLDGRID.CONTROLS.addStyles( this.$target, property );
 	}
 
 	/**

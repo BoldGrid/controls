@@ -3,6 +3,7 @@ import { Switch } from '../../switch';
 import './style.scss';
 import selectedSVG from './check.svg';
 import { EventEmitter } from 'eventemitter3';
+import '../../util';
 
 export class TextEffect {
 	constructor( options ) {
@@ -76,7 +77,7 @@ export class TextEffect {
 	applySelection() {
 		this.removeClasses();
 		this.$target.addClass( this.getValue() );
-		this.$target.css( 'text-shadow', '' );
+		window.BOLDGRID.CONTROLS.addStyle( this.$target, 'text-shadow', '' );
 	}
 
 	/**
