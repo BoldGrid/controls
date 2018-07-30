@@ -12,6 +12,7 @@ export { Slider } from './slider';
 export { Animation } from './animation';
 export { Control as Typography } from './typography';
 export { Updater as StyleUpdater } from './style';
+export { WebFont } from './typography/family/webfont';
 
 export default {
 	Color: require( './color' ),
