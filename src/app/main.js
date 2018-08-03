@@ -13,7 +13,8 @@ import {
 	Typography,
 	Slider,
 	DeviceVisibility,
-	BorderRadius
+	BorderRadius,
+	WebFont
 } from '../controls';
 
 import '@boldgrid/components/src/app/scss/main.scss';
@@ -62,6 +63,8 @@ export class Application {
 		$tab.find( '.control' ).html( new Typography( {
 			target: $demoElement
 		} ).render() );
+
+		new WebFont( { $scope: $(  'html' ) } ).updateFontLink();
 	}
 
 	deviceVisibility() {

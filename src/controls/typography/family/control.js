@@ -128,11 +128,10 @@ export class Control {
 			let fontClass = this.getFontClass();
 			let value = this.$familySelect.find( `[data-font-class="${fontClass}"]` ).attr( 'value' );
 			this.$familySelect.val( value ).change();
-			this._updateWeightSelection();
 		} else if ( family && this.$familySelect.find( '[value="' + family + '"]' ).length ) {
 			this.$familySelect.val( family ).change();
-			this._updateWeightSelection();
 		}
+		this._updateWeightSelection();
 
 		if ( weight && this.$weightSelect.find( '[value="' + weight + '"]' ).length ) {
 			this.$weightSelect.val( weight ).change();
