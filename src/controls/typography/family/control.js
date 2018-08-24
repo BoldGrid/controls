@@ -31,6 +31,23 @@ export class Control {
 			700: 'Thick'
 		};
 
+		this.commonFonts = [
+
+			// sansSerif.
+			'Open Sans',
+			'Roboto',
+			'Lato',
+			'Montserrat',
+			'Oswald',
+
+			// serif
+			'Merriweather',
+			'Roboto Slab',
+			'EB Garamond',
+			'Alegreya',
+			'PT Serif'
+		];
+
 		this.selectStyleConfig = {
 			minimumResultsForSearch: 10,
 			width: '100%'
@@ -38,6 +55,11 @@ export class Control {
 
 		this.fonts = this.options.fonts || [];
 		this.fonts = this.fonts.concat( [
+			{
+				sectionName: 'Common Fonts',
+				type: 'inline',
+				options: _.invert( this.commonFonts )
+			},
 			{
 				sectionName: 'System Fonts',
 				type: 'inline',
