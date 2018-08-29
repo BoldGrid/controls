@@ -822,6 +822,7 @@ colorPalette.setup_color_picker = function() {
 	}
 
 	var myOptions = {
+		width: 255,
 		secondaryPalette: secondaryPalette,
 		change: function( event, ui ) {
 			if ( self.fadeEffectInProgress ) {
