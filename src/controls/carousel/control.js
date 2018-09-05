@@ -11,6 +11,14 @@ import dotPosition from './config/dot-position';
 import './style.scss';
 
 export class Control {
+
+	/**
+	 * Init Control Options.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param {object} options List of control options.
+	 */
 	constructor( options ) {
 		this.options = _.defaults( options || {}, {
 			title: 'BoldGrid Slider'
@@ -48,9 +56,50 @@ export class Control {
 		this.$element.find( 'autoplay-speed' ).replaceWith( this.autoplaySlider.render() );
 		this.$element.find( 'infinite-switch' ).replaceWith( this.infiniteSwitch.render() );
 
+		this._bindEvents();
+		this.updateUI();
+
 		return this.$element;
 	}
 
+	/**
+	 * Update the UI.
+	 *
+	 * @since 1.0.0
+	 */
+	updateUI() {
+		let navButtonEnabled = this.navSwitch.isEnabled(),
+			navDotsEnabled = this.dotSwitch.isEnabled(),
+			autoplayEnabled = this.autoplaySwitch.isEnabled();
+
+		this.navPosition.$element.toggle( navButtonEnabled );
+		this.navDesign.$element.toggle( navButtonEnabled );
+		this.navOverlay.$element.toggle( navButtonEnabled );
+		this.backgroundColor.$control.toggle( navButtonEnabled );
+
+		this.dotPosition.$element.toggle( navDotsEnabled );
+		this.dotOverlay.$element.toggle( navDotsEnabled );
+		this.dotColor.$control.toggle( navDotsEnabled );
+
+		this.autoplaySlider.$control.toggle( autoplayEnabled );
+	}
+
+	/**
+	 * Setup all events.
+	 *
+	 * @since 1.0.0
+	 */
+	_bindEvents() {
+		this.navSwitch.$input.on( 'change', () => this.updateUI() );
+		this.dotSwitch.$input.on( 'change', () => this.updateUI() );
+		this.autoplaySwitch.$input.on( 'change', () => this.updateUI() );
+	}
+
+	/**
+	 * Setup controls for navigation dots.
+	 *
+	 * @since 1.0.0
+	 */
 	_setupDots() {
 		this.dotSwitch = new Switch( {
 			name: 'carousel-navigation-dots',
@@ -71,6 +120,11 @@ export class Control {
 		} );
 	}
 
+	/**
+	 * Setup the infinite loop switc.
+	 *
+	 * @since 1.0.0
+	 */
 	_setupInfinite() {
 		this.infiniteSwitch = new Switch( {
 			name: 'carousel-infinite',
@@ -79,6 +133,11 @@ export class Control {
 		} );
 	}
 
+	/**
+	 * Setup the controls for auto play.
+	 *
+	 * @since 1.0.0
+	 */
 	_setupAutoPlay() {
 		this.autoplaySwitch = new Switch( {
 			name: 'carousel-autoplay-enabled',
