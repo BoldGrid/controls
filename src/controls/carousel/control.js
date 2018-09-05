@@ -96,6 +96,11 @@ export class Control {
 		} );
 	}
 
+	/**
+	 * Setup any controls needed for navigation controls.
+	 *
+	 * @since 1.0.0
+	 */
 	_setupNavigation() {
 		this.navSwitch = new Switch( {
 			name: 'carousel-navigation-buttons',
