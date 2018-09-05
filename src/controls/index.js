@@ -13,6 +13,7 @@ export { Animation } from './animation';
 export { Control as Typography } from './typography';
 export { Updater as StyleUpdater } from './style';
 export { WebFont } from './typography/family/webfont';
+export { Carousel } from './carousel';
 
 export default {
 	Color: require( './color' ),

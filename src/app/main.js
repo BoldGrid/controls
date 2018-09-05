@@ -14,12 +14,12 @@ import {
 	Slider,
 	DeviceVisibility,
 	BorderRadius,
+	Carousel,
 	WebFont
 } from '../controls';
 
 import '@boldgrid/components/src/app/scss/main.scss';
 import '@boldgrid/components/dist/css/components.css';
-
 import './main.scss';
 
 export class Application {
@@ -54,6 +54,13 @@ export class Application {
 		this.animation();
 		this.deviceVisibility();
 		this.typography();
+		this.carousel();
+	}
+
+	carousel() {
+		let $tab = $( '.carousel-tab' );
+
+		$tab.find( '.control' ).html( new Carousel().render() );
 	}
 
 	typography() {
