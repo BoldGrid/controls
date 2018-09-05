@@ -1,0 +1,35 @@
+.boldgrid-control.carousel-control {
+	.carousel-dots > .boldgrid-control,
+	.carousel-arrow > .boldgrid-control {
+		margin-bottom: 8px;
+	}
+
+	.carousel-infinite-switch,
+	.carousel-arrow,
+	.carousel-dots,
+	.carousel-autoplay {
+		margin-bottom: 35px;
+	}
+
+	.carousel-autoplay-enabled-switch {
+		margin-bottom: 0;
+	}
+
+	.font-color-control .control-name {
+		font-weight: normal;
+		font-size: 14px;
+		color: #757575;
+	}
+
+	.bg-control-switch.left-text label {
+		font-size: 17px;
+	}
+
+	.carousel-navigation-overlay-switch,
+	.carousel-dots-overlay-switch {
+		label {
+			font-weight: normal;
+			font-size: 14px;
+		}
+	}
+}

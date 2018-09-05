@@ -1,0 +1,13 @@
+<div class="bg-control-select <%=name %>-switch boldgrid-control">
+	<div class="mdc-select">
+	  <select class="mdc-select__native-control">
+			<% _.each( settings, function( value ) { %>
+	    <option value="<%=value.value %>">
+				<%=value.label %>
+	    </option>
+			<% } ); %>
+	  </select>
+	  <label class="mdc-floating-label"><%=label %></label>
+	  <div class="mdc-line-ripple"></div>
+	</div>
+</div>

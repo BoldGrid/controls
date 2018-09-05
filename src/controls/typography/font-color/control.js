@@ -11,7 +11,10 @@ export class Control {
 	 * @param {Object} options Options for instantiation.
 	 */
 	constructor( options ) {
-		this.options = options || {};
+		this.options = _.defaults( options, {
+			label: 'Color'
+		} );
+
 		this.colorPicker = new ColorPicker;
 	}
 
@@ -25,7 +28,7 @@ export class Control {
 	render() {
 		this._setupColorPicker();
 
-		this.$control = $( _.template( template )() );
+		this.$control = $( _.template( template )( this.options ) );
 		this.$control.find( 'font-color' ).replaceWith( this.colorPicker.$element );
 
 		this.$currentValue = this.$control.find( '.value' );

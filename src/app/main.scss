@@ -98,6 +98,7 @@
 }
 
 // Palette Selection
+.bg-tabs-content.current.carousel-tab,
 .bg-tabs-content.current.typography-tab,
 .bg-tabs-content.current.animations-tab {
 	display: flex;
@@ -119,4 +120,9 @@
 .typography-tab .demo-control {
 	padding: 30px;
 	border-left: 2px solid #ececec;
+}
+
+.carousel-tab .control {
+	padding: 5px 20px;
+	min-width: 300px;
 }

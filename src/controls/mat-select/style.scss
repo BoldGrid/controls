@@ -1,0 +1,16 @@
+@import '../shared/scss/variables.scss';
+@import "@material/select/mdc-select";
+
+
+.mdc-select {
+	width: 100%;
+
+	select {
+		-webkit-appearance: none;
+		-moz-appearance: none;
+
+		&::-ms-expand {
+			display: none;
+		}
+	}
+}

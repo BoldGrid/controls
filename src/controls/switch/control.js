@@ -2,6 +2,7 @@ var $ = window.jQuery;
 
 import template from './template.html';
 import './style.scss';
+import { MDCSwitch } from '@material/switch';
 
 export class Switch {
 	constructor( options ) {
@@ -24,6 +25,8 @@ export class Switch {
 	render() {
 		this.$element = $( this.template( this.options ) );
 		this.$input = this.$element.find( 'input' );
+
+		new MDCSwitch( this.$element.find( '.mdc-switch' )[0] );
 
 		return this.$element;
 	}
