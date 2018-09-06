@@ -10,7 +10,7 @@ export class Control {
 	 *
 	 * @param {Object} options Options for instantiation.
 	 */
-	constructor( options ) {
+	constructor( { ...options } ) {
 		this.options = _.defaults( options, {
 			label: 'Color'
 		} );

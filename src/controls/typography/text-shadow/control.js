@@ -8,7 +8,7 @@ import { EventEmitter } from 'eventemitter3';
 import './style.scss';
 
 export class Control extends MultiSlider {
-	constructor( options ) {
+	constructor( { ...options } ) {
 		super( options );
 
 		this.parser = new Parser();
@@ -197,5 +197,3 @@ export class Control extends MultiSlider {
 		} );
 	}
 }
-
-export { BoxShadow as default };

@@ -6,7 +6,7 @@ import { EventEmitter } from 'eventemitter3';
 import '../../util';
 
 export class TextEffect {
-	constructor( options ) {
+	constructor( { ...options } ) {
 		this.options = options || {};
 		this.presets = [
 			'bg-text-fx bg-text-fx-inset-text',

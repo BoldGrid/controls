@@ -372,7 +372,7 @@ export class MultiSlider {
 	}
 
 	/**
-<<<<<<< HEAD
+
 	 * Add classes to the controls, based on its configuration.
 	 *
 	 * @since 1.0.0
@@ -380,7 +380,10 @@ export class MultiSlider {
 	_addClasses() {
 		if ( 1 === this.controlOptions.control.sliders.length ) {
 			this.$control.addClass( 'single' );
-=======
+		}
+	}
+
+	/*
 	 * An overridable method used to apply styles to a target.
 	 *
 	 * @since 1.0.0
@@ -528,13 +531,10 @@ export class MultiSlider {
 		if ( this.deviceSelection ) {
 			const selectedDevice = this.deviceSelection.getSelectedValue();
 			this.deviceSelection.updateRelationship( ! settings.media[ selectedDevice ] );
->>>>>>> dab7e0d24dbda81e1338ab1409c5a5a6517f6567
 		}
 	}
 
 	/**
-<<<<<<< HEAD
-=======
 	 * Merge the css values of each device into 1 value.
 	 *
 	 * @since 1.0.0
@@ -670,7 +670,6 @@ export class MultiSlider {
 	}
 
 	/**
->>>>>>> dab7e0d24dbda81e1338ab1409c5a5a6517f6567
 	 * Create sliders and attach them to the template.
 	 *
 	 * @since 1.0.0
@@ -875,13 +874,10 @@ export class MultiSlider {
 		this.applyCssRules( property );
 	}
 
-<<<<<<< HEAD
 	applyCssRules( property ) {
 		window.BOLDGRID.CONTROLS.addStyles( this.$target, property );
 	}
 
-=======
->>>>>>> dab7e0d24dbda81e1338ab1409c5a5a6517f6567
 	/**
 	 * Update css as the control fires updates.
 	 *

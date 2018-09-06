@@ -3,7 +3,7 @@ var $ = window.jQuery;
 import { MultiSlider } from '../../multi-slider';
 
 export class Control extends MultiSlider {
-	constructor( options ) {
+	constructor( { ...options } ) {
 		super( options );
 
 		this.controlOptions = {

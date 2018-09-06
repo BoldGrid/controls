@@ -17,7 +17,7 @@ export class Control {
 	 *
 	 * @param  {array} options Options.
 	 */
-	constructor( options ) {
+	constructor( { ...options } ) {
 		this.options = options;
 
 		this.defaultWeights = [ '400', '600' ];

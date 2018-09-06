@@ -1,7 +1,7 @@
 import { Select } from '../../select';
 
 export class Control extends Select {
-	constructor( options ) {
+	constructor( { ...options } ) {
 		super( options );
 
 		this.controlOptions = {

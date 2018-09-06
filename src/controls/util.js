@@ -1,4 +1,3 @@
-window = window || {};
 window.BOLDGRID = window.BOLDGRID || {};
 window.BOLDGRID.CONTROLS = {
 
