@@ -58,9 +58,17 @@ export class Application {
 	}
 
 	carousel() {
-		let $tab = $( '.carousel-tab' );
+		let preset = '{"arrows":true,"autoplay":true,"autoplaySpeed":"19","dots":true,"infinite":true,"bgOptions":{"arrowsPos":"top-right","arrowsDesign":"square","arrowsOverlay":false,"arrowsBgColor":"","dotsPos":"bottom","dotsOverlay":false,"dotsColor":""}}';
+		let $tab = $( '.carousel-tab' ),
 
-		$tab.find( '.control' ).html( new Carousel().render() );
+			// carousel = new Carousel( { 'preset': JSON.parse( preset ) } );
+			carousel = new Carousel();
+
+		carousel.event.on( 'change', ( data ) => {
+			console.log( JSON.stringify( data ) );
+		} );
+
+		$tab.find( '.control' ).html( carousel.render() );
 	}
 
 	typography() {

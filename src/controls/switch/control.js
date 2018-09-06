@@ -26,9 +26,13 @@ export class Switch {
 		this.$element = $( this.template( this.options ) );
 		this.$input = this.$element.find( 'input' );
 
-		new MDCSwitch( this.$element.find( '.mdc-switch' )[0] );
+		this.switch = new MDCSwitch( this.$element.find( '.mdc-switch' )[0] );
 
 		return this.$element;
+	}
+
+	setChecked( val ) {
+		return this.switch.getDefaultFoundation().setChecked( val );
 	}
 
 	/**
