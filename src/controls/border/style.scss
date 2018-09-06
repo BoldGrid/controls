@@ -1,5 +1,9 @@
-.border-width-control {
+.border-width-control .slider-group {
 	display: none;
+
+	.control-name {
+		margin-bottom: 10px;
+	}
 }
 
 .border-type-control {
@@ -7,6 +11,7 @@
 
 	.control-title {
 		font-size: 15px;
+		margin-top: 0;
 	}
 
 	ul {

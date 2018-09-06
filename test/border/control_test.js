@@ -21,7 +21,7 @@ describe( 'Border Control', function() {
 	it( 'shows border width', function() {
 		$target.css( 'border', '2px dashed green' );
 		border.refreshValues();
-		expect( border.$typeControl.find( '.border-width-control' ).css( 'display' ) ).toEqual( 'block' );
+		expect( border.$typeControl.find( '.slider-group' ).css( 'display' ) ).toEqual( 'block' );
 	} );
 
 	it( 'returns border-style', function() {
@@ -29,7 +29,7 @@ describe( 'Border Control', function() {
 		$target.css( 'border-bottom', '2px dashed green' );
 		border.refreshValues();
 		expect( border._getBorderStyle() ).toEqual( 'dashed' );
-		expect( border.$typeControl.find( '.border-width-control' ).css( 'display' ) ).toEqual( 'block' );
+		expect( border.$typeControl.find( '.slider-group' ).css( 'display' ) ).toEqual( 'block' );
 	} );
 
 	it( 'hides border width', function() {
@@ -37,6 +37,6 @@ describe( 'Border Control', function() {
 		border.refreshValues();
 		$target.css( 'border', '' );
 		border.refreshValues();
-		expect( border.$typeControl.find( '.border-width-control' ).css( 'display' ) ).toEqual( 'none' );
+		expect( border.$typeControl.find( '.slider-group' ).css( 'display' ) ).toEqual( 'none' );
 	} );
 } );

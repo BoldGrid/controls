@@ -5,10 +5,6 @@ import {
 	StyleUpdater,
 	ColorPaletteSelection,
 	PaletteConfiguration,
-	Padding,
-	Margin,
-	Border,
-	BoxShadow,
 	Animation,
 	Typography,
 	Slider,
@@ -18,9 +14,15 @@ import {
 	WebFont
 } from '../controls';
 
+import { Preview } from './preview';
 import '@boldgrid/components/src/app/scss/main.scss';
 import '@boldgrid/components/dist/css/components.css';
 import './main.scss';
+import { Control as Save } from './save';
+
+// Import Demo files.
+import { Demo as MultiSliderDemo } from './multi-slider';
+import { Demo as DeviceVisibilityDemo } from './device-visibility/demo';
 
 export class Application {
 
@@ -31,14 +33,19 @@ export class Application {
 	 */
 	init() {
 		this.paletteConfig = new PaletteConfiguration();
+		this.preview = new Preview();
 
 		new ComponentApplication().init();
+
+		this.saveUI = new Save();
+		this.saveUI.render();
 
 		// Instantiate the css loader.
 		this.styleUpdater = new StyleUpdater( document );
 		this.styleUpdater.setup();
 
 		this.renderControls();
+
 	}
 
 	/**
@@ -50,7 +57,7 @@ export class Application {
 		this.paletteCustomize();
 		this.paletteSelection();
 		this.setupSlider();
-		this.multiSlider();
+		new MultiSliderDemo( this.saveUI ).render();
 		this.animation();
 		this.deviceVisibility();
 		this.typography();
@@ -109,27 +116,6 @@ export class Application {
 		$tab.find( '.control' ).html( new Animation( {
 			target: $demoElement
 		} ).render() );
-	}
-
-	/**
-	 * Setup multislider demo control.
-	 *
-	 * @since 0.10.0
-	 */
-	multiSlider() {
-		let $tab = $( '.directional-controls' ),
-			$combined = $tab.find( '.combined' ),
-			padding = new Padding( { target: $combined } ),
-			border = new Border( { target: $combined } ),
-			boxShadow = new BoxShadow( { target: $combined } ),
-			borderRadius = new BorderRadius( { target: $combined } ),
-			margin = new Margin( { target: $combined } );
-
-		$tab.find( '.padding-control .control' ).html( padding.render() );
-		$tab.find( '.margin-control .control' ).html( margin.render() );
-		$tab.find( '.border-control .control' ).html( border.render() );
-		$tab.find( '.border-radius .control' ).html( borderRadius.render() );
-		$tab.find( '.box-shadow .control' ).html( boxShadow.render() );
 	}
 
 	paletteSelection() {

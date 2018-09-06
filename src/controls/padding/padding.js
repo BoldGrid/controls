@@ -9,7 +9,6 @@ export class Padding extends MultiSlider {
 				title: 'Padding',
 				name: 'padding',
 				units: {
-					default: 'em',
 					enabled: [ 'px', 'em', '%' ]
 				},
 				sliders: [
@@ -19,6 +18,19 @@ export class Padding extends MultiSlider {
 					{ name: 'left', label: 'Left', cssProperty: 'padding-left' }
 				]
 			},
+			defaults: [
+				{
+					media: [ 'base', 'phone', 'tablet', 'desktop', 'large' ],
+					unit: 'em',
+					isLinked: false,
+					values: {
+						top: 0,
+						right: 0,
+						bottom: 0,
+						left: 0
+					}
+				}
+			],
 			slider: {
 				px: {
 					min: 0,

@@ -7,18 +7,114 @@ import config from './config.js';
 import deepmerge from 'deepmerge';
 import refreshSvg from './img/refresh.svg';
 import linkSvg from './img/link.svg';
+import { EventEmitter } from 'eventemitter3';
+import { Control as DeviceSelection } from './device-selection/control';
 
 export class MultiSlider {
 	constructor( options ) {
 		this.options = options || {};
 
+		this.$control = null;
 		this.slidersLinked = false;
 		this.$target = this.options.target;
 		this.template = _.template( template );
+		this.mediaOrder = [ 'base', 'phone', 'tablet', 'desktop', 'large' ];
+		this.settings = {};
+		this.params = {};
+		this.tempSavedSettings = {};
+		this.events = new EventEmitter();
 
 		if ( ! this.$target ) {
-			throw Error( 'Your must define a target element' );
+			this.$target = $( '<div>' ).hide();
+			$( 'body' ).append( this.$target );
+			this.$target.detach();
 		}
+	}
+
+	/**
+	 * Set the current target.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param {jQuery} $target Target to update.
+	 */
+	setTarget( $target ) {
+		this.$target = $( $target );
+		this.refreshValues();
+	}
+
+	/**
+	 * Get the current settings.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {object} Settings for a control.
+	 */
+	getSettings() {
+		let settings = {
+			unit: this.getUnit(),
+			slidersLinked: this.slidersLinked,
+			values: this.getValues()
+		};
+
+		settings.css = this.createCss( settings );
+
+		return settings;
+	}
+
+	/**
+	 * Create css string if a selecor is passed.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {string} [description]
+	 */
+	createCss( settings ) {
+		let css = false;
+
+		if ( this.controlOptions.control.selectors && this.controlOptions.control.selectors.length ) {
+			css = '';
+			css += this.controlOptions.control.selectors.join( ',' ) + '{';
+			css += this.getCssRule( settings );
+			css += '}';
+
+			// If a device selection is enabled, add media queries.
+			if ( this.deviceSelection ) {
+				css = this.deviceSelection.addMediaQuery( css );
+			}
+		}
+
+		return css;
+	}
+
+	/**
+	 * Get the current device selection. Handles devices feature disabled.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {string} Current Device.
+	 */
+	getSelectedDevice() {
+		return this.deviceSelection ? this.deviceSelection.getSelectedValue() : 'base';
+	}
+
+	/**
+	 * Get the CSS definitions.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {string} css riles.
+	 */
+	getCssRule( settings ) {
+		let cssRule = '';
+
+		for ( let slider in settings.values ) {
+			if ( this.sliders[ slider ] ) {
+				cssRule += this.sliders[ slider ].options.cssProperty + ':' + settings.values[slider] + settings.unit + ';';
+			}
+		}
+
+		return cssRule;
 	}
 
 	/**
@@ -30,6 +126,14 @@ export class MultiSlider {
 		this.controlOptions = deepmerge( config.defaults, this.controlOptions || {}, {
 			arrayMerge: ( destination, source ) => source
 		} );
+
+		this.baseConfig = $.extend( true, {}, this.controlOptions );
+
+		this.options.target = null;
+		this.controlOptions = deepmerge( this.controlOptions, this.options, {
+			arrayMerge: ( destination, source ) => source
+		} );
+
 	}
 
 	/**
@@ -41,30 +145,121 @@ export class MultiSlider {
 	 */
 	render() {
 		this.mergeDefaultConfigs();
+		this._saveMergedDefaults();
+		this._saveConfigurationInitial();
 
-		this.controlOptions.svg = {};
-		this.controlOptions.svg.link = linkSvg;
-		this.controlOptions.svg.refresh = refreshSvg;
+		this._setSvgSettings();
+		this._createDOMElements();
+		this._setupDevices();
+		this._setupDelete();
 
-		this.$control = $( this.template( this.controlOptions ) );
-		this.$sliderGroup = this.$control.find( '.slider-group' );
-		this.$units = this.$control.find( '.unit' );
-		this.$revert = this.$control.find( '.refresh' );
+		// If saved settings were provided store them as the current values.
+		if ( this.options.saved ) {
+			this.settings = $.extend( true, {}, this.options.saved );
+		}
 
 		this._bindUnits();
-		this.setUnits( this.controlOptions.control.units.default );
-		this._addClasses();
 
 		// Create sliders and attach them to the template.
 		this._createSliders();
-		this.$links = this.$control.find( '.link' );
+		this._setupLinks();
 
+		// Apply initial settings for the control, past saved settings or config defaults.
+		this.applySettings( this.configInitial.media.base );
+
+		// If defaults passed in set them as the initial values.
+		this.settings = this._getParamDefaultSettings() || this.settings;
+
+		this._setSettingCSS( this.settings );
+
+		// Setup the revert process.
 		this._storeDefaultValues();
-		this._setDefaultLinkedState();
-		this._bindLinked();
 		this._bindRevert();
 
+		this.$control.rendered = true;
+
 		return this.$control;
+	}
+
+	/**
+	 * If a developer overwrote the defaults on instantiation, pull the settings
+	 * from the configs so they can be applies to the settings object.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {object} Settings.
+	 */
+	_getParamDefaultSettings() {
+		let settings = false;
+
+		if ( _.isEmpty( this.settings ) && this.options.defaults ) {
+
+			settings = { css: '', media: {} };
+			let mediaOverrides = [];
+			for ( let setting of this.options.defaults ) {
+				for ( let media of setting.media ) {
+					settings.media[ media ] = this.configDefaults.media[ media ];
+				}
+			}
+		}
+
+		return settings;
+	}
+
+	/**
+	 * Update CSS for all initial settings to match control configurations.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param {object} settings Settings configuration.
+	 */
+	_setSettingCSS( settings ) {
+		_.each( settings.media || [], ( setting, device ) => {
+			setting.css = this.createCss( setting );
+
+			if ( this.deviceSelection ) {
+				setting.css = this.deviceSelection.addMediaQuery( setting.css, device );
+			}
+		} );
+
+		if ( settings.media ) {
+			settings.css = this._consolidateMediaCss( settings );
+		}
+	}
+
+	/**
+	 * The intitial configuration loaded when the user renders the control.
+	 *
+	 * We use this when the user clicks on the revert button. We've merged any
+	 * saved settings with the controls defaults.
+	 *
+	 * @since 1.0.0
+	 */
+	_saveConfigurationInitial() {
+		let savedValues = {},
+			configInitial = { css: '', media: {} };
+
+		if ( this.options.saved && this.options.saved.media ) {
+			savedValues = this.options.saved.media;
+		}
+		for ( let [ mediaType, value ] of Object.entries( this.configDefaults.media ) ) {
+			configInitial.media[ mediaType ] = savedValues[ mediaType ] || value;
+		}
+
+		this.configInitial = configInitial;
+	}
+
+	/**
+	 * Apply settings without triggering change events.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  {object} settings Settings.
+	 */
+	silentApplySettings( settings ) {
+		this.changeEventDisabled = true;
+		this.applySettings( settings );
+		this.changeEventDisabled = false;
 	}
 
 	/**
@@ -76,11 +271,13 @@ export class MultiSlider {
 	 */
 	applySettings( settings ) {
 		this.setUnits( settings.unit );
+		this._updateLinkedStatus( true === settings.slidersLinked );
 
 		for ( let key in settings.values ) {
 			let value = settings.values[key];
-
-			this.sliders[key].$slider.slider( 'option', 'value', value );
+			if ( this.sliders[key] )  {
+				this.sliders[key].$slider.slider( 'option', 'value', value );
+			}
 		}
 	}
 
@@ -103,10 +300,22 @@ export class MultiSlider {
 	 * @param {string} unit Units.
 	 */
 	setUnits( unit ) {
+		this.selectedUnit = unit;
 		this.$units
 			.filter( '[value="' + unit + '"]' )
 			.prop( 'checked', true )
 			.change();
+	}
+
+	/**
+	 * Get the currently selected units.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {string} Selected units.
+	 */
+	getUnit() {
+		return this.$units.filter( ':checked' ).val();
 	}
 
 	/**
@@ -163,6 +372,7 @@ export class MultiSlider {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Add classes to the controls, based on its configuration.
 	 *
 	 * @since 1.0.0
@@ -170,10 +380,297 @@ export class MultiSlider {
 	_addClasses() {
 		if ( 1 === this.controlOptions.control.sliders.length ) {
 			this.$control.addClass( 'single' );
+=======
+	 * An overridable method used to apply styles to a target.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  {object} property Styles for object
+	 */
+	applyCssRules( property ) {
+		this.$target.css( property );
+	}
+
+	/**
+	 * Set the default link and setup events.
+	 *
+	 * @since 1.0.0
+	 */
+	_setupLinks() {
+		this.$links = this.$control.find( '.link' );
+
+		this._bindLinked();
+	}
+
+	/**
+	 * Setup device support.
+	 *
+	 * @since 1.0.0
+	 */
+	_setupDevices() {
+		if ( this.controlOptions.responsive ) {
+			this.deviceSelection = new DeviceSelection( {
+				sizes: this.controlOptions.responsive
+			} );
+
+			this._setupDeviceChange();
+			this._setupLinkedChange();
 		}
 	}
 
 	/**
+	 * When a user change the relationship to the base styles, change their settings.
+	 *
+	 * @since 1.0.0
+	 */
+	_setupLinkedChange() {
+		this.deviceSelection.events.on( 'linkedToggle', ( isLinked ) => {
+			const selectedDevice = this.deviceSelection.getSelectedValue();
+
+			if ( isLinked ) {
+				this.tempSavedSettings[ selectedDevice ] = this.settings.media[ selectedDevice ];
+
+				// Determine the correct base styles to use.
+				let baseSettings = this.configDefaults.media.base;
+				if ( this.settings.media && this.settings.media.base ) {
+					baseSettings = this.settings.media.base;
+				}
+
+				// Update inputs.
+				this.applySettings( baseSettings );
+
+				// Trigger an event where the device is unset.
+				delete this.settings.media[ selectedDevice ];
+				this.settings.css = this._consolidateMediaCss( this.settings );
+				this._updateRelationshipStatus( this.settings );
+				this.events.emit( 'change', this.settings );
+			} else {
+				let unlinkSettings = this.configDefaults.media.base;
+				if ( this.settings.media && this.settings.media.base ) {
+					unlinkSettings = this.settings.media.base;
+				}
+
+				if ( this.tempSavedSettings[ selectedDevice ] ) {
+					unlinkSettings = this.tempSavedSettings[ selectedDevice ];
+				}
+
+				this.applySettings( unlinkSettings );
+			}
+		} );
+	}
+
+	/**
+	 * Create required DOM elements.
+	 *
+	 * @since 1.0.0
+	 */
+	_createDOMElements() {
+		this.$control = $( this.template( this.controlOptions ) );
+		this.$sliderGroup = this.$control.find( '.slider-group' );
+		this.$units = this.$control.find( '.unit' );
+		this.$revert = this.$control.find( '.undo' );
+		this.$deleteSaved = this.$control.find( '.delete-saved .remove' );
+	}
+
+	/**
+	 * Add svg elements to configs.
+	 */
+	_setSvgSettings() {
+		this.controlOptions.svg = {};
+		this.controlOptions.svg.link = linkSvg;
+		this.controlOptions.svg.refresh = refreshSvg;
+	}
+
+	/**
+	 * Update the settings with latest.
+	 *
+	 * @since 1.0.0
+	 */
+	_updateSettings() {
+		this.settings.media = this.settings.media || {};
+		this.settings.media[ this.getSelectedDevice() ] = this.getSettings();
+		this.settings.css = this._consolidateMediaCss( this.settings );
+
+		this._updateRelationshipStatus( this.settings );
+	}
+
+	/**
+	 * Setup the delete saved setting button.
+	 *
+	 * @since 1.0.0
+	 */
+	_setupDelete() {
+		this.$deleteSaved.on( 'click', ( e ) => {
+			e.preventDefault();
+
+			// Apply the configured defaults (not loaded changes).
+			this.resetDeviceSelection();
+
+			// Delete saved Settings.
+			this.settings = {};
+			this.applySettings( this.configDefaults.media.base );
+
+			// Trigger Delete Event.
+			this.events.emit( 'deleteSettings' );
+		} );
+	}
+
+	/**
+	 * Update the linked status to the base styles.
+	 *
+	 * Note: this will only work correctly after settings are updated.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  {object} settings Settings.
+	 */
+	_updateRelationshipStatus( settings ) {
+		if ( this.deviceSelection ) {
+			const selectedDevice = this.deviceSelection.getSelectedValue();
+			this.deviceSelection.updateRelationship( ! settings.media[ selectedDevice ] );
+>>>>>>> dab7e0d24dbda81e1338ab1409c5a5a6517f6567
+		}
+	}
+
+	/**
+<<<<<<< HEAD
+=======
+	 * Merge the css values of each device into 1 value.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {string} Media CSS
+	 */
+	_consolidateMediaCss( settings ) {
+		let css = '';
+
+		for ( const mediaType of this.mediaOrder ) {
+			if ( settings.media[ mediaType ] ) {
+				css += settings.media[ mediaType ].css;
+			}
+		}
+
+		return css;
+	}
+
+	/**
+	 * When the user changes devices, remeber their settings.
+	 *
+	 * @since 1.0.0
+	 */
+	_setupDeviceChange() {
+		let $deviceSelection = this.deviceSelection.render();
+		this.$control.find( 'device-selection' ).replaceWith( $deviceSelection );
+
+		this.deviceSelection.$inputs.on( 'change', () => {
+			const selectedDevice = this.deviceSelection.getSelectedValue();
+			let settings = this.configDefaults.media.base,
+				isLinkedToBase = true;
+
+			// If the user has customized a device, prepoulate.
+			if ( this.settings.media && this.settings.media[ selectedDevice ] ) {
+				settings = this.settings.media[ selectedDevice ];
+				isLinkedToBase = false;
+
+			// If the user has customized base.
+			} else if ( this.settings.media && this.settings.media.base ) {
+				settings = this.settings.media.base;
+				isLinkedToBase = true;
+			}
+
+			this.silentApplySettings( settings );
+			this.deviceSelection.updateRelationship( isLinkedToBase );
+
+			// Trigger slider device change event.
+			this.events.emit( 'deviceChange', selectedDevice );
+		} );
+	}
+
+	/**
+	 * Get the default unit set, takes into consideration defaults object.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {string} Unit.
+	 */
+	_getDefaultUnits() {
+		let defaultUnit = this.configDefaults.media.base.unit,
+			baseDefault = this._getBaseDefault();
+
+		if ( baseDefault && baseDefault.unit ) {
+			defaultUnit = baseDefault.unit;
+		}
+
+		return defaultUnit;
+	}
+
+	/**
+	 * Use the default settings to populate a customization object that can be used
+	 * for restoring to factory settings.
+	 *
+	 * @since 1.0.0
+	 */
+	_saveMergedDefaults() {
+		this.configDefaults = this._convertDefault(
+			[ ...this.baseConfig.defaults, ...this.controlOptions.defaults ]
+		);
+	}
+
+	/**
+	 * Convert settings passed in as defaults to settings passed in to settings used by the controls.
+	 *
+	 * This are different so to minimize the amount number of settings a developer must define.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  {object} defaults Defaults array
+	 * @return {object}          Updated Settings.
+	 */
+	_convertDefault( defaults ) {
+		let settings = {};
+		settings.css = '';
+		settings.media = {};
+
+		for ( let setting of defaults ) {
+			for ( let media of setting.media ) {
+				let mediaConfig = { ...setting };
+
+				mediaConfig.css = '';
+				mediaConfig.slidersLinked = setting.isLinked;
+				mediaConfig.unit = mediaConfig.unit;
+
+				delete mediaConfig.media;
+				delete mediaConfig.isLinked;
+
+				// Merge the in the previous value, this ensures that all values are defined.
+				settings.media[ media ] = deepmerge( settings.media[ media ] || {}, mediaConfig, {
+					arrayMerge: ( destination, source ) => source
+				} );
+			}
+		}
+
+		return settings;
+	}
+
+	/**
+	 * Get the default settings passed for the base media type.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return {object} Base Styles
+	 */
+	_getBaseDefault() {
+		let baseDefault = false;
+
+		if ( this.options.saved && this.options.saved.media ) {
+			baseDefault = this.options.saved.media.base;
+		}
+
+		return baseDefault;
+	}
+
+	/**
+>>>>>>> dab7e0d24dbda81e1338ab1409c5a5a6517f6567
 	 * Create sliders and attach them to the template.
 	 *
 	 * @since 1.0.0
@@ -185,6 +682,7 @@ export class MultiSlider {
 			let sliderControl;
 
 			slider.uiSettings = this.getSliderConfig( slider );
+
 			sliderControl = new Slider( $.extend( true, {}, slider ) );
 
 			sliderControl.render();
@@ -207,7 +705,8 @@ export class MultiSlider {
 	 */
 	_storeDefaultValues() {
 		this.defaultValues = {
-			unit: this.controlOptions.control.units.default,
+			unit: this._getDefaultUnits(),
+			slidersLinked: this.slidersLinked,
 			values: this.getValues()
 		};
 	}
@@ -220,23 +719,50 @@ export class MultiSlider {
 	_bindRevert() {
 		this.$revert.on( 'click', event => {
 			event.preventDefault();
-			this.applySettings( this.defaultValues );
+			this.resetDeviceSelection();
+			this.settings = $.extend( true, {}, this.options.saved || {} );
+
+			// Update the slider, with the derived base config (Also Triggers Change).
+			this.applySettings( this.configInitial.media.base );
+
+			/*
+			 * @todo Remove this hack
+			 * This is a hack to make sure any throttling of this event doesnt ignore the
+			 * previous change event. Without this timeout, reverting to an empty
+			 * value css update ignores the css change if throttled.
+			 */
+			setTimeout( () => {
+				this.events.emit( 'change', this.settings );
+			}, 75 );
 		} );
+	}
+
+	/**
+	 * Change device selection back to base.
+	 *
+	 * @since 1.0.0
+	 */
+	resetDeviceSelection() {
+		if ( this.deviceSelection ) {
+			this.deviceSelection.activate( 'base' );
+		}
 	}
 
 	/**
 	 * Bind changing of units.
 	 *
+	 * Update the slider to respect bounds for the unit.
+	 *
 	 * @since 1.0
 	 */
 	_bindUnits() {
-		this.$control.find( '.unit' ).on( 'change', e => {
-			let $target = $( e.target );
 
-			this.selectedUnit = $target.val();
-			if ( this.sliders ) {
-				this._unitsChanged();
-			}
+		// Unit defaults must be set before sliders are created.
+		this.setUnits( this._getDefaultUnits() );
+
+		this.$control.find( '.unit' ).on( 'change', e => {
+			this.selectedUnit = e.target.value;
+			this._unitsChanged();
 		} );
 	}
 
@@ -261,12 +787,12 @@ export class MultiSlider {
 	 * @since 1.0.0
 	 */
 	refreshValues() {
-		this.slideChangeDisabled = true;
+		this.changeEventDisabled = true;
 
 		this._resetOptions();
 
 		setTimeout( () => {
-			this.slideChangeDisabled = false;
+			this.changeEventDisabled = false;
 		} );
 	}
 
@@ -283,15 +809,15 @@ export class MultiSlider {
 	}
 
 	/**
-	 * Set the default slider state.
+	 * Update the linked status.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param  {Boolean} isLinked Whether or not it should be linked.
 	 */
-	_setDefaultLinkedState() {
-		if ( this.controlOptions.control.linkable ) {
-			let values = _.unique( _.values( this.getValues() ) );
-			this.slidersLinked = 1 === values.length;
-		}
+	_updateLinkedStatus( isLinked ) {
+		this.$links.toggleClass( 'linked', isLinked );
+		this.slidersLinked = isLinked;
 	}
 
 	/**
@@ -305,11 +831,11 @@ export class MultiSlider {
 		}
 
 		this.$links.on( 'click', event => {
-			let $target = $( event.target ).closest( 'a' );
 			event.preventDefault();
-			$target.toggleClass( 'linked' );
-			this.slidersLinked = $target.hasClass( 'linked' );
+			this.slidersLinked = ! this.slidersLinked;
+			this.$links.toggleClass( 'linked', this.slidersLinked );
 			this.$control.trigger( 'linked', { isLinked: this.slidersLinked } );
+			this._triggerChangeEvent();
 		} );
 	}
 
@@ -349,10 +875,13 @@ export class MultiSlider {
 		this.applyCssRules( property );
 	}
 
+<<<<<<< HEAD
 	applyCssRules( property ) {
 		window.BOLDGRID.CONTROLS.addStyles( this.$target, property );
 	}
 
+=======
+>>>>>>> dab7e0d24dbda81e1338ab1409c5a5a6517f6567
 	/**
 	 * Update css as the control fires updates.
 	 *
@@ -360,11 +889,24 @@ export class MultiSlider {
 	 */
 	_bindSliderChange( slider ) {
 		slider.$control.on( 'slide-change', ( e, data ) => {
-			if ( ! this.slideChangeDisabled ) {
+			if ( ! this.changeEventDisabled ) {
 				this._updateLinked( slider );
 				this._updateCss( slider );
+				this._triggerChangeEvent();
 			}
 		} );
+	}
+
+	/**
+	 * Trigger the change event only after setup is done.
+	 *
+	 * @since 1.0.0
+	 */
+	_triggerChangeEvent() {
+		if ( this.$control.rendered && ! this.changeEventDisabled ) {
+			this._updateSettings();
+			this.events.emit( 'change', this.settings );
+		}
 	}
 }
 

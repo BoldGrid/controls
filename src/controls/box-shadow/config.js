@@ -3,37 +3,44 @@ export default {
 		control: {
 			title: 'Box Shadow',
 			name: 'box-shadow',
-			linkable: false,
+			linkable: {
+				enabled: false
+			},
 			units: {
-				default: 'px',
 				enabled: [ 'px' ]
 			},
 			sliders: [
 				{
 					name: 'horizontal-position',
-					label: 'Horizontal Position',
-					cssProperty: 'border-top-left-radius'
+					label: 'Horizontal Position'
 				},
 				{
 					name: 'vertical-position',
-					label: 'Vertical Position',
-					cssProperty: 'border-top-right-radius'
+					label: 'Vertical Position'
 				},
-				{ name: 'blur-radius', label: 'Blur Radius', cssProperty: 'border-bottom-right-radius' },
-				{ name: 'spread-radius', label: 'Spread Radius', cssProperty: 'border-bottom-right-radius' }
+				{ name: 'blur-radius', label: 'Blur Radius' },
+				{ name: 'spread-radius', label: 'Spread Radius' }
 			]
 		},
-		slider: {
-			px: {
-				min: -200,
-				max: 200
-			},
-			em: {
-				min: 0.1,
-				max: 5
+
+		// Default settings for the control.
+		defaults: [
+			{
+				media: [ 'base', 'phone', 'tablet', 'desktop', 'large' ],
+				unit: 'px',
+				isLinked: false,
+				type: '',
+				color: '#cecece',
+				values: {
+					'horizontal-position': 0,
+					'vertical-position': 0,
+					'blur-radius': 0,
+					'spread-radius': 0
+				}
 			}
-		}
+		]
 	},
+
 	sliderConfig: {
 		'horizontal-position': {
 			min: -50,

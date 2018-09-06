@@ -1,0 +1,19 @@
+<div class="device" data-relationship-linked="1">
+	<ul>
+		<%
+		var devices = this.devices;
+		_.each( devices, function ( device ) { %>
+			<li>
+				<input <%= 'base' === device.name ? 'checked="checked"' : '' %> name="<%=id %>"
+					type="radio" id="<%=id + '-' + device.name %>" value="<%= device.name %>">
+				<label title="<%= device.tooltip ? device.tooltip : titleCase( device.name ) + ' Only' %>" for="<%=id + '-' + device.name %>"><%= device.icon %></label>
+				<div class="relationship" title="Inherting from All Devices setting">
+					<%= devices[0].icon %>
+					<span class="relationship-unlinked"><%= unlinkIcon %></span>
+					<span class="relationship-linked"><%= linkIcon %></span>
+					<%= device.icon %>
+				</div>
+			</li>
+		<% } ); %>
+	</ul>
+</div>

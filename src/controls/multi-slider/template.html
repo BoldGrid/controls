@@ -1,16 +1,22 @@
-<div class="directional-control <%=control.name %>-control boldgrid-control" data-linkable="<%= control.linkable %>">
-	<h3 class="control-name"><%=control.title %><a href="#" class="refresh" title="Reset to Default"><%= svg.refresh %></a></h3>
-	<p class="units">
-		<% if ( -1 !== control.units.enabled.indexOf( 'px' ) ) { %>
-		<label title="Pixel Unit"><input type="radio" name="<%=control.name %>-unit" class="unit" value="px"><span>PX</span></label>
-		<% } %>
-		<% if ( -1 !== control.units.enabled.indexOf( 'em' ) ) { %>
-			<label title="Em Unit"><input type="radio" name="<%=control.name %>-unit" class="unit" value="em"><span>EM</span></label>
-		<% } %>
-		<% if ( -1 !== control.units.enabled.indexOf( '%' ) ) { %>
-			<label title="Percentage Unit"><input type="radio" name="<%=control.name %>-unit" class="unit" value="%" ><span>%</span></label>
-		<% } %>
-	</p>
+<div class="directional-control <%=control.name %>-control boldgrid-control" data-linkable="<%= control.linkable.enabled %>">
+	<h3 class="control-name"><%=control.title %></h3>
+	<div class="configs">
+		<device-selection/>
+		<div class="units">
+			<% if ( -1 !== control.units.enabled.indexOf( 'px' ) ) { %>
+			<label title="Pixel Unit"><input type="radio" name="<%=control.name %>-unit" class="unit" value="px"><span>PX</span></label>
+			<% } %>
+			<% if ( -1 !== control.units.enabled.indexOf( 'em' ) ) { %>
+				<label title="Em Unit"><input type="radio" name="<%=control.name %>-unit" class="unit" value="em"><span>EM</span></label>
+			<% } %>
+			<% if ( -1 !== control.units.enabled.indexOf( '%' ) ) { %>
+				<label title="Percentage Unit"><input type="radio" name="<%=control.name %>-unit" class="unit" value="%" ><span>%</span></label>
+			<% } %>
+		</div>
+	</div>
 	<div class="slider-group">
+	</div>
+	<div class="delete-saved">
+		<a href="#" class="remove">Delete Saved Settings</a><a href="#" class="undo">Undo Changes</a>
 	</div>
 </div>

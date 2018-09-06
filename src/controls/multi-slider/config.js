@@ -1,10 +1,11 @@
-export default {
+let config = {
 	defaults: {
 		control: {
 			title: 'Universal',
-			linkable: true,
+			linkable: {
+				isLinked: true
+			},
 			units: {
-				default: 'percentage',
 				enabled: [ 'px', 'percentage', 'em' ]
 			},
 			sliders: [
@@ -13,6 +14,28 @@ export default {
 				{ name: 'bottom', label: 'Bottom', cssProperty: 'border-bottom-width' },
 				{ name: 'left', label: 'Left', cssProperty: 'border-left-width' }
 			]
+		},
+		defaults: [
+			{
+				media: [ 'base', 'phone', 'tablet', 'desktop', 'large' ],
+				unit: 'px',
+				isLinked: false,
+				values: {
+					top: 0,
+					right: 0,
+					bottom: 0,
+					left: 0
+				}
+			}
+		],
+		responsive: {
+
+			// These are max widths.
+			phone: 767, // 0 to 767 is phone.
+			tablet: 991,  // 768 to 991 is tablet.
+			desktop: 1199  // 992 to 1199 is desktop.
+
+			// Large is 1200+
 		},
 		slider: {
 			px: {
@@ -30,3 +53,5 @@ export default {
 		}
 	}
 };
+
+export { config as default };

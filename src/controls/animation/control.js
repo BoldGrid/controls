@@ -12,7 +12,7 @@ export class Control {
 	constructor( options ) {
 		this.options = options || {};
 		this.$target = this.options.target;
-		this.animationClasses = _.flatten( _.values( animateConfig ) );
+		this.animationClasses = this._getAnimationClasses();
 		this.animationClassesString = this.animationClasses.join( ' ' );
 
 		this.delayControl = new Slider( {
@@ -82,6 +82,24 @@ export class Control {
 		this._bindEvents();
 
 		return this.$control;
+	}
+
+	/**
+	 * Get a list of available animations from the configruations file.
+	 *
+	 * @since 0.14.0
+	 *
+	 * @return {array} List of animations.
+	 */
+	_getAnimationClasses() {
+		const classes = [];
+		for ( const category of _.values( animateConfig ) ) {
+			for ( const [ animationClass, enabled ] of Object.entries( category ) ) {
+				classes.push( animationClass );
+			}
+		}
+
+		return classes;
 	}
 
 	/**

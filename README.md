@@ -19,3 +19,7 @@ yarn dev
 
 # Build for production
 yarn build
+```
+
+## Usage
+For more information on how to use this library please see the [Wiki](https://github.com/BoldGrid/controls/wiki)

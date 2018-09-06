@@ -1,0 +1,142 @@
+@import '../../shared/scss/variables.scss';
+
+.boldgrid-control .device {
+	position: relative;
+	text-align: right;
+
+	[value="base"] + label svg {
+		vertical-align: top;
+		transform: scale(1.4);
+		margin-right: 6px;
+		position: relative;
+		top: 3px;
+	}
+
+	ul {
+		list-style: none;
+		margin: 10px 0;
+		padding: 0;
+	}
+
+	input:checked ~ .relationship {
+		display: block;
+	}
+
+	ul li:first-of-type input:checked ~ .relationship {
+		display: none;
+	}
+
+	.relationship {
+		display: none;
+		user-select: none;
+		background: black;
+		position: absolute;
+		top: -45px;
+		border-radius: 4px;
+		transform: translateX(-50%);
+		left: 50%;
+		width: 80px;
+		cursor: pointer;
+		text-align: center;
+
+		&:hover {
+			box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.3);
+		}
+
+		&::after {
+			content: '';
+			width: 0;
+			height: 0;
+			border-left: 8px solid transparent;
+			border-right: 8px solid transparent;
+			border-top: 7px solid $primaryColor;
+			position: absolute;
+			bottom: -7px;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+
+		svg {
+			padding: 0 2px;
+			vertical-align: -webkit-baseline-middle;
+			vertical-align: -moz-middle-with-baseline;
+			fill: white;
+		}
+
+		> svg:last-of-type {
+			width: 15px;
+			position: relative;
+			top: -2px;
+		}
+	}
+
+	.selection-text {
+		position: absolute;
+		right: 0;
+		top: -22px;
+		font-size: 12px;
+	}
+
+	li {
+		display: inline;
+		margin: 10px 0;
+		position: relative;
+	}
+
+	input {
+		display: none;
+
+		+ label {
+			display: table-cell;
+			cursor: pointer;
+			vertical-align: top;
+		}
+
+		&:checked + label svg {
+			fill: $accentColor;
+		}
+
+		&:checked + label {
+			color: $accentColor;
+		}
+	}
+
+	svg {
+		padding: 0 2px;
+		width: 20px;
+	}
+
+	.relationship-unlinked,
+	.relationship-linked {
+		display: none;
+	}
+
+	.relationship-unlinked svg {
+		transform: scale(1.3) translateY(1px) translateX(0);
+	}
+
+	.relationship-linked svg {
+		transform: rotateZ(-45deg);
+		width: 14px;
+	}
+
+	&[data-relationship-linked="1"] .relationship-linked {
+		display: inline;
+	}
+
+	&[data-relationship-linked="0"] .relationship-unlinked {
+		display: inline;
+	}
+
+	&[data-relationship-linked="0"] .relationship svg {
+		padding: 0;
+	}
+
+	&[data-relationship-linked="0"] .relationship {
+		background: rgba(0, 0, 0, 0.23);
+
+		&::after {
+			border-top-color: rgba(0, 0, 0, 0.23);
+		}
+	}
+}

@@ -47,8 +47,11 @@ module.exports = {
 			},
 			{
 				test: /\.js$/,
-				use: [ 'babel-loader' ],
-				include: [ srcDir ]
+				loader: 'babel-loader',
+				include: [ srcDir ],
+				options: {
+					presets: [ '@babel/preset-env' ]
+				}
 			},
 			{
 				test: /\.svg$/,
