@@ -8,7 +8,11 @@
 	.carousel-arrow,
 	.carousel-dots,
 	.carousel-autoplay {
-		margin-bottom: 35px;
+		margin-bottom: 30px;
+	}
+
+	.carousel-autoplay .slider-control {
+		margin-top: 5px;
 	}
 
 	.carousel-autoplay-enabled-switch {
