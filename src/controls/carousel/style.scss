@@ -17,7 +17,7 @@
 	}
 
 	.select2 {
-		width: 65px !important;
+		width: 60px !important;
 
 		.fa {
 			font-size: 25px;
@@ -53,4 +53,9 @@
 			font-size: 14px;
 		}
 	}
+}
+
+.select2-dropdown .select2-results__option {
+	font-size: 25px;
+	text-align: center;
 }

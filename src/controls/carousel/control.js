@@ -3,7 +3,7 @@ var $ = window.jQuery;
 import { Switch } from '../switch';
 import { Slider } from '../slider';
 import { MatSelect } from '../mat-select';
-import { Select } from '../select';
+import { Icon } from './icon';
 import { FontColor } from '../typography/font-color';
 import template from './template.html';
 import navigationOptions from './config/nav-position';
@@ -73,7 +73,6 @@ export class Control {
 
 		this.$element.find( 'nav-switch' ).replaceWith( this.navSwitch.render() );
 		this.$element.find( 'nav-position' ).replaceWith( this.navPosition.render() );
-		this.$element.find( 'nav-design' ).replaceWith( this.navDesign.render() );
 		this.$element.find( 'nav-overlay' ).replaceWith( this.navOverlay.render() );
 		this.$element.find( 'nav-size' ).replaceWith( this.navSize.render() );
 		this.$element.find( 'nav-icon' ).replaceWith( this.navIcon.render() );
@@ -113,7 +112,6 @@ export class Control {
 			infinite: this.infiniteSwitch.isEnabled(),
 			bgOptions: {
 				arrowsPos: this.navPosition.getValue(),
-				arrowsDesign: this.navDesign.getValue(),
 				arrowsOverlay: this.navOverlay.isEnabled(),
 				arrowsBgColor: this.navBgColor.$colorVal.val(),
 				arrowsIcon: this.navIcon.$select.val(),
@@ -139,7 +137,6 @@ export class Control {
 			autoplayEnabled = this.autoplaySwitch.isEnabled();
 
 		this.navPosition.$element.toggle( navButtonEnabled );
-		this.navDesign.$element.toggle( navButtonEnabled );
 		this.navOverlay.$element.toggle( navButtonEnabled );
 		this.navIcon.$control.toggle( navButtonEnabled );
 		this.navBgColor.$control.toggle( navButtonEnabled );
@@ -164,7 +161,6 @@ export class Control {
 		// Arrows.
 		this.navSwitch.setChecked( presets.arrows );
 		this.navPosition.setValue( presets.bgOptions.arrowsPos );
-		this.navDesign.setValue( presets.bgOptions.arrowsDesign );
 		this.navOverlay.setChecked( presets.bgOptions.arrowsOverlay );
 		this.navBgColor.updateUI( presets.bgOptions.arrowsBgColor );
 		this.navSize.$slider.slider( 'value', presets.bgOptions.arrowsSize );
@@ -295,31 +291,7 @@ export class Control {
 			}
 		} );
 
-		let $fake = $( '<div>' );
-		$( 'body' ).append( $fake );
-
-		this.navIcon = new Select( { target: $fake } );
-		this.navIcon.controlOptions = {
-			title: 'Icon',
-			name: 'carousel-icon',
-			property: 'invalid',
-			options: [
-				{
-					value: 'fa fa-angle-double-right',
-					label: 'fa fa-angle-double-right'
-				},
-				{
-					value: 'fa fa-arrows-h',
-					label: 'fa fa-arrows-h'
-				}
-			]
-		};
-
-		this.navIcon.selectStyleConfig.templateResult = ( icon ) => {
-			return $( `<i class="${icon.id}"></i>` );
-		};
-		this.navIcon.selectStyleConfig.templateSelection = this.navIcon.selectStyleConfig.templateResult;
-
+		this.navIcon = new Icon();
 		this.navOverlay = new Switch( {
 			name: 'carousel-navigation-overlay',
 			direction: 'reverse',
@@ -327,7 +299,6 @@ export class Control {
 		} );
 
 		this.navPosition = new MatSelect( navigationOptions );
-		this.navDesign = new MatSelect( navigationDesign );
 		this.navBgColor = new FontColor( {
 			label: 'Background Color',
 			target: $( '<div style="color: #000000">' )
