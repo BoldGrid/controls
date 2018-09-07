@@ -9,6 +9,7 @@ import navigationOptions from './config/nav-position';
 import navigationDesign from './config/nav-design';
 import dotPosition from './config/dot-position';
 import { EventEmitter } from 'eventemitter3';
+import deepmerge from 'deepmerge';
 import './style.scss';
 
 export class Control {
@@ -21,7 +22,9 @@ export class Control {
 	 * @param {object} options List of control options.
 	 */
 	constructor( options ) {
-		this.options = _.defaults( options || {}, {
+		options = options || {};
+
+		this.defaultSettings = {
 			title: 'BoldGrid Slider',
 			preset: {
 				arrows: true,
@@ -39,6 +42,10 @@ export class Control {
 					dotsColor: '#333333'
 				}
 			}
+		};
+
+		this.options = deepmerge( this.defaultSettings, options, {
+			arrayMerge: ( destination, source ) => source
 		} );
 
 		this.template = _.template( template );
