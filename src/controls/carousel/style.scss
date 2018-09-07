@@ -16,6 +16,18 @@
 		margin: 15px 0 !important;
 	}
 
+	.select2 {
+		width: 65px !important;
+
+		.fa {
+			font-size: 25px;
+		}
+	}
+
+	.carousel-arrow .slider-control {
+		margin-bottom: 15px;
+	}
+
 	.carousel-autoplay .slider-control {
 		margin-top: 5px;
 	}
@@ -36,7 +48,7 @@
 
 	.carousel-navigation-overlay-switch,
 	.carousel-dots-overlay-switch {
-		label {
+		&.bg-control-switch label {
 			font-weight: normal;
 			font-size: 14px;
 		}

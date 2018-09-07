@@ -3,6 +3,7 @@ var $ = window.jQuery;
 import { Switch } from '../switch';
 import { Slider } from '../slider';
 import { MatSelect } from '../mat-select';
+import { Select } from '../select';
 import { FontColor } from '../typography/font-color';
 import template from './template.html';
 import navigationOptions from './config/nav-position';
@@ -37,9 +38,11 @@ export class Control {
 					arrowsDesign: 'square',
 					arrowsOverlay: true,
 					arrowsBgColor: 'rgba(0,0,0,0)',
+					arrowsSize: 20,
 					dotsPos: 'bottom',
 					dotsOverlay: true,
-					dotsColor: '#333333'
+					dotsColor: '#333333',
+					dotsSize: 10
 				}
 			}
 		};
@@ -72,12 +75,15 @@ export class Control {
 		this.$element.find( 'nav-position' ).replaceWith( this.navPosition.render() );
 		this.$element.find( 'nav-design' ).replaceWith( this.navDesign.render() );
 		this.$element.find( 'nav-overlay' ).replaceWith( this.navOverlay.render() );
+		this.$element.find( 'nav-size' ).replaceWith( this.navSize.render() );
+		this.$element.find( 'nav-icon' ).replaceWith( this.navIcon.render() );
 		this.$element.find( 'nav-background-color' ).replaceWith( this.navBgColor.render() );
 
 		this.$element.find( 'dots-switch' ).replaceWith( this.dotSwitch.render() );
 		this.$element.find( 'dots-position' ).replaceWith( this.dotPosition.render() );
 		this.$element.find( 'dots-overlay' ).replaceWith( this.dotOverlay.render() );
 		this.$element.find( 'dots-color' ).replaceWith( this.dotColor.render() );
+		this.$element.find( 'dots-size' ).replaceWith( this.dotSize.render() );
 
 		this.$element.find( 'autoplay-switch' ).replaceWith( this.autoplaySwitch.render() );
 		this.$element.find( 'autoplay-speed' ).replaceWith( this.autoplaySlider.render() );
@@ -110,9 +116,12 @@ export class Control {
 				arrowsDesign: this.navDesign.getValue(),
 				arrowsOverlay: this.navOverlay.isEnabled(),
 				arrowsBgColor: this.navBgColor.$colorVal.val(),
+				arrowsIcon: this.navIcon.$select.val(),
+				arrowsSize: this.navSize.$input.val(),
 				dotsPos: this.dotPosition.getValue(),
 				dotsOverlay: this.dotOverlay.isEnabled(),
-				dotsColor: this.dotColor.$colorVal.val()
+				dotsColor: this.dotColor.$colorVal.val(),
+				dotsSize: this.dotSize.$input.val()
 			}
 		};
 
@@ -132,11 +141,13 @@ export class Control {
 		this.navPosition.$element.toggle( navButtonEnabled );
 		this.navDesign.$element.toggle( navButtonEnabled );
 		this.navOverlay.$element.toggle( navButtonEnabled );
+		this.navIcon.$control.toggle( navButtonEnabled );
 		this.navBgColor.$control.toggle( navButtonEnabled );
 
 		this.dotPosition.$element.toggle( navDotsEnabled );
 		this.dotOverlay.$element.toggle( navDotsEnabled );
 		this.dotColor.$control.toggle( navDotsEnabled );
+		this.dotSize.$control.toggle( navDotsEnabled );
 
 		this.autoplaySlider.$control.toggle( autoplayEnabled );
 	}
@@ -156,12 +167,14 @@ export class Control {
 		this.navDesign.setValue( presets.bgOptions.arrowsDesign );
 		this.navOverlay.setChecked( presets.bgOptions.arrowsOverlay );
 		this.navBgColor.updateUI( presets.bgOptions.arrowsBgColor );
+		this.navSize.$slider.slider( 'value', presets.bgOptions.arrowsSize );
 
 		// Dots.
 		this.dotSwitch.setChecked( presets.dots );
 		this.dotPosition.setValue( presets.bgOptions.dotsPos );
 		this.dotOverlay.setChecked( presets.bgOptions.dotsOverlay );
 		this.dotColor.updateUI( presets.bgOptions.dotsColor );
+		this.dotSize.$slider.slider( 'value', presets.bgOptions.dotsSize );
 
 		// Autoplay.
 		this.autoplaySwitch.setChecked( presets.autoplay );
@@ -208,6 +221,15 @@ export class Control {
 			name: 'carousel-dots-overlay',
 			direction: 'reverse',
 			label: 'Overlay'
+		} );
+
+		this.dotSize = new Slider( {
+			name: 'carousel-dots-size',
+			label: 'Size',
+			uiSettings: {
+				min: 5,
+				max: 30
+			}
 		} );
 
 		this.dotPosition = new MatSelect( dotPosition );
@@ -263,6 +285,40 @@ export class Control {
 			direction: 'reverse',
 			label: 'Navigation Buttons'
 		} );
+
+		this.navSize = new Slider( {
+			name: 'carousel-nav-size',
+			label: 'Size',
+			uiSettings: {
+				min: 5,
+				max: 30
+			}
+		} );
+
+		let $fake = $( '<div>' );
+		$( 'body' ).append( $fake );
+
+		this.navIcon = new Select( { target: $fake } );
+		this.navIcon.controlOptions = {
+			title: 'Icon',
+			name: 'carousel-icon',
+			property: 'invalid',
+			options: [
+				{
+					value: 'fa fa-angle-double-right',
+					label: 'fa fa-angle-double-right'
+				},
+				{
+					value: 'fa fa-arrows-h',
+					label: 'fa fa-arrows-h'
+				}
+			]
+		};
+
+		this.navIcon.selectStyleConfig.templateResult = ( icon ) => {
+			return $( `<i class="${icon.id}"></i>` );
+		};
+		this.navIcon.selectStyleConfig.templateSelection = this.navIcon.selectStyleConfig.templateResult;
 
 		this.navOverlay = new Switch( {
 			name: 'carousel-navigation-overlay',

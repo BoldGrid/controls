@@ -47,6 +47,7 @@ export class Control {
 
 		this._preset();
 		this._onChange();
+		this.$control = $control;
 
 		return $control;
 	}
