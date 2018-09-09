@@ -38,11 +38,11 @@ export class Control {
 					arrowsDesign: 'square',
 					arrowsOverlay: true,
 					arrowsBgColor: 'rgba(0,0,0,0)',
-					arrowsSize: 20,
+					arrowsSize: 30,
 					dotsPos: 'bottom',
 					dotsOverlay: true,
 					dotsColor: '#333333',
-					dotsSize: 10
+					dotsSize: 50
 				}
 			}
 		};
@@ -139,6 +139,7 @@ export class Control {
 		this.navPosition.$element.toggle( navButtonEnabled );
 		this.navOverlay.$element.toggle( navButtonEnabled );
 		this.navIcon.$control.toggle( navButtonEnabled );
+		this.navSize.$control.toggle( navButtonEnabled );
 		this.navBgColor.$control.toggle( navButtonEnabled );
 
 		this.dotPosition.$element.toggle( navDotsEnabled );
@@ -223,8 +224,8 @@ export class Control {
 			name: 'carousel-dots-size',
 			label: 'Size',
 			uiSettings: {
-				min: 5,
-				max: 30
+				min: 20,
+				max: 90
 			}
 		} );
 
@@ -286,8 +287,8 @@ export class Control {
 			name: 'carousel-nav-size',
 			label: 'Size',
 			uiSettings: {
-				min: 1,
-				max: 30
+				min: 10,
+				max: 100
 			}
 		} );
 
