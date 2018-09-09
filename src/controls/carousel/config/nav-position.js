@@ -3,16 +3,16 @@ export default {
 	label: 'Position',
 	settings: [
 		{
-			label: 'Standard',
+			label: 'Center',
 			value: 'standard'
-		},
-		{
-			label: 'Bottom',
-			value: 'bottom'
 		},
 		{
 			label: 'Top',
 			value: 'top'
+		},
+		{
+			label: 'Bottom',
+			value: 'bottom'
 		},
 		{
 			label: 'Top Left',
@@ -27,7 +27,7 @@ export default {
 			value: 'bottom-right'
 		},
 		{
-			label: 'Bottom left',
+			label: 'Bottom Left',
 			value: 'bottom-left'
 		}
 	]
