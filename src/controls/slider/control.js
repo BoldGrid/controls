@@ -61,7 +61,7 @@ export class Slider {
 	 * @param  {$} $slider Slider element jquery.
 	 */
 	_updateInput( $slider ) {
-		this.$input.val( this.$slider.slider( 'value' ) );
+		this.$input.val( this.$slider.slider( 'value' ) ).change();
 	}
 
 	/**

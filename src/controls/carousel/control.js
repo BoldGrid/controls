@@ -264,7 +264,7 @@ export class Control {
 			name: 'autoplay-duration',
 			label: 'Autoplay Duration',
 			uiSettings: {
-				min: 2,
+				min: 1,
 				max: 20
 			}
 		} );
@@ -286,7 +286,7 @@ export class Control {
 			name: 'carousel-nav-size',
 			label: 'Size',
 			uiSettings: {
-				min: 5,
+				min: 1,
 				max: 30
 			}
 		} );
