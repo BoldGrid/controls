@@ -69,10 +69,10 @@ export class Control {
 	 */
 	_setupShadowSwitch() {
 		this.textShadow.events.on( 'open', () => {
-			this.textEffect.switchControl.$input.prop( 'checked', false ).change();
+			this.textEffect.switchControl.setChecked( false );
 		} );
 		this.textEffect.events.on( 'open', () => {
-			this.textShadow.switchControl.$input.prop( 'checked', false ).change();
+			this.textShadow.switchControl.setChecked( false );
 		} );
 	}
 }
