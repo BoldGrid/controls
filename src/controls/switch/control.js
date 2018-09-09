@@ -32,6 +32,7 @@ export class Switch {
 	}
 
 	setChecked( val ) {
+		this.$input.prop( 'checked', val ).change();
 		return this.switch.getDefaultFoundation().setChecked( val );
 	}
 
