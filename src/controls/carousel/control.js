@@ -232,6 +232,7 @@ export class Control {
 		this.dotPosition = new MatSelect( dotPosition );
 		this.dotColor = new FontColor( {
 			label: 'Color',
+			name: 'dotsColor',
 			target: $( '<div style="color: #000000">' )
 		} );
 	}
@@ -302,6 +303,7 @@ export class Control {
 		this.navPosition = new MatSelect( navigationOptions );
 		this.navBgColor = new FontColor( {
 			label: 'Background Color',
+			name: 'arrowsBG',
 			target: $( '<div style="color: #000000">' )
 		} );
 	}

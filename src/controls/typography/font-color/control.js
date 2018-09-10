@@ -12,7 +12,8 @@ export class Control {
 	 */
 	constructor( { ...options } ) {
 		this.options = _.defaults( options, {
-			label: 'Color'
+			label: 'Color',
+			name: 'font-color'
 		} );
 
 		this.colorPicker = new ColorPicker;
@@ -34,7 +35,7 @@ export class Control {
 		this.$currentValue = this.$control.find( '.value' );
 		this.$editLink = this.$control.find( '.edit-link' );
 		this.$colorPreview = this.$control.find( '.color-preview' );
-		this.$colorVal = this.$control.find( '[name="font-color"]' );
+		this.$colorVal = this.$control.find( `[name="${this.options.name}"]` );
 		this.$picker = this.colorPicker.$element.find( '.bg-color-picker-control.boldgrid-control' );
 
 		this._preset();

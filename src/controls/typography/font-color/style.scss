@@ -13,7 +13,7 @@
 		right: 0;
 	}
 
-	input[name="font-color"] {
+	.color-preview + input {
 		display: none;
 
 		&[data-type="class"] ~ .value {
