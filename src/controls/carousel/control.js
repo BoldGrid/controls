@@ -3,6 +3,7 @@ var $ = window.jQuery;
 import { Switch } from '../switch';
 import { Slider } from '../slider';
 import { MatSelect } from '../mat-select';
+import { ActionMenu } from '../action-menu';
 import { Icon } from './icon';
 import { FontColor } from '../typography/font-color';
 import template from './template.html';
@@ -51,13 +52,35 @@ export class Control {
 			arrayMerge: ( destination, source ) => source
 		} );
 
+		this.event = new EventEmitter();
+
 		this.template = _.template( template );
 		this._setupNavigation();
 		this._setupAutoPlay();
 		this._setupInfinite();
 		this._setupDots();
+		this._setupActions();
+	}
 
-		this.event = new EventEmitter();
+	/**
+	 * Create a menu for actions.
+	 *
+	 * @since 1.0.0
+	 */
+	_setupActions() {
+		this.actionMenu = new ActionMenu( {
+			name: 'modify',
+			label: 'Modify Slide',
+			action: 'Edit',
+			options: [
+				{ name: 'forward', label: 'Move Slide Forward' },
+				{ name: 'back', label: 'Move Slide Backward' },
+				{ name: 'copy', label: 'Copy Current Slide' },
+				{ name: 'new', label: 'Create New Slide' }
+			]
+		} );
+
+		this.actionMenu.event = this.event;
 	}
 
 	/**
@@ -69,7 +92,10 @@ export class Control {
 	 */
 	render() {
 		this.$element = $( this.template( this.options ) );
+
 		this.$form = this.$element.find( 'form' );
+
+		this.$element.find( 'action-menu' ).replaceWith( this.actionMenu.render() );
 
 		this.$element.find( 'nav-switch' ).replaceWith( this.navSwitch.render() );
 		this.$element.find( 'nav-position' ).replaceWith( this.navPosition.render() );
