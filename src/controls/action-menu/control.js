@@ -48,7 +48,8 @@ export class Control extends MatMenu {
 		} );
 
 		this.$control.find( '[data-action]' ).on( 'click', ( e ) => {
-			this.event.emit( 'action', $( e.target ).data( 'action' ) );
+			let name = $( e.target ).data( 'action' );
+			this.event.emit( 'action-' + name );
 		} );
 	}
 }
