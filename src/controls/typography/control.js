@@ -13,8 +13,6 @@ import { FontSize } from './font-size';
 import { TextShadow } from './text-shadow';
 import { TextEffect } from './text-effect';
 import { TextDecoration } from './decoration';
-import 'select2/dist/css/select2.min.css';
-import 'select2/dist/js/select2.min.js';
 
 export class Control {
 

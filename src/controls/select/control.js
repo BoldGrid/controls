@@ -2,6 +2,8 @@ import $ from 'jquery';
 import template from './template.html';
 import './style.scss';
 import '../util';
+import 'select2/dist/css/select2.min.css';
+import 'select2/dist/js/select2.min.js';
 
 export class Control {
 	constructor( options ) {
