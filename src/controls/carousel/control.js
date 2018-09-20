@@ -70,9 +70,10 @@ export class Control {
 	_setupActions() {
 		this.actionMenu = new ActionMenu( {
 			name: 'modify',
-			label: 'Modify Slide',
+			label: 'Slide Actions',
 			action: 'Edit',
 			options: [
+				{ name: 'next', label: 'Show Next Slide' },
 				{ name: 'forward', label: 'Move Slide Forward' },
 				{ name: 'back', label: 'Move Slide Backward' },
 				{ name: 'copy', label: 'Copy Current Slide' },

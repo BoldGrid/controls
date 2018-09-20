@@ -32,6 +32,7 @@ export class Icon extends Select {
 		};
 
 		this._appendOptions();
+
 		this.selectStyleConfig.minimumResultsForSearch = 20;
 		this.selectStyleConfig.templateResult = ( icon ) => this.template( icon );
 		this.selectStyleConfig.templateSelection = ( icon ) => this.template( icon );
@@ -63,6 +64,6 @@ export class Icon extends Select {
 	 * @return {$}            jQuery object.
 	 */
 	template( icon ) {
-		return $( `<i class="fa fa-${icon.id}-${this.direction}"></i>` );
+		return $( `<div class="bg-select2-icon"><i class="fa fa-${icon.id}-${this.direction}"></i></div>` );
 	}
 }
