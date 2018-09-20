@@ -8,10 +8,10 @@
 	}
 
 	.action-wrap {
-		position: relative;
-		float: right;
-		width: 185px;
+		position: absolute;
+		width: 200px;
 		text-align: right;
+		right: 30px;
 	}
 
 	a.action {
