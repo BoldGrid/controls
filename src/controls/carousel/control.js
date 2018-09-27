@@ -74,6 +74,7 @@ export class Control {
 			action: 'Edit',
 			options: [
 				{ name: 'next', label: 'Show Next Slide' },
+				{ name: 'previous', label: 'Show Previous Slide' },
 				{ name: 'forward', label: 'Move Slide Forward' },
 				{ name: 'back', label: 'Move Slide Backward' },
 				{ name: 'copy', label: 'Copy Current Slide' },
