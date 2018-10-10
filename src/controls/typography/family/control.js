@@ -91,7 +91,10 @@ export class Control {
 
 		this.$familySelect = $control
 			.find( '.font-family-control select' )
-			.select2( this.selectStyleConfig );
+			.select2( { ...this.selectStyleConfig, ...{
+				templateSelection: ( font ) => this.familyTemplateResult( font ),
+				templateResult: ( font ) => this.familyTemplateResult( font )
+			} } );
 
 		this.$variantSelect = $control
 			.find( '.font-variant-control select' )
@@ -107,6 +110,25 @@ export class Control {
 		this._bindEvents();
 
 		return $control;
+	}
+
+	/**
+	 * Wrap each font item with attributes making it easier to select.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  {object} font Current Font selection
+	 * @return {jQuery}      Font element.
+	 */
+	familyTemplateResult( font ) {
+		if ( ! font.id ) {
+			return font.text;
+		}
+
+		let fontClassname = font.text.replace( /\s+/g, '-' ).toLowerCase(),
+			typeClassname = googleFonts[ font.text ] ? 'bgcon-google-font' : 'bgcon-system-font';
+
+		return $( `<div class="font-wrap ${fontClassname} ${typeClassname}">${font.text}</div>` );
 	}
 
 	/**
