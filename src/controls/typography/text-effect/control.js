@@ -111,7 +111,7 @@ export class TextEffect {
 	 * @since 1.0.0
 	 */
 	_presetSwitch() {
-		this.switchControl.$input.prop( 'checked', !! this.$inputs.filter( ':checked' ).length ).change();
+		this.switchControl.setChecked( !! this.$inputs.filter( ':checked' ).length );
 		this.$selections.toggle( !! this.$inputs.filter( ':checked' ).length );
 	}
 

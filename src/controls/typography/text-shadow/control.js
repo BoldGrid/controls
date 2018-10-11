@@ -68,7 +68,7 @@ export class Control extends MultiSlider {
 
 		// Checked if shadow is set.
 		checked = ( shadow && 'none' !== shadow && ! this.$target.hasClass( 'bg-text-fx' ) );
-		this.switchControl.$input.prop( 'checked', checked ).change();
+		this.switchControl.setChecked( checked );
 	}
 
 	/**
