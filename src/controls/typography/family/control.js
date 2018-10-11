@@ -1,5 +1,5 @@
 import templateHtml from './template.html';
-import googleFonts from 'google-fonts-complete';
+import googleFonts from './google-fonts.json';
 import systemFonts from './system-fonts.js';
 import './style.scss';
 import '../../util';
@@ -23,12 +23,14 @@ export class Control {
 		this.defaultWeights = [ '400', '600' ];
 
 		this.weightNames = {
+			100: 'Extra Thin',
 			200: 'Thin',
 			300: 'Light',
 			400: 'Regular',
 			500: 'Medium',
 			600: 'Bold',
-			700: 'Thick'
+			700: 'Thick',
+			800: 'Extra Thick'
 		};
 
 		this.commonFonts = [
@@ -363,11 +365,10 @@ export class Control {
 		const config = this.getSelectedConfig(),
 			varient = this.$variantSelect.val() || 'normal',
 			$selectedElement = this.$familySelect.find( ':checked' );
-		let weights = config.variants ? config.variants[varient] || {} : {};
+		let weights = config.variants ? config.variants[varient] || [] : [];
 
 		this.$weightControl.toggle( 'class' !== $selectedElement.data( 'font-type' ) );
 
-		weights = Object.keys( weights );
 		weights = weights.concat( this.defaultWeights );
 
 		let defaultWeight = '400';

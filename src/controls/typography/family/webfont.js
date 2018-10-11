@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import googleFonts from 'google-fonts-complete';
+import googleFonts from './google-fonts.json';
 
 export class WebFont {
 
@@ -24,13 +24,13 @@ export class WebFont {
 				weight = $this.attr( 'data-font-weight' );
 
 			if ( family && googleFonts[ family ] ) {
-				let weights = googleFonts[ family ].variants[ variant ];
+				let weights = googleFonts[ family ].variants[ variant ] || googleFonts[ family ].variants.normal;
 				families[family] = families[family] || {};
 
-				if ( weight && weights && weights[ weight ] ) {
+				if ( weight && weights && -1 !== weights.indexOf( weight ) ) {
 					families[family].weights = families[family].weights || [];
 
-					if ( 'italic' === variant ) {
+					if ( 'italic' === variant && googleFonts[ family ].variants[ variant ] ) {
 						weight = weight + 'i';
 					}
 
