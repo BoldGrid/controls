@@ -1,0 +1,21 @@
+.boldgrid-control-action-menu {
+	margin-bottom: 20px;
+	font-size: 17px;
+	position: relative;
+
+	.control-title {
+		font-weight: bold;
+		font-variant: small-caps;
+	}
+
+	.action-wrap {
+		position: absolute;
+		width: 200px;
+		text-align: right;
+		right: 0;
+	}
+
+	a.action {
+		color: #f95b26;
+	}
+}
