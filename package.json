@@ -91,7 +91,7 @@
   "engines": {
     "node": ">=6"
   },
-  "license": "WTFPL",
+  "license": "GPL-2.0",
   "main": "src/controls/index.js",
   "name": "@boldgrid/controls",
   "repository": {
