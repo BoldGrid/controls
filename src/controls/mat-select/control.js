@@ -8,7 +8,8 @@ export class Control {
 	constructor( options ) {
 		this.options = _.defaults( options || {}, {
 			name: _.random( 0, 10000 ),
-			label: 'My Select'
+			label: 'My Select',
+			default: null
 		} );
 
 		this.template = _.template( template );

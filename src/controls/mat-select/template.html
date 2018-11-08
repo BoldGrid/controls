@@ -2,7 +2,7 @@
 	<div class="mdc-select">
 	  <select class="mdc-select__native-control" name="<%=name %>">
 			<% _.each( settings, function( value ) { %>
-	    <option value="<%=value.value %>">
+	    <option value="<%=value.value %>" <%=value.value === default ? 'selected' : '' %>>
 				<%=value.label %>
 	    </option>
 			<% } ); %>
