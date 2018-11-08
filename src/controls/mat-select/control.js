@@ -9,7 +9,7 @@ export class Control {
 		this.options = _.defaults( options || {}, {
 			name: _.random( 0, 10000 ),
 			label: 'My Select',
-			default: null
+			selected: null
 		} );
 
 		this.template = _.template( template );
