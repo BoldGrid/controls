@@ -8555,9 +8555,9 @@ sass-loader@^7.0.0:
     neo-async "^2.5.0"
     pify "^3.0.0"
 
-sass.js@0.10.9:
-  version "0.10.9"
-  resolved "https://registry.yarnpkg.com/sass.js/-/sass.js-0.10.9.tgz#a5d7d8b9e4b448b58d6ff6cd14c802893cbd288d"
+sass.js@0.10.13:
+  version "0.10.13"
+  resolved "https://registry.yarnpkg.com/sass.js/-/sass.js-0.10.13.tgz#6f39698755a14d7a7795f9dc85175f122ad91d9b"
 
 sauce-tunnel@~2.4.0:
   version "2.4.0"
