@@ -1,6 +1,12 @@
 @import '../shared/scss/variables.scss';
+@import "@material/list/mdc-list";
+@import "@material/menu-surface/mdc-menu-surface";
+@import "@material/menu/mdc-menu";
 @import "@material/select/mdc-select";
 
+.enhanced-select {
+	width: 300px;
+}
 
 .mdc-select {
 	width: 100%;

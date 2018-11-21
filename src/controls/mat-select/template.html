@@ -1,13 +1,24 @@
 <div class="bg-control-select <%=name %>-switch boldgrid-control">
-	<div class="mdc-select">
-	  <select class="mdc-select__native-control" name="<%=name %>">
-			<% _.each( settings, function( value ) { %>
-	    <option value="<%=value.value %>" <%=value.value === selected ? 'selected' : '' %>>
-				<%=value.label %>
-	    </option>
+	<div class="mdc-select enhanced-select">
+	  <input type="hidden" name="<%=name %>">
+	  <i class="mdc-select__dropdown-icon"></i>
+	  <div class="mdc-select__selected-text">
+			<% _.each( settings, function( value ) {
+					if ( value.value === selected ) {  %>
+							<%=value.label %>
+					<% } %>
 			<% } ); %>
-	  </select>
-	  <label class="mdc-floating-label"><%=label %></label>
+		</div>
+	  <div class="mdc-select__menu mdc-menu mdc-menu-surface enhanced-select">
+	    <ul class="mdc-list">
+				<% _.each( settings, function( value ) { %>
+					<li class="mdc-list-item <%=value.value === selected ? 'mdc-list-item--selected' : '' %>" data-value="<%=value.value %>" <%= selected ? 'aria-selected="true"' : '' %>>
+							<%=value.label %>
+					</li>
+				<% } ); %>
+	    </ul>
+	  </div>
+	  <span class="mdc-floating-label <%= selected ? 'mdc-floating-label--float-above' : '' %>"><%=label %></span>
 	  <div class="mdc-line-ripple"></div>
 	</div>
 </div>
