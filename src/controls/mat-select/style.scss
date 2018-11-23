@@ -21,3 +21,8 @@
 		}
 	}
 }
+
+// Prevent conflicts with older versions of material select.
+.mdc-select.enhanced-select {
+	background-image: none;
+}
