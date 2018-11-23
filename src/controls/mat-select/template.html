@@ -1,7 +1,10 @@
 <div class="bg-control-select <%=name %>-switch boldgrid-control">
-	<div class="mdc-select enhanced-select">
+	<div class="mdc-select enhanced-select <%= icon || iconOption ? 'mdc-select--with-leading-icon' : '' %>">
 	  <input type="hidden" name="<%=name %>">
 	  <i class="mdc-select__dropdown-icon"></i>
+		<% if ( icon || iconOption ) { %>
+			<img class="mdc-select__icon" src="<%=icon %>">
+		<% } %>
 	  <div class="mdc-select__selected-text">
 			<% _.each( settings, function( value ) {
 					if ( value.value === selected ) {  %>
