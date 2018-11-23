@@ -1,7 +1,7 @@
 <div class="mdc-menu mdc-menu-surface" tabindex="-1">
   <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
 	  <% _.each( options, function ( setting ) { %>
-		  <li data-action="<%= setting.name %>" class="mdc-list-item" role="menuitem">
+		  <li data-action="<%= setting.name %>" class="mdc-list-item <%= setting.name === selected ? 'mdc-menu-item--selected' : '' %>" role="menuitem">
 			  <span class="mdc-list-item__text"><%= setting.label %></span>
 		  </li>
 	  <% } ); %>

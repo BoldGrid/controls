@@ -31,6 +31,11 @@ export class Control {
 	 */
 	show() {
 		this.menu.open = true;
+
+		// Focus the selected element. This should be removed if a material solution is found.
+		setTimeout( () => {
+			this.$menu.find( '.mdc-menu-item--selected' ).focus();
+		}, 250 );
 	}
 
 	/**
