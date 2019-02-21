@@ -7,7 +7,7 @@ export class Picker {
 	init( $target, options ) {
 		this.options = _.defaults( options || {}, {
 			clear: false,
-			width: 255,
+			width: 225,
 			mode: 'hsv',
 			type: 'full',
 			slider: 'horizontal',
