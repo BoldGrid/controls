@@ -692,9 +692,13 @@ colorPalette.getScss = function() {
 	colorPalette.state = colorPalette.format_current_palette_state();
 
 	let scss_file = colorPalette.create_color_scss_file( colorPalette.state ),
-		colorClasses = scss_file + self.configs.renderer.getImportString();
+		scss = scss_file + self.configs.renderer.getImportString();
 
-	return colorClasses + self.configs.renderer.buttonColors.getCompileString( colorPalette.state );
+	if ( self.configs.renderer.configs.includeButtonCss ) {
+		scss += self.configs.renderer.buttonColors.getCompileString( colorPalette.state );
+	}
+
+	return scss;
 };
 
 /**

@@ -14,6 +14,7 @@ export class Renderer {
 
 		this.configs = _.defaults( configs || {}, {
 			sassFiles: [],
+			includeButtonCss: true,
 			defaultSassFiles: [ 'color-palette-scss/classes/color-classes.scss' ]
 		} );
 
