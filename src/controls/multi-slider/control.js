@@ -584,7 +584,7 @@ export class MultiSlider {
 	_getDefaultUnits() {
 		let defaultUnit = this.configDefaults.media.base.unit,
 			baseDefault = this._getBaseDefault();
-
+		console.log( this.configDefaults );
 		if ( baseDefault && baseDefault.unit ) {
 			defaultUnit = baseDefault.unit;
 		}

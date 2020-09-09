@@ -12,6 +12,9 @@
 			<% if ( -1 !== control.units.enabled.indexOf( '%' ) ) { %>
 				<label title="Percentage Unit"><input type="radio" name="<%=control.name %>-unit" class="unit" value="%" ><span>%</span></label>
 			<% } %>
+			<% if ( -1 !== control.units.enabled.indexOf( 'col' ) ) { %>
+				<label title="Columns Unit"><input type="radio" name="<%=control.name %>-unit" class="unit" value="col" ><span>COL</span></label>
+			<% } %>
 		</div>
 	</div>
 	<div class="slider-group">
