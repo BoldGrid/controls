@@ -27,6 +27,7 @@ export class ColWidth
 
 		this.options.control.sliders = this.controlOptions.control.sliders;
 		this.options.defaults = this.controlOptions.defaults;
+	}
 
 	/**
 	 * Get Control Sliders.
