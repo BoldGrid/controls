@@ -27,12 +27,11 @@ export class ColWidth
 
 		this.options.control.sliders = this.controlOptions.control.sliders;
 		this.options.defaults = this.controlOptions.defaults;
-	}
 
 	/**
 	 * Get Control Sliders.
 	 *
-	 * @since SINCEVERSION
+	 * @since 0.16.0
 	 *
 	 * @return {array} An Array of slider configs.
 	 */
@@ -64,7 +63,7 @@ export class ColWidth
 	/**
 	 * Get Default Slider uids and values.
 	 *
-	 * @since SINCEVERSION
+	 * @since 0.16.0
 	 *
 	 * @param {object} options Options config.
 	 *
