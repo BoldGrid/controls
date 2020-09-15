@@ -133,7 +133,6 @@ export class MultiSlider {
 		this.controlOptions = deepmerge( this.controlOptions, this.options, {
 			arrayMerge: ( destination, source ) => source
 		} );
-
 	}
 
 	/**
@@ -401,7 +400,8 @@ export class MultiSlider {
 	_setupDevices() {
 		if ( this.controlOptions.responsive ) {
 			this.deviceSelection = new DeviceSelection( {
-				sizes: this.controlOptions.responsive
+				sizes: this.controlOptions.responsive,
+				enabled: this.controlOptions.devicesEnabled
 			} );
 
 			this._setupDeviceChange();
@@ -584,7 +584,6 @@ export class MultiSlider {
 	_getDefaultUnits() {
 		let defaultUnit = this.configDefaults.media.base.unit,
 			baseDefault = this._getBaseDefault();
-		console.log( this.configDefaults );
 		if ( baseDefault && baseDefault.unit ) {
 			defaultUnit = baseDefault.unit;
 		}

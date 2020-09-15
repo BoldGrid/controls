@@ -28,6 +28,7 @@ let config = {
 				}
 			}
 		],
+		devicesEnabled: [ 'base', 'large', 'desktop', 'tablet', 'phone' ],
 		responsive: {
 
 			// These are max widths.

@@ -1,8 +1,10 @@
-<div class="device" data-relationship-linked="1">
+<div class="device" data-relationship-linked="1" >
 	<ul>
 		<%
 		var devices = this.devices;
-		_.each( devices, function ( device ) { %>
+		var enabled = this.enabled;
+		_.each( devices, function ( device ) {
+			if ( enabled.includes( device.name ) ) {%>
 			<li>
 				<input <%= 'base' === device.name ? 'checked="checked"' : '' %> name="<%=id %>"
 					type="radio" id="<%=id + '-' + device.name %>" value="<%= device.name %>">
@@ -14,6 +16,7 @@
 					<%= device.icon %>
 				</div>
 			</li>
-		<% } ); %>
+		<% }
+		 } ); %>
 	</ul>
 </div>
