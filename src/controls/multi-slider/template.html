@@ -1,5 +1,8 @@
 <div class="directional-control <%=control.name %>-control boldgrid-control" data-linkable="<%= control.linkable.enabled %>">
 	<h3 class="control-name"><%=control.title %></h3>
+	<% if ( control.description ) { %>
+	<p class="control-description"><%=control.description %></p>
+	<% } %>
 	<div class="configs">
 		<device-selection/>
 		<div class="units">

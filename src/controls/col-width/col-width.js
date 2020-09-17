@@ -4,6 +4,7 @@ export class ColWidth
  extends MultiSlider {
 	constructor( options ) {
 		super( options );
+		console.log( options );
 		this.controlOptions = {
 			control: {
 				title: 'Column Widths',
@@ -12,7 +13,8 @@ export class ColWidth
 					default: 'col',
 					enabled: [ 'col' ]
 				},
-				sliders: this.getControlSliders()
+				sliders: this.getControlSliders(),
+				description: options.description
 			},
 			slider: {
 				col: {
@@ -42,11 +44,19 @@ export class ColWidth
 		if ( _.isFunction( wp.customize ) ) {
 
 			$( wp.customize.control( 'bgtfw_header_layout' ).container ).find( '.repeater' ).each( function() {
+				let label,
+					row;
 				key = this.dataset.key;
+				row = parseInt( $( this ).parent().attr( 'id' ).split('-')[2] ) + 1;
+				if ( 'sidebar' === key ) {
+					label = 'Row ' + row + ' Widget Area';
+				} else {
+					label = 'Row ' + row + ' ' + key.substr( 0, 1 ).toUpperCase() + key.substr( 1 );
+				}
 				sliders.push(
 					{
 						'name': this.dataset.uid,
-						'label': 'Row 1 ' + key.substr( 0, 1 ).toUpperCase() + key.substr( 1 ),
+						'label': label,
 						'cssProperty': 'width'
 					}
 				);
