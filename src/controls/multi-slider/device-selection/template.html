@@ -3,10 +3,12 @@
 		<%
 		var devices = this.devices;
 		var enabled = this.enabled;
+		var defaultSelected = this.defaultSelected;
 		_.each( devices, function ( device ) {
+			console.log( defaultSelected );
 			if ( enabled.includes( device.name ) ) {%>
 			<li>
-				<input <%= 'base' === device.name ? 'checked="checked"' : '' %> name="<%=id %>"
+				<input <%= 'base' === device.name || defaultSelected === device.name ? 'checked="checked"' : '' %> name="<%=id %>"
 					type="radio" id="<%=id + '-' + device.name %>" value="<%= device.name %>">
 				<label title="<%= device.tooltip ? device.tooltip : titleCase( device.name ) + ' Only' %>" for="<%=id + '-' + device.name %>"><%= device.icon %></label>
 				<div class="relationship" title="Inherting from All Devices setting">

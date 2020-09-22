@@ -30,6 +30,8 @@ export class Control {
 			'phone'
 		];
 
+		this.defaultSelected = this.options.defaultSelected || 'base';
+
 		let maxRand = 1000000;
 		this._id = _.random( 0, maxRand );
 		this.template = _.template( template );

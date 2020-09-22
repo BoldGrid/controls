@@ -1,4 +1,6 @@
 import { MultiSlider } from '@boldgrid/controls/src/controls/multi-slider';
+import { Slider } from '../slider';
+import linkSvg from '../multi-slider/img/link.svg';
 
 export class ColWidth
  extends MultiSlider {
@@ -24,11 +26,44 @@ export class ColWidth
 				}
 			},
 			defaults: this.getDefaults( options ),
-			devicesEnabled: [ 'base', 'large', 'desktop', 'tablet', 'phone' ],
+			devicesEnabled: [ 'large', 'desktop', 'tablet', 'phone' ],
+			defaultSelected: 'large'
 		};
 
 		this.options.control.sliders = this.controlOptions.control.sliders;
 		this.options.defaults = this.controlOptions.defaults;
+	}
+
+	/**
+	 * Create sliders and attach them to the template.
+	 *
+	 * @since 1.0.0
+	 */
+	_createSliders() {
+		this.sliders = {};
+		for ( let slider of this.controlOptions.control.sliders ) {
+			let sliderControl;
+			let thisRow = slider.label.split( ' ' )[1];
+			let lastRow = this.$sliderGroup.find( 'label' ).last().text() ? this.$sliderGroup.find( 'label' ).last().text().split( ' ' )[1] : thisRow;
+
+			if ( thisRow > lastRow ) {
+				this.$sliderGroup.append( '<hr />' );
+			}
+			slider.uiSettings = this.getSliderConfig( slider );
+
+			sliderControl = new Slider( $.extend( true, {}, slider ) );
+
+			sliderControl.render();
+
+			this.$sliderGroup.append( sliderControl.$control );
+			sliderControl.$input.after(
+				'<a class="link" href="#" title="Link all sliders">' + linkSvg + '</a>'
+			);
+
+			this.sliders[slider.name] = sliderControl;
+
+			this._bindSliderChange( sliderControl );
+		}
 	}
 
 	/**

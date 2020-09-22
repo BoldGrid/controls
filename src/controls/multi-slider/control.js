@@ -164,7 +164,12 @@ export class MultiSlider {
 		this._setupLinks();
 
 		// Apply initial settings for the control, past saved settings or config defaults.
-		this.applySettings( this.configInitial.media.base );
+		if ( this.configInitial.media.base ) {
+			this.applySettings( this.configInitial.media.base );
+		} else {
+			this.applySettings( this.configInitial.media.large );
+		}
+
 
 		// If defaults passed in set them as the initial values.
 		this.settings = this._getParamDefaultSettings() || this.settings;
@@ -401,7 +406,8 @@ export class MultiSlider {
 		if ( this.controlOptions.responsive ) {
 			this.deviceSelection = new DeviceSelection( {
 				sizes: this.controlOptions.responsive,
-				enabled: this.controlOptions.devicesEnabled
+				enabled: this.controlOptions.devicesEnabled,
+				defaultSelected: this.controlOptions.defaultSelected
 			} );
 
 			this._setupDeviceChange();
@@ -421,10 +427,19 @@ export class MultiSlider {
 			if ( isLinked ) {
 				this.tempSavedSettings[ selectedDevice ] = this.settings.media[ selectedDevice ];
 
+				let baseSettings;
+
 				// Determine the correct base styles to use.
-				let baseSettings = this.configDefaults.media.base;
+				if ( this.configDefaults.media.base ) {
+					baseSettings = this.configDefaults.media.base;
+				} else {
+					baseSettings = this.configDefaults.media.large;
+				}
+
 				if ( this.settings.media && this.settings.media.base ) {
 					baseSettings = this.settings.media.base;
+				} else {
+					baseSettings = this.settings.media.large;
 				}
 
 				// Update inputs.
@@ -436,7 +451,13 @@ export class MultiSlider {
 				this._updateRelationshipStatus( this.settings );
 				this.events.emit( 'change', this.settings );
 			} else {
-				let unlinkSettings = this.configDefaults.media.base;
+				let unlinkSettings;
+				if ( this.configDefaults.media.base ) {
+					unlinkSettings = this.configDefaults.media.base;
+				} else {
+					unlinkSettings = this.configDefaults.media.large;
+				}
+
 				if ( this.settings.media && this.settings.media.base ) {
 					unlinkSettings = this.settings.media.base;
 				}
@@ -499,7 +520,14 @@ export class MultiSlider {
 
 			// Delete saved Settings.
 			this.settings = {};
-			this.applySettings( this.configDefaults.media.base );
+			let settings;
+			if ( this.configDefaults.media.base ) {
+				settings = this.configDefaults.media.base;
+			} else {
+				settings = this.configDefaults.media.large;
+			}
+
+			this.applySettings( settings );
 
 			// Trigger Delete Event.
 			this.events.emit( 'deleteSettings' );
@@ -552,8 +580,15 @@ export class MultiSlider {
 
 		this.deviceSelection.$inputs.on( 'change', () => {
 			const selectedDevice = this.deviceSelection.getSelectedValue();
-			let settings = this.configDefaults.media.base,
+			let settings,
+				isLinkedToBase;
+			if ( this.configDefaults.media.base ) {
+				settings = this.configDefaults.media.base,
 				isLinkedToBase = true;
+			} else {
+				settings = this.configDefaults.media.large,
+				isLinkedToBase = false;
+			}
 
 			// If the user has customized a device, prepoulate.
 			if ( this.settings.media && this.settings.media[ selectedDevice ] ) {
@@ -582,8 +617,17 @@ export class MultiSlider {
 	 * @return {string} Unit.
 	 */
 	_getDefaultUnits() {
-		let defaultUnit = this.configDefaults.media.base.unit,
-			baseDefault = this._getBaseDefault();
+		let defaultUnit,
+			baseDefault;
+
+		if ( this.configDefaults.media.base ) {
+			defaultUnit = this.configDefaults.media.base.unit;
+		} else {
+			defaultUnit = this.configDefaults.media.large.unit;
+		}
+
+		baseDefault = this._getBaseDefault();
+
 		if ( baseDefault && baseDefault.unit ) {
 			defaultUnit = baseDefault.unit;
 		}
@@ -663,7 +707,6 @@ export class MultiSlider {
 	 */
 	_createSliders() {
 		this.sliders = {};
-
 		for ( let slider of this.controlOptions.control.sliders ) {
 			let sliderControl;
 
