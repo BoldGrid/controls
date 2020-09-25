@@ -129,7 +129,7 @@ export class ColWidth
 			if ( 0 < placeHolders.length ) {
 				defaults[ index ].values = {};
 				sliderNames.forEach( function( sliderName, placeHolderIndex ) {
-					defaults[ index ].values[ sliderName ] = values[ placeHolders[ placeHolderIndex ] ];
+					defaults[ index ].values[ sliderName ] = values[ placeHolders[ placeHolderIndex ] ] ? values[ placeHolders[ placeHolderIndex ] ] : 12;
 				} );
 			}
 		} );
