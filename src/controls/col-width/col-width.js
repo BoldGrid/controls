@@ -6,7 +6,6 @@ export class ColWidth
  extends MultiSlider {
 	constructor( options ) {
 		super( options );
-		console.log( options );
 		this.controlOptions = {
 			control: {
 				title: 'Column Widths',

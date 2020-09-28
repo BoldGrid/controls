@@ -5,7 +5,6 @@
 		var enabled = this.enabled;
 		var defaultSelected = this.defaultSelected;
 		_.each( devices, function ( device ) {
-			console.log( defaultSelected );
 			if ( enabled.includes( device.name ) ) {%>
 			<li>
 				<input <%= 'base' === device.name || defaultSelected === device.name ? 'checked="checked"' : '' %> name="<%=id %>"
