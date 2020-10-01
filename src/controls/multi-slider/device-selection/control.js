@@ -22,6 +22,16 @@ export class Control {
 			// Large is 1200+
 		};
 
+		this.enabled = this.options.enabled || [
+			'base',
+			'large',
+			'desktop',
+			'tablet',
+			'phone'
+		];
+
+		this.defaultSelected = this.options.defaultSelected || 'base';
+
 		let maxRand = 1000000;
 		this._id = _.random( 0, maxRand );
 		this.template = _.template( template );

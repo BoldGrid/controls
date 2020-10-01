@@ -1,5 +1,8 @@
 <div class="directional-control <%=control.name %>-control boldgrid-control" data-linkable="<%= control.linkable.enabled %>">
 	<h3 class="control-name"><%=control.title %></h3>
+	<% if ( control.description ) { %>
+	<p class="control-description"><%=control.description %></p>
+	<% } %>
 	<div class="configs">
 		<device-selection/>
 		<div class="units">
@@ -11,6 +14,9 @@
 			<% } %>
 			<% if ( -1 !== control.units.enabled.indexOf( '%' ) ) { %>
 				<label title="Percentage Unit"><input type="radio" name="<%=control.name %>-unit" class="unit" value="%" ><span>%</span></label>
+			<% } %>
+			<% if ( -1 !== control.units.enabled.indexOf( 'col' ) ) { %>
+				<label title="Columns Unit"><input type="radio" name="<%=control.name %>-unit" class="unit" value="col" ><span>COL</span></label>
 			<% } %>
 		</div>
 	</div>
