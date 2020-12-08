@@ -1,7 +1,7 @@
 <div class="directional-control <%=control.name %>-control boldgrid-control" data-linkable="<%= control.linkable.enabled %>">
 	<h3 class="control-name"><%=control.title %></h3>
 	<div class="configs">
-		<device-selection/>
+		<device-selection></device-selection>
 		<div class="units">
 			<% if ( -1 !== control.units.enabled.indexOf( 'px' ) ) { %>
 			<label title="Pixel Unit"><input type="radio" name="<%=control.name %>-unit" class="unit" value="px"><span>PX</span></label>
