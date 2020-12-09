@@ -21,19 +21,19 @@ export class Padding extends MultiSlider {
 			},
 			slider: {
 				px: {
-					min: 0,
-					max: 100,
+					min: -250,
+					max: 250,
 					step: 1
 				},
 				'%': {
-					min: 0,
-					max: 20,
+					min: -100,
+					max: 100,
 					step: 0.1
 				},
 				em: {
-					min: 0,
-					max: 5,
-					step: 0.1
+					min: -100,
+					max: 100,
+					step: 1
 				}
 			}
 		};
