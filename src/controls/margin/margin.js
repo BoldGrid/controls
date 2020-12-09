@@ -21,19 +21,19 @@ export class Margin extends MultiSlider {
 			},
 			slider: {
 				px: {
-					min: -100,
-					max: 100,
+					min: -250,
+					max: 250,
 					step: 1
 				},
 				'%': {
-					min: -20,
-					max: 20,
+					min: -100,
+					max: 100,
 					step: 0.1
 				},
 				em: {
-					min: -5,
-					max: 5,
-					step: 0.1
+					min: -100,
+					max: 100,
+					step: 1
 				}
 			}
 		};
