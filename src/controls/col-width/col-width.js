@@ -29,6 +29,9 @@ export class ColWidth
 			defaultSelected: 'large'
 		};
 
+		window.BOLDGRID.colWidthSlider = this;
+
+
 		this.options.control.sliders = this.controlOptions.control.sliders;
 		this.options.defaults = this.controlOptions.defaults;
 	}
