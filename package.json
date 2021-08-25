@@ -25,9 +25,9 @@
     "deepmerge": "^3.0.0",
     "eventemitter3": "^3.1.0",
 	"google-material-color-palette-json": "^2.0.1",
-    "jquery": "1.*",
+    "jquery": "3.5.0",
     "material-components-web": "^0.36.1",
-	"select2": "^4.0.6-rc.1",
+	"select2": "^4.0.8",
     "sass.js": "0.10.9",
     "title-case": "^2.1.1",
     "url-loader": "^1.0.1"
