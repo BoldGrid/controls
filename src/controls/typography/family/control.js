@@ -22,6 +22,13 @@ export class Control {
 
 		this.defaultWeights = [ '400', '600' ];
 
+		this.googleFonts = {};
+
+		// The new google-fonts.json is in a different format than previous versions.
+		for ( let font in googleFonts.items ) {
+			this.googleFonts[ googleFonts.items[ font ].family ] = googleFonts.items[ font ];
+		}
+
 		this.weightNames = {
 			100: 'Extra Thin',
 			200: 'Thin',
@@ -70,7 +77,7 @@ export class Control {
 			{
 				sectionName: 'Google Fonts',
 				type: 'inline',
-				options: googleFonts
+				options: this.googleFonts
 			}
 		] );
 
@@ -128,7 +135,7 @@ export class Control {
 		}
 
 		let fontClassname = font.text.replace( /\s+/g, '-' ).toLowerCase(),
-			typeClassname = googleFonts[ font.text ] ? 'bgcon-google-font' : 'bgcon-system-font';
+			typeClassname = this.googleFonts[ font.text ] ? 'bgcon-google-font' : 'bgcon-system-font';
 
 		return $( `<div class="font-wrap ${fontClassname} ${typeClassname}">${font.text}</div>` );
 	}
@@ -156,7 +163,7 @@ export class Control {
 	 * @return {object} Font configuration.
 	 */
 	getSelectedConfig() {
-		return ! this._getSystemFont() ? googleFonts[this.$familySelect.val()] || {} : {};
+		return ! this._getSystemFont() ? this.googleFonts[this.$familySelect.val()] || {} : {};
 	}
 
 	/**

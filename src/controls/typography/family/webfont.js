@@ -5,6 +5,13 @@ export class WebFont {
 
 	constructor( options ) {
 		this.options = options;
+
+		this.googleFonts = {};
+
+		// The new google-fonts.json is in a different format than previous versions.
+		for ( let font in googleFonts.items ) {
+			this.googleFonts[ googleFonts.items[ font ].family ] = googleFonts.items[ font ];
+		}
 	}
 
 	/**
@@ -23,14 +30,14 @@ export class WebFont {
 				variant = $this.attr( 'data-font-style' ) || 'normal',
 				weight = $this.attr( 'data-font-weight' );
 
-			if ( family && googleFonts[ family ] ) {
-				let weights = googleFonts[ family ].variants[ variant ] || googleFonts[ family ].variants.normal;
+			if ( family && this.googleFonts[ family ] ) {
+				let weights = this.googleFonts[ family ].variants[ variant ] || this.googleFonts[ family ].variants.normal;
 				families[family] = families[family] || {};
 
 				if ( weight && weights && -1 !== weights.indexOf( weight ) ) {
 					families[family].weights = families[family].weights || [];
 
-					if ( 'italic' === variant && googleFonts[ family ].variants[ variant ] ) {
+					if ( 'italic' === variant && this.googleFonts[ family ].variants[ variant ] ) {
 						weight = weight + 'i';
 					}
 
@@ -39,7 +46,7 @@ export class WebFont {
 
 			}
 		} );
-
+		console.log( families );
 		return families;
 	}
 
