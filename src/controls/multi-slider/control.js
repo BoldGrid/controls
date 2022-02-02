@@ -305,6 +305,9 @@ export class MultiSlider {
 	 */
 	setUnits( unit ) {
 		this.selectedUnit = unit;
+		console.log( {
+			'units': this.$units
+		} );
 		this.$units
 			.filter( '[value="' + unit + '"]' )
 			.prop( 'checked', true )
@@ -600,12 +603,13 @@ export class MultiSlider {
 				settings = this.settings.media.base;
 				isLinkedToBase = true;
 			}
-
 			this.silentApplySettings( settings );
 			this.deviceSelection.updateRelationship( isLinkedToBase );
 
 			// Trigger slider device change event.
 			this.events.emit( 'deviceChange', selectedDevice );
+
+			this.$control.siblings( '.customize-control-kirki-generic' )
 		} );
 	}
 
