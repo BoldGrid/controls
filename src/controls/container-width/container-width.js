@@ -23,7 +23,7 @@ export class ContainerWidth extends MultiSlider {
 					max: 3840,
 					step: 5
 				},
-				px: {
+				'%': {
 					min: 0,
 					max: 100,
 					step: 1
