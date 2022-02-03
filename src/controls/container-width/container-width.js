@@ -32,27 +32,11 @@ export class ContainerWidth extends MultiSlider {
 			devicesEnabled: [ 'base', 'large', 'desktop', 'tablet' ],
 			defaults: [
 				{
-					media: [ 'large' ],
-					unit: 'px',
-					isLinked: false,
+					media: [ 'base', 'large', 'desktop', 'tablet' ],
+					unit: '%',
+					isLinked: true,
 					values: {
-						width: 1170,
-					}
-				},
-				{
-					media: [ 'desktop' ],
-					unit: 'px',
-					isLinked: false,
-					values: {
-						width: 970,
-					}
-				},
-				{
-					media: [ 'tablet' ],
-					unit: 'px',
-					isLinked: false,
-					values: {
-						width: 750,
+						maxWidth: 100,
 					}
 				},
 			]
