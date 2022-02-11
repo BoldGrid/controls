@@ -1013,6 +1013,18 @@ colorPalette.get_random_format = function() {
 	return colorPalette.body_classes[0];
 };
 
+colorPalette.compareColors = function( color1, color2 ) {
+	var color1Obj = BrehautColorJs.toRgba( color1 ),
+		color2Obj = BrehautColorJs.toRgba( color2 );
+
+	console.log( {
+		color1: color1Obj.toString(),
+		color2: color2Obj.toString()
+	} );
+
+	return color1Obj.toString() === color2Obj.toString();
+}
+
 /**
  * Initialization processes to be run after the picker has been initialized
  */

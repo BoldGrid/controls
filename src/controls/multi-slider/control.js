@@ -305,9 +305,6 @@ export class MultiSlider {
 	 */
 	setUnits( unit ) {
 		this.selectedUnit = unit;
-		console.log( {
-			'units': this.$units
-		} );
 		this.$units
 			.filter( '[value="' + unit + '"]' )
 			.prop( 'checked', true )
