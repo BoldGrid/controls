@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@boldgrid/components@^2.15.2":
-  version "2.15.2"
-  resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.15.2.tgz#e32bf1a600dfeba53a409705911d2a2a35fbf9ac"
-  integrity sha512-VVLcMmFgEC05HcF/18+H+E26apv2m8DLidOSIkLvQTtfwb+RyGIgS2tzBcHiGwdyHUaCwZ/8SaLkd6EqNZrR7Q==
+"@boldgrid/components@^2.15.8":
+  version "2.16.8"
+  resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.16.8.tgz#c335568e5d791294bb25007aec8f6399487c3acb"
+  integrity sha512-38ubSfrDAG75ia94kAfxL8vKVJs76nJIKgqJOxSsMD5GzP1pnSfgqIFmy3H4dBZLXximc1xyb062pFIMjsehsQ==
 
 "@material/animation@^0.41.0":
   version "0.41.0"

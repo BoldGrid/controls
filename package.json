@@ -3,7 +3,7 @@
   "author": "Rafael Ramos <rramo012@gmail.com>",
   "bundleDependencies": false,
   "dependencies": {
-    "@boldgrid/components": "^2.15.2",
+    "@boldgrid/components": "^2.15.8",
     "Buttons": "https://github.com/alexwolfe/Buttons",
     "Iris": "git+https://github.com/Automattic/Iris.git#master",
     "animate.css": "^3.5.2",

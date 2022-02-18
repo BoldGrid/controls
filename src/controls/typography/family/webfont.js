@@ -46,7 +46,7 @@ export class WebFont {
 
 			}
 		} );
-		console.log( families );
+
 		return families;
 	}
 
