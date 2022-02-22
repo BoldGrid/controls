@@ -347,7 +347,7 @@ export class Control {
 		if ( systemFont ) {
 			window.BOLDGRID.CONTROLS.addStyle( this.options.target, 'font-family', systemFont.style );
 		} else {
-			window.BOLDGRID.CONTROLS.addStyle( this.options.target, 'font-family', selections.family );
+			window.BOLDGRID.CONTROLS.addStyle( this.options.target, 'font-family', `'${selections.family}'` );
 		}
 
 		window.BOLDGRID.CONTROLS.addStyle( this.options.target, 'font-weight', selections.weight );
