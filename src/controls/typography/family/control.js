@@ -29,9 +29,6 @@ export class Control {
 			this.googleFonts[ googleFonts.items[ font ].family ] = googleFonts.items[ font ];
 		}
 
-		console.log( {
-			numberOfFonts: this.googleFonts.items.length
-		} );
 		this.weightNames = {
 			100: 'Extra Thin',
 			200: 'Thin',
