@@ -10,7 +10,7 @@ export class ContainerWidth extends MultiSlider {
 				name: 'container-width',
 				units: {
 					default: 'px',
-					enabled: [ 'px', '%' ]
+					enabled: [ 'px' ]
 				},
 				sliders: [
 					{ name: 'width', label: 'Width', cssProperty: 'width' },
@@ -22,23 +22,19 @@ export class ContainerWidth extends MultiSlider {
 					min: 0,
 					max: 3840,
 					step: 1
-				},
-				'%': {
-					min: 0,
-					max: 100,
-					step: 1
 				}
 			},
-			devicesEnabled: [ 'base', 'large', 'desktop', 'tablet' ],
+			devicesEnabled: [ 'large', 'desktop', 'tablet' ],
+			defaultSelected: 'large',
 			defaults: [
 				{
-					media: [ 'base', 'large', 'desktop', 'tablet' ],
-					unit: '%',
-					isLinked: true,
+					media: [ 'large' ],
+					unit: 'px',
+					isLinked: false,
 					values: {
-						maxWidth: 100,
+						maxWidth: 1920
 					}
-				},
+				}
 			]
 		};
 	}
