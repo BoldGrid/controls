@@ -33,6 +33,18 @@ export class ContainerWidth extends MultiSlider {
 					isLinked: false,
 					values: {
 						maxWidth: 1920
+					},
+					media: [ 'desktop' ],
+					unit: 'px',
+					isLinked: false,
+					values: {
+						maxWidth: 1200
+					},
+					media: [ 'tablet' ],
+					unit: 'px',
+					isLinked: false,
+					values: {
+						maxWidth: 992
 					}
 				}
 			]

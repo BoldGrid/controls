@@ -753,7 +753,11 @@ export class MultiSlider {
 			this.settings = $.extend( true, {}, this.options.saved || {} );
 
 			// Update the slider, with the derived base config (Also Triggers Change).
+		if ( this.configInitial.media.base ) {
 			this.applySettings( this.configInitial.media.base );
+		} else {
+			this.applySettings( this.configInitial.media.large );
+		}
 
 			/*
 			 * @todo Remove this hack
