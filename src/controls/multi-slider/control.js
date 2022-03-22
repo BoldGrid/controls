@@ -777,7 +777,9 @@ export class MultiSlider {
 	 * @since 1.0.0
 	 */
 	resetDeviceSelection() {
-		if ( this.deviceSelection ) {
+		if ( this.deviceSelection && this.deviceSelection.defaultSelected ) {
+			this.deviceSelection.activate( this.deviceSelection.defaultSelected );
+		} else if ( this.deviceSelection ) {
 			this.deviceSelection.activate( 'base' );
 		}
 	}
