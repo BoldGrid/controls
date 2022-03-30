@@ -372,7 +372,7 @@ export class Control {
 		const config = this.getSelectedConfig(),
 			varient = this.$variantSelect.val() || 'normal',
 			$selectedElement = this.$familySelect.find( ':checked' );
-		let weights = config.variants ? config.variants[varient] || [] : [];
+		let weights = config.variants ? config.variants : [];
 
 		this.$weightControl.toggle( 'class' !== $selectedElement.data( 'font-type' ) );
 
@@ -385,6 +385,10 @@ export class Control {
 		weights = _.uniq( weights );
 
 		this.$weightSelect.empty();
+
+		if ( -1 !== weights.indexOf( 'regular' ) ) {
+			weights.splice( weights.indexOf( 'regular' ), 1 );
+		}
 
 		for ( let weight of weights ) {
 			let text = this.weightNames[ parseInt( weight, 10 ) ] || '';

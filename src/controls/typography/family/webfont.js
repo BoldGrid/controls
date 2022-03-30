@@ -28,10 +28,10 @@ export class WebFont {
 			let $this = $( el ),
 				family = $this.attr( 'data-font-family' ),
 				variant = $this.attr( 'data-font-style' ) || 'normal',
-				weight = $this.attr( 'data-font-weight' );
+				weight = '400' === $this.attr( 'data-font-weight' ) ? 'regular' : $this.attr( 'data-font-weight' );
 
 			if ( family && this.googleFonts[ family ] ) {
-				let weights = this.googleFonts[ family ].variants[ variant ] || this.googleFonts[ family ].variants.normal;
+				let weights = this.googleFonts[ family ].variants;
 				families[family] = families[family] || {};
 
 				if ( weight && weights && -1 !== weights.indexOf( weight ) ) {
