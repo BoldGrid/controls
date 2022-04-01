@@ -392,6 +392,9 @@ export class Control {
 
 		for ( let weight of weights ) {
 			let text = this.weightNames[ parseInt( weight, 10 ) ] || '';
+			if ( weight.includes( 'italic' ) ) {
+				continue;
+			}
 			text = text ? `${weight} (${text})` : weight;
 			this.$weightSelect.append( `<option value="${weight}">${text}</option>` );
 		}
