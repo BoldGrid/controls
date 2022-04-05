@@ -5,6 +5,7 @@ export { Control as DeviceVisibility } from './device-visibility';
 export { SassCompiler } from './style';
 export { Padding } from './padding';
 export { Border } from './border';
+export { Outline } from './outline';
 export { Margin } from './margin';
 export { BorderRadius } from './border-radius';
 export { BoxShadow } from './box-shadow';
