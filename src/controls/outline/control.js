@@ -15,23 +15,35 @@ export class Outline extends MultiSlider {
 				units: {
 					default: 'px',
 					enabled: [ 'px', 'em' ]
-				}
+				},
+				sliders: [
+					{ name: 'outline-width', label: 'width', cssProperty: 'outline-width' },
+					{ name: 'outline-offset', label: 'offset', cssProperty: 'outline-offset' }
+				]
+			},
+			sliderConfig: {
+				'outline-width': {
+					min: 0,
+					max: 15
+				},
+				'outline-offset': {
+					min: -30,
+					max: 30
+				},
 			},
 			slider: {
 				px: {
 					step: 0.1,
-					min: 0,
-					max: 15
+					min: -30,
+					max: 30
 				},
 				em: {
-					min: 0,
-					max: 5,
+					min: -10,
+					max: 10,
 					step: 0.1
 				}
 			}
 		};
-
-		this.outlineDirections = [ 'left', 'top', 'right', 'bottom' ];
 	}
 
 	/**
@@ -91,14 +103,7 @@ export class Outline extends MultiSlider {
 	 * @return {string} Currently applied style.
 	 */
 	_getOutlineStyle() {
-		let style = '';
-		for ( let direction of this.outlineDirections ) {
-			let directionalStyle = this.$target.css( 'outline-' + direction + '-style' );
-			if ( 'none' !== directionalStyle && directionalStyle ) {
-				style = directionalStyle;
-				break;
-			}
-		}
+		let style = this.$target.css( 'outline-style' );
 
 		return style;
 	}
