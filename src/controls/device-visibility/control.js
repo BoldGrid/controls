@@ -111,8 +111,8 @@ export class Control {
 	_appendSliders() {
 		const $container = this.$control.find( '.sliders' );
 
-		for ( const slider of this.sliderConfigs ) {
-			let slider = new Slider( slider );
+		for ( const sliderConfig of this.sliderConfigs ) {
+			let slider = new Slider( sliderConfig );
 			$container.append( slider.render() );
 			// this._presetSlider( slider );
 			// this._bindSlider( slider );
