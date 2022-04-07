@@ -2,6 +2,7 @@ var $ = window.jQuery;
 
 import template from './template.html';
 import { Checkbox } from '../checkbox';
+import { Slider } from '../slider';
 
 export class Control {
 	constructor( options ) {
@@ -35,6 +36,40 @@ export class Control {
 				icon: require( './img/large.svg' )
 			}
 		];
+		this.sliderConfigs = [
+			{
+				name: 'phone-col-order',
+				label: 'Phone',
+				uiSettings: {
+					min: 0,
+					max: 12
+				}
+			},
+			{
+				name: 'tablet-col-order',
+				label: 'Tablet',
+				uiSettings: {
+					min: 0,
+					max: 12
+				}
+			},
+			{
+				name: 'desktop-col-order',
+				label: 'Desktop',
+				uiSettings: {
+					min: 0,
+					max: 12
+				}
+			},
+			{
+				name: 'large-col-order',
+				label: 'Large Displays',
+				uiSettings: {
+					min: 0,
+					max: 12
+				}
+			}
+		];
 	}
 
 	/**
@@ -47,6 +82,7 @@ export class Control {
 	render() {
 		this.$control = $( this.template() );
 		this._appendCheckboxes();
+		this._appendSliders();
 
 		return this.$control;
 	}
@@ -64,6 +100,22 @@ export class Control {
 			$container.append( this.checkboxConfigs[index].control.render() );
 			this._preset( checkbox );
 			this._bind( checkbox );
+		}
+	}
+
+	/**
+	 * Append all the checkboxes in the config to the control.
+	 *
+	 * @since 1.0.0
+	 */
+	_appendSliders() {
+		const $container = this.$control.find( '.sliders' );
+
+		for ( const slider of this.sliderConfigs ) {
+			let slider = new Slider( slider );
+			$container.append( slider.render() );
+			// this._presetSlider( slider );
+			// this._bindSlider( slider );
 		}
 	}
 
