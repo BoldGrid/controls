@@ -12,24 +12,47 @@ export class Outline extends MultiSlider {
 			control: {
 				title: 'Outline Width',
 				name: 'outline-width',
+				linkable: false,
 				units: {
 					default: 'px',
 					enabled: [ 'px', 'em' ]
 				},
 				sliders: [
-					{ name: 'outline-width', label: 'width', cssProperty: 'outline-width' },
-					{ name: 'outline-offset', label: 'offset', cssProperty: 'outline-offset' }
+					{
+						name: 'outline-width',
+						label: 'width',
+						cssProperty: 'outline-width',
+						uiSettings: {
+							min: 0,
+							max: 30,
+							step: 0.1,
+							value: 3
+						}
+					},
+					{
+						name: 'outline-offset',
+						label: 'offset',
+						cssProperty: 'outline-offset',
+						uiSettings: {
+							min: -30,
+							max: 30,
+							step: 0.1,
+							value: -15
+						}
+					}
 				]
 			},
 			sliderConfig: {
 				'outline-width': {
 					min: 0,
-					max: 15
+					max: 15,
+					value: 3
 				},
 				'outline-offset': {
 					min: -30,
-					max: 30
-				},
+					max: 30,
+					value: -15
+				}
 			},
 			slider: {
 				px: {
@@ -86,6 +109,15 @@ export class Outline extends MultiSlider {
 	_setType() {
 		let setting = this._getOutlineStyle();
 
+		console.log( {
+			method: '_setType',
+			setting: setting
+		} );
+
+		if ( 'undefined' === typeof setting ) {
+			setting = 'none';
+		}
+
 		setting = 'none' !== setting ? setting : '';
 		return this.$typeControl
 			.find( '.outline-type-control input' )
@@ -103,7 +135,7 @@ export class Outline extends MultiSlider {
 	 * @return {string} Currently applied style.
 	 */
 	_getOutlineStyle() {
-		let style = this.$target.css( 'outline-style' );
+		let style = this.$target.attr( 'data-outline-style' );
 
 		return style;
 	}
@@ -136,6 +168,30 @@ export class Outline extends MultiSlider {
 	}
 
 	/**
+	 * Setup outline color change event.
+	 *
+	 * @since 1.6.0
+	 */
+	_setColor() {
+		var value = BG.Panel.$element.find( 'input[name=generic-outline-color]' ).val(),
+			type = this.$input.attr( 'data-type' );
+
+		BG.CONTROLS.Color.resetOutlineClasses( this.$target );
+
+		if ( ! value ) {
+			BG.Controls.addStyle( this.$target, 'outline-color', '#2c3338' );
+		} else if ( 'class' === type ) {
+			this.$target.addClass( BG.CONTROLS.Color.getColorClass( 'outline-color', value ) );
+		} else {
+			BG.Controls.addStyle( this.$target, 'outline-color', value );
+		}
+
+		BG.Panel.$element.trigger(
+			BG.Panel.currentControl.name + '-outline-color-change'
+		);
+	}
+
+	/**
 	 * When the outline type changes, update the css.
 	 *
 	 * @since 1.0.0
@@ -148,6 +204,15 @@ export class Outline extends MultiSlider {
 			this.applyCssRules( {
 				'outline-style': val
 			} );
+
+			console.log( {
+				method: '_bindTypeChange',
+				target: this.$target
+			} );
+
+			this.$target.attr( 'data-outline-style', val );
+
+			this._setColor();
 
 			this._toggleWidthControl( val );
 			this.$control.trigger( 'type-change', val );

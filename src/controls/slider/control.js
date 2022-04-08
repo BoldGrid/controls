@@ -80,12 +80,20 @@ export class Slider {
 	 * @since 1.0
 	 */
 	_bindSlider() {
+		console.log( {
+			method: '_bindSlider',
+			name: this.$slider.data( 'name' ),
+			sliderconfig: this.getSliderConfig( this.$slider.data( 'name' ) )
+		} );
 		this.$slider.slider(
-			_.defaults( this.getSliderConfig( this.$slider.data( 'name' ) ), {
-				animate: 'fast',
-				slide: () => this._onSliderChange(),
-				change: () => this._onSliderChange()
-			} )
+			_.defaults(
+				this.getSliderConfig( this.$slider.data( 'name' ) ),
+				{
+					animate: 'fast',
+					slide: () => this._onSliderChange(),
+					change: () => this._onSliderChange()
+				}
+			)
 		);
 
 		this._updateInput( this.$slider );
