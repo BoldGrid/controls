@@ -109,11 +109,6 @@ export class Outline extends MultiSlider {
 	_setType() {
 		let setting = this._getOutlineStyle();
 
-		console.log( {
-			method: '_setType',
-			setting: setting
-		} );
-
 		if ( 'undefined' === typeof setting ) {
 			setting = 'none';
 		}
@@ -173,13 +168,21 @@ export class Outline extends MultiSlider {
 	 * @since 1.6.0
 	 */
 	_setColor() {
-		var value = BG.Panel.$element.find( 'input[name=generic-outline-color]' ).val(),
-			type = this.$input.attr( 'data-type' );
+		var value       = BG.Panel.$element.find( 'input[name=generic-outline-color]' ).val(),
+			outlineType = BG.Panel.$element.find( 'input[name=outline-type]:checked' ).val(),
+			type        = this.$input.attr( 'data-type' );
 
-		BG.CONTROLS.Color.resetOutlineClasses( this.$target );
+		if ( '' === outlineType ) {
+			BG.CONTROLS.Color.resetOutlineClasses( this.$target, true );
+			BG.Panel.$element.trigger(
+				BG.Panel.currentControl.name + '-outline-color-change'
+			);
+		}
+		if ( ! value && '' !== outlineType ) {
+			let $colorControlLabel = BG.Panel.$element.find( 'label[for=generic-outline-color]' ),
+				labelBackground    = $colorControlLabel.css( 'background-color' );
 
-		if ( ! value ) {
-			BG.Controls.addStyle( this.$target, 'outline-color', '#2c3338' );
+			BG.Controls.addStyle( this.$target, 'outline-color', labelBackground );
 		} else if ( 'class' === type ) {
 			this.$target.addClass( BG.CONTROLS.Color.getColorClass( 'outline-color', value ) );
 		} else {
@@ -198,17 +201,26 @@ export class Outline extends MultiSlider {
 	 */
 	_bindTypeChange() {
 		this.$typeControl.find( 'input' ).on( 'change', e => {
-			let $this = $( e.target ),
-				val = $this.val();
+			let $this         = $( e.target ),
+				val           = $this.val(),
+				outlineWidth  = BG.Panel.$element.find( 'input[name=outline-width]' ),
+				outlineOffset = BG.Panel.$element.find( 'input[name=outline-offset]' ),
+				unit          = BG.Panel.$element.find( 'input[name=outline-width-unit]' ).val();
 
 			this.applyCssRules( {
 				'outline-style': val
 			} );
 
-			console.log( {
-				method: '_bindTypeChange',
-				target: this.$target
-			} );
+			if ( '' === val ) {
+				this.applyCssRules( {
+					'outline-color': ''
+				} );
+
+				BG.CONTROLS.Color.resetOutlineClasses( this.$target, true );
+			} else {
+				BG.Controls.addStyle( this.$target, 'outline-width', outlineWidth.val() + unit );
+				BG.Controls.addStyle( this.$target, 'outline-offset', outlineOffset.val() + unit );
+			}
 
 			this.$target.attr( 'data-outline-style', val );
 

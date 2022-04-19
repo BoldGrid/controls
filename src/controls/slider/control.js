@@ -80,11 +80,6 @@ export class Slider {
 	 * @since 1.0
 	 */
 	_bindSlider() {
-		console.log( {
-			method: '_bindSlider',
-			name: this.$slider.data( 'name' ),
-			sliderconfig: this.getSliderConfig( this.$slider.data( 'name' ) )
-		} );
 		this.$slider.slider(
 			_.defaults(
 				this.getSliderConfig( this.$slider.data( 'name' ) ),
