@@ -29,7 +29,7 @@ export class Control {
 			this.googleFonts[ googleFonts.items[ font ].family ] = googleFonts.items[ font ];
 		}
 
-		this.weightNames = {
+		this.weightNames = BoldgridEditor.fontWeightNames ? BoldgridEditor.fontWeightNames : {
 			100: 'Extra Thin',
 			200: 'Thin',
 			300: 'Light',
