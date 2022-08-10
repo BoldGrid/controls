@@ -47,7 +47,8 @@
 					border-style: double;
 				}
 
-				input[value='']::after {
+				input[value='']::after,
+				input[value='none']::after {
 					border-color: transparent;
 				}
 			}
