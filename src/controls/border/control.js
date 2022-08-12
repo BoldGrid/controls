@@ -92,6 +92,8 @@ export class Border extends MultiSlider {
 	 */
 	_getBorderStyle() {
 		let style = '';
+		let width = {};
+		let targetBorderStyle = this.$target.css( 'border-style' );
 		for ( let direction of this.borderDirections ) {
 			let directionalStyle = this.$target.css( 'border-' + direction + '-style' );
 			if ( 'none' !== directionalStyle && directionalStyle ) {
@@ -100,8 +102,45 @@ export class Border extends MultiSlider {
 			}
 		}
 
+		// If the border style already matches return it.
+		if ( targetBorderStyle === style ) {
+			return style;
+		}
+
+		/**
+		 * This is used to handle issues where one of the
+		 * border directions is set, but none others are.
+		 * In this case, the border style needs to be set for
+		 * all directions, as well as the current width.
+		 */
+		$.each( this.sliders, ( direction ) => {
+			var $input    = this.sliders[ direction ].$input,
+				value     = $input.val();
+
+			width[ direction ] = value + this.$units.filter( ':checked' ).val();
+		} );
+
+		this.applyCssRules( {
+			'border-style': style + ' ' + style + ' ' + style + ' ' + style,
+			'border-top-width': width.top,
+			'border-right-width': width.right,
+			'border-bottom-width': width.bottom,
+			'border-left-width': width.left
+		} );
+
 		return style;
 	}
+
+	_bindWidthChange() {
+		$.each( this.sliders, ( direction ) => {
+			this.sliders[ direction].$control.on( 'slide-change', ( e, data ) => {
+				this.applyCssRules( {
+					'border-style': this.$typeControl.find( 'input:checked' ).val()
+				} );
+			} );
+		} );
+	}
+
 
 	/**
 	 * Refresh the values of the input to the values of the target.
