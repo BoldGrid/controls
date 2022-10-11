@@ -12,7 +12,7 @@ export class Control extends MultiSlider {
 				name: 'line-height',
 				linkable: false,
 				units: {
-					default: 'em',
+					default: 'px',
 					enabled: [ 'px', 'em' ]
 				},
 				sliders: [
@@ -21,7 +21,7 @@ export class Control extends MultiSlider {
 			},
 			slider: {
 				px: {
-					min: 0,
+					min: 1,
 					max: 100,
 					step: 1
 				},
