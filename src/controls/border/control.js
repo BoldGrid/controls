@@ -103,7 +103,7 @@ export class Border extends MultiSlider {
 		}
 
 		// If the border style already matches return it.
-		if ( targetBorderStyle === style ) {
+		if ( targetBorderStyle === style || ( '' === style && 'none' === targetBorderStyle ) ) {
 			return style;
 		}
 
