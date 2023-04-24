@@ -18,6 +18,9 @@
 			<% if ( -1 !== control.units.enabled.indexOf( 'col' ) ) { %>
 				<label title="Columns Unit"><input type="radio" name="<%=control.name %>-unit" class="unit" value="col" ><span>COL</span></label>
 			<% } %>
+			<% if ( -1 !== control.units.enabled.indexOf( 'auto' ) ) { %>
+				<label title="Auto"><input type="radio" name="<%=control.name %>-unit" class="unit" value="auto" ><span>AUTO</span></label>
+			<% } %>
 		</div>
 	</div>
 	<div class="slider-group">
