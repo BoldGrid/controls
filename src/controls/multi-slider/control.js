@@ -106,11 +106,17 @@ export class MultiSlider {
 	 * @return {string} css riles.
 	 */
 	getCssRule( settings ) {
-		let cssRule = '';
+		let cssRule = '',
+			value;
 
 		for ( let slider in settings.values ) {
+			if ( 'auto' === settings.unit ) {
+				value = '';
+			} else {
+				value = settings.values[slider];
+			}
 			if ( this.sliders[ slider ] ) {
-				cssRule += this.sliders[ slider ].options.cssProperty + ':' + settings.values[slider] + settings.unit + ';';
+				cssRule += this.sliders[ slider ].options.cssProperty + ':' + value + settings.unit + ';';
 			}
 		}
 
@@ -123,6 +129,10 @@ export class MultiSlider {
 	 * @since 1.0.0
 	 */
 	mergeDefaultConfigs() {
+		if ( 'undefined' === typeof this.controlOptions ) {
+			this.controlOptions = {};
+		}
+
 		this.controlOptions = deepmerge( config.defaults, this.controlOptions, {
 			arrayMerge: ( destination, source ) => source
 		} );
@@ -811,6 +821,12 @@ export class MultiSlider {
 		this.linkedDisabled = true;
 
 		this._resetOptions();
+
+		if ( 'auto' === this.selectedUnit ) {
+			this.$sliderGroup.hide();
+		} else {
+			this.$sliderGroup.show();
+		}
 
 		setTimeout( () => {
 			this.linkedDisabled = false;

@@ -21,6 +21,11 @@ export class Conversion {
 
 	pxToPercentage( px, $element ) {
 		let contextWidth = $element.width();
+
+		if ( 'undefined' === typeof contextWidth ) {
+			return 0;
+		}
+
 		return px / contextWidth * 100;
 	}
 

@@ -6,6 +6,12 @@
 	<div class="configs">
 		<device-selection></device-selection>
 		<div class="units">
+			<% if ( -1 !== control.units.enabled.indexOf( 'col' ) ) { %>
+				<label title="Columns Unit"><input type="radio" name="<%=control.name %>-unit" class="unit" value="col" ><span>COL</span></label>
+			<% } %>
+			<% if ( -1 !== control.units.enabled.indexOf( 'auto' ) ) { %>
+				<label title="Auto"><input type="radio" name="<%=control.name %>-unit" class="unit" value="auto" ><span>AUTO</span></label>
+			<% } %>
 			<% if ( -1 !== control.units.enabled.indexOf( 'px' ) ) { %>
 			<label title="Pixel Unit"><input type="radio" name="<%=control.name %>-unit" class="unit" value="px"><span>PX</span></label>
 			<% } %>
@@ -14,12 +20,6 @@
 			<% } %>
 			<% if ( -1 !== control.units.enabled.indexOf( '%' ) ) { %>
 				<label title="Percentage Unit"><input type="radio" name="<%=control.name %>-unit" class="unit" value="%" ><span>%</span></label>
-			<% } %>
-			<% if ( -1 !== control.units.enabled.indexOf( 'col' ) ) { %>
-				<label title="Columns Unit"><input type="radio" name="<%=control.name %>-unit" class="unit" value="col" ><span>COL</span></label>
-			<% } %>
-			<% if ( -1 !== control.units.enabled.indexOf( 'auto' ) ) { %>
-				<label title="Auto"><input type="radio" name="<%=control.name %>-unit" class="unit" value="auto" ><span>AUTO</span></label>
 			<% } %>
 		</div>
 	</div>
