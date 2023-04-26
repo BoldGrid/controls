@@ -1,5 +1,14 @@
 {
 	"presets": [
-		["es2015", { "modules": false }], "stage-0"
+		[
+		  "@babel/preset-env",
+		  {
+			"useBuiltIns": "entry",
+			"corejs": "3.22"
+		  }
+		]
+	],
+	"plugins": [
+		"@babel/plugin-proposal-export-default-from"
 	]
 }

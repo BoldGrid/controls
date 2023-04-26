@@ -7,7 +7,7 @@ import { Switch } from '../../switch';
 import { EventEmitter } from 'eventemitter3';
 import './style.scss';
 
-export class Control extends MultiSlider {
+export class TextShadow extends MultiSlider {
 	constructor( options ) {
 		super( options );
 
@@ -198,4 +198,4 @@ export class Control extends MultiSlider {
 	}
 }
 
-export { BoxShadow as default };
+export { TextShadow as default };

@@ -1,1 +1,1 @@
-export { Control as TextShadow } from './control.js';
+export { TextShadow } from './control.js';

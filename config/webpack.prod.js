@@ -1,9 +1,8 @@
 const path = require( 'path' );
 const webpack = require( 'webpack' );
-const HtmlWebpackPlugin = require( 'html-webpack-plugin' );
-const ExtractTextPlugin = require( 'extract-text-webpack-plugin' );
+const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
-const MinifyPlugin = require( 'babel-minify-webpack-plugin' );
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 const srcDir = path.resolve( __dirname, '..', 'src' );
 const distDir = path.resolve( __dirname, '..', 'dist' );
@@ -32,7 +31,7 @@ module.exports = {
 		rules: [
 			{
 				test: /\.ejs$/,
-				loader: 'ejs-loader'
+				loader: 'ejs-compiled-loader'
 			},
 			{
 				test: /\.html$/,
@@ -55,44 +54,18 @@ module.exports = {
 				loader: 'svg-inline-loader'
 			},
 			{
-				test: /\.js$/,
-				enforce: 'pre',
-				exclude: /node_modules/,
-				loader: 'eslint-loader',
-				options: {
-					emitWarning: true
-				}
-			},
-			{
-				test: /\.(scss|css)$/,
-				use: ExtractTextPlugin.extract( {
-					fallback: 'style-loader',
-					use: [
-						{
-							loader: 'css-loader',
-							options: {
-								minimize: true
-							}
-						},
-						{
-							loader: 'sass-loader',
-							options: {
-								includePaths: [ nodeModulesDir ]
-							}
-						},
-						{
-							loader: 'postcss-loader',
-							options: {
-								plugins: loader => [ require( 'autoprefixer' )() ]
-							}
-						}
-					]
-				} )
-			},
+				test: /\.(sc|c)ss$/,
+				use: [
+				  MiniCssExtractPlugin.loader,
+				  "css-loader",
+				  "postcss-loader",
+				  "sass-loader",
+				],
+			  },
 			{
 				test: /\.(jpg|jpeg|png|gif|ico)$/,
 				loader: 'url-loader',
-				query: {
+				options: {
 					limit: 10000, // Use data url for assets <= 10KB
 					name: './[name].[hash].[ext]'
 				}
@@ -101,46 +74,41 @@ module.exports = {
 	},
 
 	plugins: [
-		new CopyWebpackPlugin( [
-			{
-				from: './../static',
-				to: ''
-			},
-			{
-				from: require.resolve( 'Iris/dist/iris.min.js' ),
-				to: './static'
-			},
-			{
-				from: require.resolve( 'sass.js/dist/sass.worker.js' ),
-				to: './static'
-			},
-			{
-				from: path.resolve( require.resolve( 'Buttons/scss/buttons.scss' ), '..' ),
-				to: './scss/color-palette-scss/buttons'
-			},
-			{
-				from: srcDir + '/controls/color/scss/utilities/color-classes.sass',
-				to: './scss/color-palette-scss/classes/color-classes.scss'
-			}
-		] ),
+		new CopyWebpackPlugin({
+			patterns: [
+				{
+					from: './../static',
+					to: ''
+				},
+				{
+					from: require.resolve( 'Iris/dist/iris.min.js' ),
+					to: './static'
+				},
+				{
+					from: require.resolve( 'sass.js/dist/sass.worker.js' ),
+					to: './static'
+				},
+				{
+					from: path.resolve( require.resolve( 'Buttons/scss/buttons.scss' ), '..' ),
+					to: './scss/color-palette-scss/buttons'
+				},
+				{
+					from: srcDir + '/controls/color/scss/utilities/color-classes.sass',
+					to: './scss/color-palette-scss/classes/color-classes.scss'
+				}
+			]
+		}),
 
-		new MinifyPlugin(),
-
-		new webpack.NamedModulesPlugin(),
-
-		new HtmlWebpackPlugin( {
-			template: path.join( srcDir, 'index.ejs' ),
-			path: distDir,
-			filename: 'index.html',
-			hash: true,
-			minify: {
-				removeComments: true,
-				minifyJS: true,
-				minifyCSS: true,
-				collapseWhitespace: true
-			}
+		new MiniCssExtractPlugin( {
+			filename: '[name].min.css',
 		} ),
 
-		new ExtractTextPlugin( '[name].min.css' )
+		new ESLintPlugin({
+			extensions: ['js'],
+			exclude: 'node_modules',
+			emitWarning: false,
+			emitError: false,
+			failOnError: false,
+		})
 	]
 };
