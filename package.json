@@ -76,7 +76,6 @@
   "scripts": {
     "start": "http-server dist/ -p $PORT",
     "prod": "http-server dist/ -p 8000 -o",
-    "postinstall": "npm run build",
     "build": "npm run rimraf ./dist && cross-env NODE_OPTIONS=--trace-deprecation NODE_ENV=production webpack",
     "devserver": "webpack-dev-server --open",
     "dev": "npm-run-all -p devserver karmadev",
