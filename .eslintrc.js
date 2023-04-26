@@ -11,7 +11,7 @@ module.exports = {
 	},
 
 	// https://github.com/feross/standard/blob/master/RULES.md#javascript-standard-style
-	extends: [ 'wordpress' ],
+	extends: [ "plugin:@wordpress/eslint-plugin/recommended" ],
 	plugins: [ 'html' ],
 
 	// Add your custom rules here
