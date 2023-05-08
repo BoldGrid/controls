@@ -3,11 +3,6 @@
   "author": "Rafael Ramos <rramo012@gmail.com>",
   "bundleDependencies": false,
   "devDependencies": {
-    "@babel/core": "7.21.4",
-		"@babel/eslint-parser": "^7.21.3",
-    "@babel/plugin-proposal-export-default-from": "^7.18.0",
-		"@babel/preset-env": "^7.21.4",
-    "@wordpress/eslint-plugin": "^14.5.0",
 		"babel-loader": "^9.1.2",
     "babel-polyfill": "^6.26.0",
     "core-js": "^3.30.1",
@@ -36,6 +31,11 @@
 		"webpack-dev-server": "^4.13.3"
   },
   "dependencies": {
+    "@babel/core": "7.21.4",
+		"@babel/eslint-parser": "^7.21.3",
+		"@babel/preset-env": "^7.21.4",
+    "@wordpress/eslint-plugin": "^14.5.0",
+    "@babel/plugin-proposal-export-default-from": "^7.18.0",
     "@boldgrid/components": "^2.16.24",
     "Buttons": "https://github.com/BoldGrid/Buttons",
     "Iris": "git+https://github.com/Automattic/Iris.git#master",
