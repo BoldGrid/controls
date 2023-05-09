@@ -992,10 +992,10 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@boldgrid/components@^2.16.24":
-  version "2.16.24"
-  resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.16.24.tgz#25ec13a5aebf0925b5dd922f25f1390d4fe8ba6c"
-  integrity sha512-w/hm1B3YKgO2k2/OH8bKTw5Gh/foS45izyR1mHAVpja81Q5KglVfy/Auevrj0xiZsdkHSWJXhAiE2PfcrPCyRQ==
+"@boldgrid/components@^2.16.25":
+  version "2.16.25"
+  resolved "https://registry.yarnpkg.com/@boldgrid/components/-/components-2.16.25.tgz#c4bfd2ec8fb6f556354d9527c10a93db2cc2d4ef"
+  integrity sha512-HCX1hQRjBymFY+QIEPOBLA3yKK3QRkZz4myQfuQpUHxUkFE7yLO3/RkXmfbTOGCky83hvokh2lPlh8hqyIFEvw==
 
 "@csstools/css-parser-algorithms@^2.1.1":
   version "2.1.1"
