@@ -6,7 +6,6 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 
 const srcDir = path.resolve( __dirname, '..', 'src' );
 const distDir = path.resolve( __dirname, '..', 'dist' );
-const nodeModulesDir = path.resolve( require.resolve( '@material/switch/mdc-switch.scss' ), '..', '..', '..' );
 
 module.exports = {
 	mode: 'production',
@@ -56,10 +55,15 @@ module.exports = {
 			{
 				test: /\.(sc|c)ss$/,
 				use: [
-				  MiniCssExtractPlugin.loader,
-				  "css-loader",
-				  "postcss-loader",
-				  "sass-loader",
+					MiniCssExtractPlugin.loader,
+					"css-loader",
+					"postcss-loader",
+					{
+						loader: "sass-loader",
+						options: {
+							implementation: require.resolve("sass")
+						},
+					},
 				],
 			  },
 			{

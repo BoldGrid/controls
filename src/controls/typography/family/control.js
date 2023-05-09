@@ -4,7 +4,6 @@ import systemFonts from './system-fonts.js';
 import './style.scss';
 import '../../util';
 import $ from 'jquery';
-import { titleCase } from 'title-case';
 import { Slider } from '../../slider';
 import { WebFont } from './webfont';
 
