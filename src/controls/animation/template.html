@@ -6,7 +6,7 @@
 			<option value="">None</option>
 			<% _.each( animateConfig, function ( category, categoryName ) {   %>
 				<optgroup label="<%= titleCase( categoryName )%>">
-			<%	_.each( category, function ( animationName ) {  %>
+			<%	_.each( category, function ( _, animationName ) {  %>
 					<option value="<%=animationName %>"><%=titleCase( animationName ) %></option>
 				<% } ); %>
 				</optgroup>
