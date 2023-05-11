@@ -79,7 +79,7 @@ export class TextShadow extends MultiSlider {
 	_setupSwitch() {
 		this.switchControl.render();
 
-		this.switchControl.$input.on( 'change', () => {
+		$( this.switchControl.$button ).on( 'click', () => {
 
 			if ( this.switchControl.isEnabled() ) {
 				this.$selections.slideDown();

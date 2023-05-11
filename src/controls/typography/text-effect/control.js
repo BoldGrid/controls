@@ -16,7 +16,7 @@ export class TextEffect {
 			'bg-text-fx bg-text-fx-enjoy-css',
 			'bg-text-fx bg-text-fx-retro',
 			'bg-text-fx bg-text-fx-stroke',
-			'bg-text-fx bg-text-fx-anaglyph'
+			'bg-text-fx bg-text-fx-anaglyph',
 		];
 
 		this.$target = this.options.target;
@@ -35,7 +35,7 @@ export class TextEffect {
 
 		this.$control = $( _.template( template )( {
 			presets: this.presets,
-			selectedSVG: selectedSVG
+			selectedSVG: selectedSVG,
 		} ) );
 
 		this.$control.find( 'switch' ).replaceWith( this.switchControl.$element );
@@ -65,8 +65,8 @@ export class TextEffect {
 	 * @return {string} Currently used classes.
 	 */
 	getValue() {
-		return this.switchControl.isEnabled() ?
-			this.$inputs.filter( ':checked' ).val() : null;
+		return this.switchControl.isEnabled()
+			? this.$inputs.filter( ':checked' ).val() : null;
 	}
 
 	/**
@@ -89,7 +89,7 @@ export class TextEffect {
 		this.switchControl = new Switch( {
 			name: 'text-effect',
 			direction: 'reverse',
-			label: 'Text Effect'
+			label: 'Text Effect',
 		} );
 
 		this.switchControl.render();
@@ -153,14 +153,13 @@ export class TextEffect {
 	 * @since 1.0.0
 	 */
 	_setupSwitch() {
-		this.switchControl.$element.on( 'change', () => {
+		$( this.switchControl.$button ).on( 'click', () => {
 			let isEnabled = this.switchControl.isEnabled(),
 				action = isEnabled ? 'slideDown' : 'slideUp';
 
 			this.$selections[ action ]( 'fast' );
 
 			if ( isEnabled ) {
-
 				// If nothing is selected, select the first item.
 				if ( ! this.getValue() ) {
 					this.$inputs.eq( 0 ).prop( 'checked', true );

@@ -9,7 +9,7 @@ export class Switch {
 		this.options = _.defaults( options || {}, {
 			name: _.random( 0, 10000 ),
 			label: 'Off / On',
-			direction: 'forward'
+			direction: 'forward',
 		} );
 
 		this.template = _.template( template );
@@ -24,26 +24,25 @@ export class Switch {
 	 */
 	render() {
 		this.$element = $( this.template( this.options ) );
-		this.$input = this.$element.find( 'input' );
 
-		this.switch = new MDCSwitch( this.$element.find( '.mdc-switch' )[0] );
+		this.$button = this.$element.find( 'button.mdc-switch' )[ 0 ];
+
+		this.switch = new MDCSwitch( this.$button );
 
 		return this.$element;
 	}
 
 	setChecked( val ) {
-		this.$input.prop( 'checked', val ).change();
-		return this.switch.getDefaultFoundation().setChecked( val );
+		return this.switch.selected = Boolean( val );
 	}
 
 	/**
 	 * Determine whether or not the switch is "on".
 	 *
 	 * @since 1.0.0
-	 * @return {Boolean} Is the switch on?
+	 * @return {boolean} Is the switch on?
 	 */
 	isEnabled() {
-		return this.$input.prop( 'checked' );
+		return this.switch.selected;
 	}
-
 }

@@ -6,7 +6,7 @@ import 'select2/dist/js/select2.min.js';
 import 'animate.css/animate.css';
 import { Slider } from '../slider';
 import animateConfig from 'animate.css/animate-config.json';
-import { titleCase } from 'title-case';
+import titleCase from 'title-case';
 
 export class Control {
 	constructor( options ) {

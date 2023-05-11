@@ -149,7 +149,7 @@ export class BoxShadow extends MultiSlider {
 	 * @since 1.0.0
 	 */
 	updateCheckedSetting() {
-		this.switchControl.$input.prop( 'checked', this.currentValues.inset );
+		this.switchControl.setChecked( this.currentValues.inset );
 	}
 
 	/**
@@ -170,7 +170,7 @@ export class BoxShadow extends MultiSlider {
 		this.switchControl.render();
 		this.updateCheckedSetting();
 
-		this.switchControl.$input.on( 'change', () => {
+		$( this.switchControl.$button ).on( 'click', () => {
 			this.updateShadowType();
 			this._updateCss();
 		} );
