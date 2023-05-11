@@ -1,8 +1,23 @@
 @import '../shared/scss/variables.scss';
-@import '@material/switch';
+@import '@material/switch/styles.scss';
+
 
 .bg-control-switch {
 	margin: 10px 0;
+
+	.mdc-switch {
+		--mdc-switch-selected-handle-color: #f95b26;
+		--mdc-switch-selected-track-color: #fca588;
+		--mdc-switch-selected-hover-track-color: #fca588;
+		--mdc-switch-selected-focus-handle-color: #e53e06;
+		--mdc-switch-selected-hover-handle-color: #e53e06;
+		--mdc-switch-selected-focus-state-layer-color: #f95b26;
+		--mdc-switch-selected-hover-state-layer-color: #f95b26;
+		--mdc-switch-selected-pressed-handle-color: #b33005;
+		--mdc-switch-selected-pressed-state-layer-color: #b33005;
+		--mdc-switch-selected-focus-track-color: #fca588;
+		--mdc-switch-selected-pressed-track-color: #fca588;
+	}
 
 	label {
 		cursor: pointer;
