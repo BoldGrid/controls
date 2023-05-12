@@ -1,27 +1,62 @@
 <div class="bg-control-select <%=name %>-switch boldgrid-control">
-	<div class="mdc-select enhanced-select <%= icon || iconOption ? 'mdc-select--with-leading-icon' : '' %>">
-	  <input type="hidden" name="<%=name %>">
-	  <i class="mdc-select__dropdown-icon"></i>
-		<% if ( icon || iconOption ) { %>
-			<img class="mdc-select__icon" src="<%=icon %>">
-		<% } %>
-	  <div class="mdc-select__selected-text">
-			<% _.each( settings, function( value ) {
+	<div class="mdc-select mdc-select--filled boldgrid-mdc-select <%= icon || iconOption ? 'mdc-select--with-leading-icon' : '' %>">
+		<input type="hidden" name="<%=name %>">
+		<div class="mdc-select__anchor"
+			role="button"
+			aria-haspopup="listbox"
+			aria-expanded="false"
+			aria-labelledby="boldgrid-label boldgrid-selected-text">
+		<span class="mdc-select__ripple"></span>
+		<span id="<%=name %>-boldgrid-label" class="mdc-floating-label mdc-floating-label--float-above">
+			<%=label %>
+		</span>
+		<span class="mdc-select__selected-text-container">
+			<div style="min-width: 50px;">
+			<% if ( icon || iconOption ) { %>
+				<img class="mdc-select__icon" src="<%=icon %>">
+			<% } %>
+			</div>
+			<span id="boldgrid-selected-text" class="mdc-select__selected-text">
+				<% _.each( settings, function( value ) {
 					if ( value.value === selected ) {  %>
 							<%=value.label %>
 					<% } %>
-			<% } ); %>
-		</div>
-	  <div class="mdc-select__menu mdc-menu mdc-menu-surface enhanced-select">
-	    <ul class="mdc-list">
+				<% } ); %>
+			</span>
+		</span>
+		<span class="mdc-select__dropdown-icon">
+			<svg
+				class="mdc-select__dropdown-icon-graphic"
+				viewBox="7 10 10 5" focusable="false">
+			  <polygon
+				  class="mdc-select__dropdown-icon-inactive"
+				  stroke="none"
+				  fill-rule="evenodd"
+				  points="7 10 12 15 17 10">
+			  </polygon>
+			  <polygon
+				  class="mdc-select__dropdown-icon-active"
+				  stroke="none"
+				  fill-rule="evenodd"
+				  points="7 15 12 10 17 15">
+			  </polygon>
+			</svg>
+		  </span>
+		<span class="mdc-line-ripple"></span>
+		</div> 
+	
+		<div class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth">
+			<ul class="mdc-list" role="listbox" aria-label="Boldgrid Settings listbox">
 				<% _.each( settings, function( value ) { %>
-					<li class="mdc-list-item <%=value.value === selected ? 'mdc-list-item--selected' : '' %>" data-value="<%=value.value %>" <%= selected ? 'aria-selected="true"' : '' %>>
+					<li class="mdc-list-item <%=value.value === selected ? 'mdc-list-item--selected' : '' %>" aria-selected="<%=value.value === selected ? true : false %>" data-value="<%=value.value %>" role="option">
+						<span class="mdc-list-item__ripple"></span>	
+						<span class="mdc-list-item__graphic"></span>
+						<span class="mdc-list-item__text">
 							<%=value.label %>
+						</span>
 					</li>
 				<% } ); %>
-	    </ul>
-	  </div>
-	  <span class="mdc-floating-label <%= selected ? 'mdc-floating-label--float-above' : '' %>"><%=label %></span>
-	  <div class="mdc-line-ripple"></div>
+			</ul>
+		</div>
 	</div>
 </div>
