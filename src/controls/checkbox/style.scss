@@ -1,5 +1,21 @@
+@use "@material/theme" with (
+	$primary: #f95b26,
+	$secondary: #f95b26,
+);
+
+@use "@material/checkbox";
+@use "@material/form-field";
+
+@include checkbox.core-styles;
+@include form-field.core-styles;
+
 @import '../shared/scss/variables.scss';
-@import '@material/checkbox/mdc-checkbox.scss';
+
+.checkboxes {
+	.mdc-form-field {
+		display: block;
+	}
+}
 
 .mdc-checkbox label {
 	display: inline-block;

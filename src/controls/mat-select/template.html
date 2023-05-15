@@ -45,12 +45,11 @@
 		<span class="mdc-line-ripple"></span>
 		</div> 
 	
-		<div class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth">
+		<div class="mdc-select__menu mdc-menu mdc-menu-surface">
 			<ul class="mdc-list" role="listbox" aria-label="Boldgrid Settings listbox">
 				<% _.each( settings, function( value ) { %>
 					<li class="mdc-list-item <%=value.value === selected ? 'mdc-list-item--selected' : '' %>" aria-selected="<%=value.value === selected ? true : false %>" data-value="<%=value.value %>" role="option">
-						<span class="mdc-list-item__ripple"></span>	
-						<span class="mdc-list-item__graphic"></span>
+						<span class="mdc-list-item__ripple"></span>
 						<span class="mdc-list-item__text">
 							<%=value.label %>
 						</span>

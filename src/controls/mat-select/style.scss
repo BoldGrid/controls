@@ -1,9 +1,18 @@
+@use "@material/theme" with (
+	$primary: #f95b26,
+	$secondary: #f95b26,
+);
+
+@use "material-components-web";
+
+@use "@material/list/mdc-list";
+@use "@material/menu-surface/mdc-menu-surface";
+@use "@material/menu/mdc-menu";
+@use "@material/select/styles";
+
+@use '@material/select';
+
 @import '../shared/scss/variables.scss';
-@import "@material/list/mdc-list";
-@import "@material/menu-surface/mdc-menu-surface";
-@import "@material/menu/mdc-menu";
-@import "@material/select/mdc-select";
-@import "@material/select/icon/mdc-select-icon";
 
 .enhanced-select {
 	width: 300px;
@@ -26,3 +35,20 @@
 .mdc-select.enhanced-select {
 	background-image: none;
 }
+
+.boldgrid-selected-text {
+	margin-top: 5px;
+}
+.mdc-select__menu.mdc-menu {
+	width: 300px;
+
+	.mdc-list-item {
+		height: 48px;
+		align-items: center;
+
+		span.mdc-list-item__text {
+			padding-left: 0;
+		}
+	}
+}
+
