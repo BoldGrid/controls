@@ -11,12 +11,6 @@ const handler = (bpercentage, message, ...args ) => {
 	console.info( percentage, message, ...args );
   };
 
-new webpack.ProgressPlugin( handler );
-
-new webpack.debug.ProfilingPlugin({
-	outputPath: path.join( __dirname, 'profiling/profileEvents.json' ),
-}),
-
 module.exports = {
 	mode: 'production',
 

@@ -55,7 +55,7 @@
     "url": "git+https://github.com/BoldGrid/controls.git"
   },
   "scripts": {
-    "build": "webpack build --progress --profile",
+    "build": "webpack build --progress=profile",
     "devserver": "webpack-dev-server --open"
   },
   "bugs": {
