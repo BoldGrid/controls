@@ -3,6 +3,8 @@
 	$secondary: #f95b26,
 );
 
+@use "material-components-web";
+
 @use '@material/switch/styles';
 @import '../shared/scss/variables.scss';
 

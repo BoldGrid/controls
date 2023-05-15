@@ -1,1 +1,5 @@
 src/controls/color/js/control.js
+webpack.config.js
+config/webpack.prod.js
+config/webpack.dev.js
+config/webpack.test.js

@@ -1,11 +1,21 @@
 const path = require( 'path' );
-const webpack = require( 'webpack' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
 const ESLintPlugin = require('eslint-webpack-plugin');
 
 const srcDir = path.resolve( __dirname, '..', 'src' );
 const distDir = path.resolve( __dirname, '..', 'dist' );
+
+const handler = (bpercentage, message, ...args ) => {
+	// e.g. Output each progress message directly to the console:
+	console.info( percentage, message, ...args );
+  };
+
+new webpack.ProgressPlugin( handler );
+
+new webpack.debug.ProfilingPlugin({
+	outputPath: path.join( __dirname, 'profiling/profileEvents.json' ),
+}),
 
 module.exports = {
 	mode: 'production',
@@ -23,15 +33,12 @@ module.exports = {
 		filename: '[name].min.js',
 		path: distDir,
 		publicPath: '/',
-		sourceMapFilename: '[name].map'
+		sourceMapFilename: '[name].map',
+		clean: true,
 	},
 
 	module: {
 		rules: [
-			{
-				test: /\.ejs$/,
-				loader: 'ejs-compiled-loader'
-			},
 			{
 				test: /\.html$/,
 				use: [
@@ -78,6 +85,8 @@ module.exports = {
 	},
 
 	plugins: [
+		new ProgressPlugin(true),
+
 		new CopyWebpackPlugin({
 			patterns: [
 				{

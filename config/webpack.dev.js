@@ -1,41 +1,32 @@
 const path = require( 'path' );
-const webpack = require( 'webpack' );
-const HtmlWebpackPlugin = require( 'html-webpack-plugin' );
+const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
-const StyleLintPlugin = require( 'stylelint-webpack-plugin' );
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 const srcDir = path.resolve( __dirname, '..', 'src' );
+const distDir = path.resolve( __dirname, '..', 'dist' );
 
 module.exports = {
-	mode: 'development',
+	mode: 'production',
 
 	context: srcDir,
 
-	entry: [ './index.js' ],
+	devtool: false,
 
-	output: {
-		filename: 'bundle.js',
-		path: path.resolve( __dirname, '..', 'dist' ),
-		publicPath: '/'
+	entry: {
+		application: './index.js',
+		bundle: './controls/index.js'
 	},
 
-	devServer: {
-		contentBase: srcDir,
+	output: {
+		filename: '[name].min.js',
+		path: distDir,
 		publicPath: '/',
-		historyApiFallback: true,
-		port: 3000,
-		overlay: {
-			errors: true,
-			warnings: true
-		}
+		sourceMapFilename: '[name].map'
 	},
 
 	module: {
 		rules: [
-			{
-				test: /\.ejs$/,
-				loader: 'ejs-loader'
-			},
 			{
 				test: /\.html$/,
 				use: [
@@ -49,90 +40,74 @@ module.exports = {
 			},
 			{
 				test: /\.js$/,
-				exclude: /node_modules/,
-				use: [ 'babel-loader' ]
-			},
-			{
-				test: /\.js$/,
-				enforce: 'pre',
-
-				loader: 'eslint-loader',
-				options: {
-					emitWarning: true
-				}
+				use: [ 'babel-loader' ],
+				include: [ srcDir ]
 			},
 			{
 				test: /\.svg$/,
 				loader: 'svg-inline-loader'
 			},
 			{
-				test: /\.(scss|css)$/,
-				exclude: [
-					srcDir + '/controls/color/scss/utilities/color-classes.scss',
-					require.resolve( 'Buttons/scss/buttons.scss' )
-				],
+				test: /\.(sc|c)ss$/,
 				use: [
+					MiniCssExtractPlugin.loader,
+					"css-loader",
+					"postcss-loader",
 					{
-						loader: 'style-loader'
-					},
-					{
-						loader: 'css-loader'
-					},
-					{
-						loader: 'sass-loader',
+						loader: "sass-loader",
 						options: {
-							includePaths: [ 'node_modules' ]
-						}
-					}
-				]
-			},
+							implementation: require.resolve("sass")
+						},
+					},
+				],
+			  },
 			{
 				test: /\.(jpg|jpeg|png|gif|ico)$/,
 				loader: 'url-loader',
-				query: {
+				options: {
 					limit: 10000, // Use data url for assets <= 10KB
-					name: 'static/images/[name].[hash].[ext]'
+					name: './[name].[hash].[ext]'
 				}
 			}
 		]
 	},
 
 	plugins: [
-		new CopyWebpackPlugin( [
-			{
-				from: './../static',
-				to: ''
-			},
-			{
-				from: require.resolve( 'Iris/dist/iris.min.js' ),
-				to: './static'
-			},
-			{
-				from: require.resolve( 'sass.js/dist/sass.worker.js' ),
-				to: './static'
-			},
-			{
-				from: path.resolve( require.resolve( 'Buttons/scss/buttons.scss' ), '..' ),
-				to: './scss/color-palette-scss/buttons'
-			},
-			{
-				from: srcDir + '/controls/color/scss/utilities/color-classes.sass',
-				to: './scss/color-palette-scss/classes/color-classes.scss'
-			}
-		] ),
+		new CopyWebpackPlugin({
+			patterns: [
+				{
+					from: './../static',
+					to: ''
+				},
+				{
+					from: require.resolve( 'Iris/dist/iris.min.js' ),
+					to: './static'
+				},
+				{
+					from: require.resolve( 'sass.js/dist/sass.worker.js' ),
+					to: './static'
+				},
+				{
+					from: path.resolve( require.resolve( 'Buttons/scss/buttons.scss' ), '..' ),
+					to: './scss/color-palette-scss/buttons'
+				},
+				{
+					from: srcDir + '/controls/color/scss/utilities/color-classes.sass',
+					to: './scss/color-palette-scss/classes/color-classes.scss'
+				}
+			]
+		}),
 
-		new webpack.HotModuleReplacementPlugin(),
+		new MiniCssExtractPlugin( {
+			filename: '[name].min.css',
+		} ),
 
-		new webpack.NamedModulesPlugin(),
-
-	//	new StyleLintPlugin( {
-	//		files: [ '**/*.s?(c)ss' ]
-	//	} ),
-
-		new HtmlWebpackPlugin( {
-			template: path.join( srcDir, 'index.ejs' ),
-			path: path.resolve( __dirname, '..', 'dist' ),
-			filename: 'index.html'
-		} )
+		new ESLintPlugin({
+			extensions: ['js'],
+			exclude: 'node_modules',
+			emitWarning: false,
+			emitError: false,
+			failOnError: false,
+		})
 	]
 };
