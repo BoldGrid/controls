@@ -3,14 +3,10 @@
 	$secondary: #f95b26,
 );
 
-@use "material-components-web";
-
 @use "@material/list/mdc-list";
 @use "@material/menu-surface/mdc-menu-surface";
 @use "@material/menu/mdc-menu";
 @use "@material/select/styles";
-
-@use '@material/select';
 
 @import '../shared/scss/variables.scss';
 
