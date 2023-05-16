@@ -48,3 +48,24 @@ span.mdc-select__selected-text-container {
 		}
 	}
 }
+
+
+.carousel-control {
+	.mdc-select {
+		.mdc-select__native-control:focus {
+			~ .mdc-floating-label {
+				color: rgba(249, 91, 38, 0.87);
+			}
+			border-bottom-color:rgba(249, 91, 38, 0.87)
+		}
+		.mdc-floating-label {
+			left: 16px;
+			right: auto;
+			bottom: 12px;
+			line-height: 1.75rem;
+			pointer-events: none;
+			transform: translateY(-40%) scale(0.75);
+			top: auto;
+		}
+	}
+}
