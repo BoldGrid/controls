@@ -1,3 +1,20 @@
-@import "@material/list/mdc-list";
-@import "@material/menu-surface/mdc-menu-surface";
-@import "@material/menu/mdc-menu";
+@use "@material/theme" with (
+	$primary: #f95b26,
+	$secondary: #f95b26,
+);
+
+
+@use "@material/list/mdc-list";
+@use "@material/menu-surface/mdc-menu-surface";
+@use "@material/menu/mdc-menu";
+
+li.mdc-list-item {
+    height: 48px;
+    align-items: center;
+}
+
+#bgppb-choose-editor .mdc-list-item__text {
+    text-overflow: ellipsis;
+    padding-left: 25px;
+    white-space: nowrap;
+}

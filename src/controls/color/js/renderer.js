@@ -6,6 +6,8 @@ import { Config } from './config.js';
 import { Button as ButtonColors } from './button.js';
 import { SassCompiler } from '../../style/js/sass-compiler.js';
 
+import template from '../template.html';
+
 export class Renderer {
 	constructor( configs ) {
 		this.preloadedFiles = false;
@@ -144,8 +146,7 @@ export class Renderer {
 	 * @return {string}               Control Markup.
 	 */
 	_createHtml( colorPalettes ) {
-		let file = require( '../template.html' );
-		return _.template( file )( { config: this.palettes } );
+		return _.template( template )( { config: this.palettes } );
 	}
 
 	/**

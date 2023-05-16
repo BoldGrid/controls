@@ -32,8 +32,9 @@
 	background-image: none;
 }
 
-.boldgrid-selected-text {
-	margin-top: 5px;
+span.mdc-select__selected-text-container {
+	height: 56px;
+	margin-top: 20px;
 }
 .mdc-select__menu.mdc-menu {
 	width: 300px;
@@ -47,4 +48,3 @@
 		}
 	}
 }
-
