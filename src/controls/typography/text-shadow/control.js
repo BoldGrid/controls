@@ -21,12 +21,6 @@ export class TextShadow extends MultiSlider {
 		this.events = new EventEmitter();
 
 		this.colorPicker = new ColorPicker();
-
-		this.switchControl = new Switch( {
-			name: 'text-shadow',
-			direction: 'reverse',
-			label: 'Text Shadow'
-		} );
 	}
 
 	/**
@@ -58,6 +52,24 @@ export class TextShadow extends MultiSlider {
 	}
 
 	/**
+	 * Preset Switch.
+	 *
+	 * @since 1.0.0
+	 */
+	_presetSwitch() {
+		var shadow  = this.$target.css( 'text-shadow' ),
+			checked = ( shadow && 'none' !== shadow && ! this.$target.hasClass( 'bg-text-fx' ) );
+
+		this.switchControl.setChecked( checked );
+
+		if( checked ) {
+			this.$selections.show();
+		} else {
+			this.$selections.hide();
+		}
+	}
+
+	/**
 	 * Based on the users current text shadow setting update the checkbox.
 	 *
 	 * @since 1.0.0
@@ -69,11 +81,7 @@ export class TextShadow extends MultiSlider {
 		// Checked if shadow is set.
 		checked = ( shadow && 'none' !== shadow && ! this.$target.hasClass( 'bg-text-fx' ) );
 
-		if ( ! checked ) {
-			this.$selections.hide();
-		} else {
-			this.$selections.show();
-		}
+		this.$selections.toggle( checked );
 		this.switchControl.setChecked( checked );
 	}
 
@@ -83,13 +91,8 @@ export class TextShadow extends MultiSlider {
 	 * @since 1.0.0
 	 */
 	_setupSwitch() {
-		this.switchControl.render();
-
 		this.switchControl.$button.on( 'click', () => {
-
-			let shadow = this.$target.css( 'text-shadow' );
-
-			if ( ( shadow && ! this.$target.hasClass( 'bg-text-fx' ) ) || this.switchControl.isEnabled() ) {
+			if ( this.switchControl.isEnabled() ) {
 				this.$selections.slideDown();
 				this._updateCss();
 				this.events.emit( 'open' );
@@ -127,7 +130,7 @@ export class TextShadow extends MultiSlider {
 
 		this._setupColorPicker();
 
-		this._setupSwitch();
+		this._initSwitch();
 
 		let $template = $( template );
 		$template.find( 'switch' ).replaceWith( this.switchControl.$element );
@@ -141,9 +144,25 @@ export class TextShadow extends MultiSlider {
 		this.$selections = this.$control.find( '.selections' );
 
 		// Presets.
-		this.updateControlDisplay();
+		this._presetSwitch();
+		this._setupSwitch();
 
 		return this.$control;
+	}
+
+	/**
+	 * Setup the switch control.
+	 *
+	 * @since 1.0.0
+	 */
+	_initSwitch() {
+		this.switchControl = new Switch( {
+			name: 'text-shadow',
+			direction: 'reverse',
+			label: 'Text Shadow'
+		} );
+
+		this.switchControl.render();
 	}
 
 	/**
