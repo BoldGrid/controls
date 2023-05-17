@@ -68,6 +68,12 @@ export class TextShadow extends MultiSlider {
 
 		// Checked if shadow is set.
 		checked = ( shadow && 'none' !== shadow && ! this.$target.hasClass( 'bg-text-fx' ) );
+
+		if ( ! checked ) {
+			this.$selections.hide();
+		} else {
+			this.$selections.show();
+		}
 		this.switchControl.setChecked( checked );
 	}
 
@@ -79,9 +85,11 @@ export class TextShadow extends MultiSlider {
 	_setupSwitch() {
 		this.switchControl.render();
 
-		$( this.switchControl.$button ).on( 'click', () => {
+		this.switchControl.$button.on( 'click', () => {
 
-			if ( this.switchControl.isEnabled() ) {
+			let shadow = this.$target.css( 'text-shadow' );
+
+			if ( ( shadow && ! this.$target.hasClass( 'bg-text-fx' ) ) || this.switchControl.isEnabled() ) {
 				this.$selections.slideDown();
 				this._updateCss();
 				this.events.emit( 'open' );
@@ -118,6 +126,7 @@ export class TextShadow extends MultiSlider {
 		super.render();
 
 		this._setupColorPicker();
+
 		this._setupSwitch();
 
 		let $template = $( template );
@@ -168,6 +177,8 @@ export class TextShadow extends MultiSlider {
 		cssString.push( data['vertical-position'] + this.selectedUnit );
 		cssString.push( data['blur-radius'] + this.selectedUnit );
 		cssString.push( this.shadowColor );
+
+		this.$target.removeClass( 'bg-text-fx' );
 
 		cssString = cssString.join( ' ' );
 

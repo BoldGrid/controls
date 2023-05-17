@@ -69,10 +69,12 @@ export class Control {
 	 */
 	_setupShadowSwitch() {
 		this.textShadow.events.on( 'open', () => {
-			this.textEffect.switchControl.setChecked( false );
+			this.textEffect.switchControl.switch.selected = false;
+			this.textEffect.$selections.hide();
 		} );
 		this.textEffect.events.on( 'open', () => {
-			this.textShadow.switchControl.setChecked( false );
+			this.textShadow.switchControl.switch.selected = false;
+			this.textShadow.$selections.hide();
 		} );
 	}
 }

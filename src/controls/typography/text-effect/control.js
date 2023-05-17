@@ -153,9 +153,9 @@ export class TextEffect {
 	 * @since 1.0.0
 	 */
 	_setupSwitch() {
-		$( this.switchControl.$button ).on( 'click', () => {
+		this.switchControl.$button.on( 'click', () => {
 			let isEnabled = this.switchControl.isEnabled(),
-				action = isEnabled ? 'slideDown' : 'slideUp';
+				action    = isEnabled ? 'slideDown' : 'slideUp';
 
 			this.$selections[ action ]( 'fast' );
 

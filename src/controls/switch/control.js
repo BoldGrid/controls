@@ -25,15 +25,21 @@ export class Switch {
 	render() {
 		this.$element = $( this.template( this.options ) );
 
-		this.$button = this.$element.find( 'button.mdc-switch' )[ 0 ];
+		this.$button = this.$element.find( 'button.mdc-switch' );
 
-		this.switch = new MDCSwitch( this.$button );
+		this.$input = this.$element.find( 'input' );
+
+		this.switch = new MDCSwitch( this.$button.get(0) );
 
 		return this.$element;
 	}
 
 	setChecked( val ) {
-		return this.switch.selected = Boolean( val );
+		if ( val === this.switch.selected ) {
+			return;
+		}
+
+		this.$button.trigger( 'click' );
 	}
 
 	/**
