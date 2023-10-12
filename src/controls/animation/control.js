@@ -12,7 +12,9 @@ export class Control {
 	constructor( options ) {
 		this.options = options || {};
 		this.$target = this.options.target;
-		this.animationClasses = _.flatten( _.values( animateConfig ) );
+
+		this.animationClasses = _.flatten( _.values( animateConfig ).map( ( x ) => _.allKeys( x ) ) );
+
 		this.animationClassesString = this.animationClasses.join( ' ' );
 
 		this.delayControl = new Slider( {
