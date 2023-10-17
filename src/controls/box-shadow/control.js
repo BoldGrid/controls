@@ -104,9 +104,10 @@ export class BoxShadow extends MultiSlider {
 	 * @since 1.0.0
 	 */
 	_updateCss() {
-		let data = this.getValues(),
-			name = this.controlOptions.control.name,
-			cssString = [];
+		let data         = this.getValues(),
+			name         = this.controlOptions.control.name,
+			currentStyle = this.$target.css( 'box-shadow' ),
+			cssString    = [];
 
 		cssString.push( this.shadowType );
 		cssString.push( data['horizontal-position'] + this.selectedUnit );
@@ -116,6 +117,15 @@ export class BoxShadow extends MultiSlider {
 		cssString.push( this.shadowColor );
 
 		cssString = cssString.join( ' ' );
+
+		let dataValuesSum = _.reduce( Object.values( data ), ( a, b ) => {
+			return a + b;
+		} );
+
+		// This prevents the box-shadow from being set when there is none.
+		if ( 'none' === currentStyle && 0 === dataValuesSum ) {
+			return;
+		}
 
 		this.applyCssRules( {
 			'box-shadow': cssString
