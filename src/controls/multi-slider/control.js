@@ -175,19 +175,43 @@ export class MultiSlider {
 	}
 
 	/**
-	 * Get the selected unit from the target's css
-	 * if the target's css is 0, return the default unit.
+	 * Get the unit that is currently used by the target.
+	 * 
+	 * There are two ways it can be set:
+	 * 1. The unit can be part of a declared property,
+	 *    that is set on the target by the user.
+	 * 2. The unit can be part of a computed property that
+	 *    is inherited from a parent, or from a theme style.
+	 * 
+	 * If the unit is declared, we want to use the declared unit, 
+	 * but fall back to the computed unit if it is not declared.
+	 * 
+	 * Lastly, we fall back to the default unit for the control.
 	 * 
 	 * @since 1.0.0
 	 */
 	_getSelectedUnit() {
-		let unit = this.controlOptions.control.units.default;
+		let unit = this.controlOptions.control.units.default,
+			value;
 
-		if ( this.$target ) {
-			let css = this.controlOptions.control.sliders[0].cssProperty;
-			if ( css ) {
-				unit = css.match( /em|px|%|vw|vh/ )[0];
+		for ( let slider of this.controlOptions.control.sliders ) {
+			let cssProperty   = slider.cssProperty.replace( /-([a-z])/g, ( match, letter ) => letter.toUpperCase() );
+			let declaredValue = this.$target.get( 0 ).style[cssProperty];
+			let computedValue = this.$target.css( slider.cssProperty );
+
+			if ( declaredValue ) {
+				value = declaredValue;
+				break;
 			}
+
+			if ( computedValue ) {
+				value = computedValue;
+				break;
+			}
+		}
+
+		if ( value ) {
+			unit = value.match( /em|px|%|vw|vh/ )[0];
 		}
 
 		return unit;
