@@ -52,7 +52,7 @@ export class MultiSlider {
 		this.$revert = this.$control.find( '.refresh' );
 
 		this._bindUnits();
-		this.setUnits( this.controlOptions.control.units.default );
+		this.setUnits( this._getSelectedUnit() );
 		this._addClasses();
 
 		// Create sliders and attach them to the template.
@@ -172,6 +172,25 @@ export class MultiSlider {
 		if ( 1 === this.controlOptions.control.sliders.length ) {
 			this.$control.addClass( 'single' );
 		}
+	}
+
+	/**
+	 * Get the selected unit from the target's css
+	 * if the target's css is 0, return the default unit.
+	 * 
+	 * @since 1.0.0
+	 */
+	_getSelectedUnit() {
+		let unit = this.controlOptions.control.units.default;
+
+		if ( this.$target ) {
+			let css = this.controlOptions.control.sliders[0].cssProperty;
+			if ( css ) {
+				unit = css.match( /em|px|%|vw|vh/ )[0];
+			}
+		}
+
+		return unit;
 	}
 
 	/**
