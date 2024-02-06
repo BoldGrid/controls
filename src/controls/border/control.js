@@ -176,12 +176,27 @@ export class Border extends MultiSlider {
 	 */
 	_bindTypeChange() {
 		this.$typeControl.find( 'input' ).on( 'change', e => {
-			let $this = $( e.target ),
-				val = $this.val();
+			let $this    = $( e.target ),
+				val      = $this.val(),
+				hasWidth = false;
+
+			$.each( this.sliders, ( direction ) => {
+				let $input = this.sliders[ direction ].$input;
+				if ( $input.val() > 0 ) {
+					hasWidth = true;
+					return false;
+				}
+			} );
 
 			this.applyCssRules( {
 				'border-style': val
 			} );
+
+			if ( ! hasWidth ) {
+				this.applyCssRules( {
+					'border-width': 0
+				} );
+			}
 
 			this._toggleWidthControl( val );
 			this.$control.trigger( 'type-change', val );
