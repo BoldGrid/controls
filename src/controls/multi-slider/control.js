@@ -210,7 +210,7 @@ export class MultiSlider {
 			}
 		}
 
-		if ( value ) {
+		if ( value && value.match( /em|px|%|vw|vh/ ) ) {
 			unit = value.match( /em|px|%|vw|vh/ )[0];
 		}
 
