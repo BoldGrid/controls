@@ -15,7 +15,7 @@
     "rimraf": "rimraf"
   },
   "dependencies": {
-    "@boldgrid/components": "^2.14.0",
+    "@boldgrid/components": "^2.16.32",
     "@material/switch": "^0.36.1",
     "Buttons": "https://github.com/alexwolfe/Buttons",
     "Iris": "git+https://github.com/Automattic/Iris.git#master",
