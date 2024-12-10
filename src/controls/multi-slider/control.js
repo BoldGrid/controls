@@ -134,9 +134,8 @@ export class MultiSlider {
 	 * @return {Object} Slider config.
 	 */
 	getSliderConfig( slider ) {
-		let uiSettings = slider.uiSettings;
-		let settings = uiSettings ? uiSettings : this.controlOptions.slider[this.selectedUnit],
-			value = this.convertToSelectedUnit( this.$target.css( slider.cssProperty ) );
+		let settings = this.controlOptions.slider[this.selectedUnit],
+			value    = this.convertToSelectedUnit( this.$target.css( slider.cssProperty ) );
 
 		settings.value = value;
 		return settings;
